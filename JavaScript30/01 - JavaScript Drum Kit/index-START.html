@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+<script>
+
+// 트랜지션 삭제 기능
+function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    // target 프로퍼티는 클릭된 HTML 태그를 반환한다.
+    this.classList.remove('playing'); 
+  }
+
+
+// 키보드를 누를 시 키 코드 값으로 소리나게 하기
+  function playSound(e) {
+    // audio 태그 data-key 프로퍼티
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    // div diata-key
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) return;
+    
+    // key를 누르면 .playing 클래스 추가
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+
+// key클래스를 배열로 만들기
+  console.log(document.querySelectorAll('.key')); // 이터러블 노드리스트
+  const keys = Array.from(document.querySelectorAll('.key'));
+
+// key class의 transition이 끝나면 removeTransition 콜백함수 실행.
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)); // keys배열을 순회하면서 각 key에 콜백함수 발동 
+
+// 즉 각 key의 transition이 종료된다면 removeTransition 콜백함수를 발동해서 css가 적용된 것을 지우는 방법이다.
+  window.addEventListener('keydown', playSound); // keydown 콜백함수 발동
+</script>
+</body>
+</html>
