@@ -1,22 +1,39 @@
 const form = document.querySelector('.js-form'),
-      input = document.querySelector('input'),
+      input = form.querySelector('input'),
       greeting = document.querySelector('.js-greeting');
-      
+   
 const USER_LS = "currentUser",
-      SHOWING_LS = "showing";
+      SHOWING_CN = 'showing';
+
+function setName(text) {
+    localStorage.setItem(USER_LS, text);
+}
+
+function handlesubmit(e) {
+  e.preventDefault();
+  const inputValue = document.querySelector('input').value;
+  paintGreeting(inputValue);
+  setName(inputValue);
+}
+
+function askForName() {
+  form.classList.add(SHOWING_CN);
+  form.addEventListener('submit', handlesubmit);
+}
 
 function paintGreeting(text) {
-  form.classList.remove(SHOWING_LS);
-  greeting.classList.add(SHOWING_LS);
+  form.classList.remove(SHOWING_CN);
+  form.style.display = "none";
+  greeting.classList.add(SHOWING_CN);
   greeting.innerText = `Hello ${text}`;
 }
 
-function loadName() {
+function loadName(){
   const currentUser = localStorage.getItem(USER_LS);
-  if(currentUser === null) {
-  
+  if(currentUser === null){
+    askForName();
   }else {
-    paintGreeting(greeting);
+    paintGreeting(currentUser);
   }
 }
 
