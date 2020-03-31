@@ -1,14 +1,18 @@
 body {
   background-color: #ecf0f1;
   color: #7f8c8d;
+  margin: 0;
+  padding: 0;
 }
 
 .btn {
   cursor: pointer;
 }
 
+
 h1 {
   color: #34495e;
+  font-size: 50px;
 }
 
 .clicked {
@@ -16,10 +20,19 @@ h1 {
 }
 
 .form,
-.greeting {
+.greetings {
   display: none;
 }
 
 .showing {
   display: block;
+}
+
+ul > li{
+  list-style-type: none;
+}
+
+button {
+  background: none;
+  border: none;
 }

@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>whatever</title>
-  <link rel="momentum" href="index.css">
+  <title>momentum</title>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div class="js-clock">
-      <h1>0:00</h1>
-    </div>
+  <div class="js-clock">
+    <h1 class="clock">00:00</h1>
+</div>
 
-    <form class="js-form form">
-      <input type="text" placeholder="what is your name?">
-    </form>
+<form class="js-form form">
+    <input type="text" placeholder="What is your name?" class="showing" />
+</form>
+<h4 class="js-greetings greeting"></h4>
 
-    <h4 class="js-greeting greeting"></h4>
-
+<form class="js-toDoForm">
+    <input type="text" placeholder="Write a to do" />
+</form>
+<ul class="js-toDoList">
+</ul>
     <script src="clock.js"></script>
     <script src="greeting.js"></script>
+    <script src="todoList.js"></script>
 </body>
 
 </html> 
