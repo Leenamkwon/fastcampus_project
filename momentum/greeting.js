@@ -20,8 +20,8 @@ function askForName() {
   form.classList.add(CLASS_CN);
   form.addEventListener('submit', handleSubmit);
 }
-////////////
 
+////////////////////////////////
 function paintGreeting(text) {
   form.classList.remove(CLASS_CN);
   greeting.classList.add(CLASS_CN);
