@@ -6,14 +6,13 @@ const TODOS_LS = 'toDos';
 
 let toDos = [];
 
-function deleteTodo(e){
+function deleteTodo(e) {
   const btn = e.target;
   const li = btn.parentNode;
   toDoList.removeChild(li);
   const cleanToDos = toDos.filter(function(toDo){
     return toDo.id !== li.id;
   });
-
   toDos = cleanToDos;
   saveToDos();
 }
@@ -60,7 +59,7 @@ function loadToDos() {
   }
 }
 
-function init(){
+function init() {
   loadToDos();
   toDoForm.addEventListener('submit', handleSubmit);
 }
