@@ -1,8 +1,9 @@
 body {
   background-color: #ecf0f1;
-  color: #7f8c8d;
+  color: #fff;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 ul {
@@ -16,7 +17,7 @@ ul {
 
 
 h1 {
-  color: #34495e;
+  color: #fff;
   font-size: 50px;
 }
 

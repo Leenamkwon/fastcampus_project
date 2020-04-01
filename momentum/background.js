@@ -2,15 +2,10 @@ const body = document.querySelector('body');
 
 const IMG_NUMBER = 3;
 
-function handleImages() {
-  console.log('adasdasd');
-}
-
 function paintImage(num) {
   const image = new Image();
-  image.src = `/images/${num + 1}.jpg`
+  image.src = `/images/${num + 1}.jpg`;
   body.appendChild(image);
-  image.addEventListener('loadend', handleImages);
   image.classList.add('bgImage');
 }
 
