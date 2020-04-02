@@ -36,7 +36,7 @@ function handleGeoSucces(position) {
 }
 
 function handleGeoError() {
-  console.log('cant access geolocation!!');
+  console.log('can\'t access geolocation!!');
 }
 
 function askForCoords() {
