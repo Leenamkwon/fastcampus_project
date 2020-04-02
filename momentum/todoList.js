@@ -14,7 +14,6 @@ function delFn(e) {
   // 조건에 걸쳐서 필터링 후 마지막에 array 반환
   const cleanToDos = toDos.filter(clean => {
     // 객체 id 값과 li id 값이 다른 나머지만 배열로 반환해서 넣어야하기 떄문에 !== 써야함 
-    // ㅈㄴ어렵네
     return clean.id !== parseInt(li.id);
   });
   toDos = cleanToDos;
@@ -60,7 +59,7 @@ function handleSubmit(e) {
 // 로컬 스토리지 불러오기 
 function loadToDos() {
   const loadedToDos = localStorage.getItem(TODOS_LS);
-  // 로컬스토리지가 비어 있지 않다면~
+  // 로컬스토리지가 비어 있지 않다면
   if(loadedToDos !== null) {
     const parsedToDo = JSON.parse(loadedToDos);
     console.log(parsedToDo);
