@@ -1,12 +1,13 @@
 # JavaScript30
 
-SCSS와 바닐라 JS로 기능구현
+  1. Drum kit 
+  2. Clock
 <br>
 
 # lecture-vue
 
-바닐라 JS로 검색 어플리케이션 만들기 <br>
-뷰를 사용해서 검색 어플리케이션 만들기
+JS: mvc pattern
+View.js: mvvc pattern
 <br>
 
 
@@ -14,8 +15,9 @@ SCSS와 바닐라 JS로 기능구현
 
 구글 어플리케이션을 바닐라 JS로 구현
 
-주요 기능
-  스토리지 기능
-  todo
-  시계
-  무작위 배경
+  function
+    Storage
+    toDo
+    Clock
+    Random Bg
+    Geolocation weather
