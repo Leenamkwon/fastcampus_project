@@ -3,16 +3,16 @@ const API_URL ='https://floating-harbor-78336.herokuapp.com/fastfood';
 $(function() {
   $('.btn-search').click(function() {
     $.get(API_URL, {}, function(data) { // .get() 인자 순서대로 'url, data, success, dataType'
-    var list = data.list;
-    var total = data.total;
+    const list = data.list;
+    console.log(data.list[0]);
+
+    const total = data.total;
 
     const $list = $('.list');
     
-    for (var i = 0; i < list.length; i++) {
-      var item = list[i];
-      console.log(list[i]);
-
-      var $elem = $('#item-template')
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      const $elem = $('#item-template')
       .clone()
       .removeAttr('id');
       
