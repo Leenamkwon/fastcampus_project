@@ -3,20 +3,27 @@ const ctx = canvas.getContext('2d');
 const colors = document.getElementsByClassName('jsColor');
 const range = document.getElementById("jsRange");
 const mode = document.getElementById('jsMode');
+const save = document.getElementById('jsSave');
+
+const INITIAL_WH = 500;
 
 // 캔버스 크기
-canvas.width = 500
-canvas.height = 500
+canvas.width = INITIAL_WH;
+canvas.height = INITIAL_WH;
 
+ctx.fillStyle = 'white';
+ctx.fillRect(0, 0, INITIAL_WH, INITIAL_WH);
 // 선 색상
 ctx.strokeStyle = "#2c2c2c";
 // 브러쉬 크기
 ctx.lineWidth = 2.5;
+// 채우기 색상
 ctx.fillStyle = "#2c2c2c";
 
 let painting = false;
 let fill = false;
-// console.log(painting);
+
+
 function stopPainting(e) {
   painting = false;
 }
@@ -29,16 +36,12 @@ function onMouseMove(e) {
   const x = e.offsetX;
   const y = e.offsetY;
 
-  // console.log(painting);
-
   if(!painting) { // 클릭하고 움직이면 이 것은 작동하지 않음.
     ctx.beginPath();
     ctx.moveTo(x, y);
-    console.log(painting);
   } else {
     ctx.lineTo(x, y);
     ctx.stroke();
-    console.log(painting);
   }
 }
 
@@ -61,7 +64,7 @@ function handleRangeChange(e) {
   ctx.lineWidth = range;
 }
 
-function handleModeClick(e) {
+function handleModeClick() {
   if(fill === true) {
     fill = false;
     mode.innerText = "FILL";
@@ -73,8 +76,20 @@ function handleModeClick(e) {
 
 function handleCanvasClick() {
   if ( fill === true) {
-    ctx.fillRect(0, 0, 700, 700);
-  };
+    ctx.fillRect(0, 0, INITIAL_WH, INITIAL_WH);
+  }
+}
+
+function handleCM(e) {
+  e.preventDefault();
+}
+
+function handleSaveClick() {
+  const image = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "mypainting.png";
+  link.click();
 }
 
 if (canvas) {
@@ -83,6 +98,7 @@ if (canvas) {
   canvas.addEventListener('mouseup', stopPainting);
   canvas.addEventListener('mouseleave', stopPainting);
   canvas.addEventListener('click', handleCanvasClick);
+  canvas.addEventListener('contextmenu', handleCM); // 우클릭 방지
 }
 
 const jsColor = [...colors];
@@ -94,4 +110,8 @@ if (range) {
 
 if (mode) {
   mode.addEventListener('click', handleModeClick);
+}
+
+if (save) {
+  save.addEventListener('click', handleSaveClick);
 }
