@@ -66,39 +66,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  const keys = document.querySelectorAll('.key')
 
-// 트랜지션 삭제 기능
-function removeTransition(e) {
-    if (e.propertyName !== 'transform') return;
-    // target 프로퍼티는 클릭된 HTML 태그를 반환한다.
-    this.classList.remove('playing'); 
+  function keyDownEvent(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    if(!audio) return
+    audio.currentTime = 0
+    audio.play()
+    key.classList.add('playing')
   }
 
+  const arrKeys = [...keys];
+  arrKeys.forEach( e => {
+    e.addEventListener('transitionend', hoverEffect)
+  })
 
-// 키보드를 누를 시 키 코드 값으로 소리나게 하기
-  function playSound(e) {
-    // audio 태그 data-key 프로퍼티
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    // div diata-key
-    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-    if (!audio) return;
-    
-    // key를 누르면 .playing 클래스 추가
-    key.classList.add('playing');
-    audio.currentTime = 0;
-    audio.play();
+  function hoverEffect(e) {
+    // e.target.classList.remove('playing') // 방법 1
+    this.classList.remove('playing') // 방법 2
   }
 
-
-// key클래스를 배열로 만들기
-  console.log(document.querySelectorAll('.key')); // 이터러블 노드리스트
-  const keys = Array.from(document.querySelectorAll('.key'));
-
-// key class의 transition이 끝나면 removeTransition 콜백함수 실행.
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition)); // keys배열을 순회하면서 각 key에 콜백함수 발동 
-
-// 즉 각 key의 transition이 종료된다면 removeTransition 콜백함수를 발동해서 css가 적용된 것을 지우는 방법이다.
-  window.addEventListener('keydown', playSound); // keydown 콜백함수 발동
+  window.addEventListener('keydown', keyDownEvent)
 </script>
 </body>
 </html>
