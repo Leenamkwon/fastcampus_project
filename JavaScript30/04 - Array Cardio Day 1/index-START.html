@@ -81,16 +81,25 @@
     // 7. sort Exercise
     // Sort the people alphabetically by last name
     const alpha = people.sort((a, b) => {
-      const [last, first] = a.split(', ')
-      const [bLast, bFirst] = b.split(', ')
+      const [last, first] = a.split(' ')
+      const [bLast, bFirst] = b.split(' ')
       return last < bLast ? -1 : 1
     })
-    // console.table(alpha)
-
+    console.table(alpha)
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+  
+  const sum = data.reduce((obj, item) => {
+    if(!obj[item]) { // obj가 false 라면 초깃값을 0으로 설정
+      obj[item] = 0
+    }
+    obj[item]++
+    console.log(obj)
+    return obj
+  }, {})
+  console.log(sum)
 
   </script>
 </body>
