@@ -43,16 +43,6 @@
     
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
-
-
-    // const birthDate = inventors.sort((a, b) => {
-    //   if(a.year > b.year) {
-    //     return 1;
-    //   } else {
-    //     return -1;
-    //   }
-    // })
-
     const ordered = inventors.sort((a, b) => a.year > b.year ? 1 : -1);
 
     console.table(ordered);
@@ -63,31 +53,40 @@
       return total + (inventor.passed - inventor.year)
     }, 0)
 
-    console.log(totalYears)
+     console.log(totalYears)
 
     // 5. Sort the inventors by years lived
     const oldest = inventors.sort((a, b) => {
       const lastGuy = a.passed - a.year;
       const nextGuy = b.passed - b.year;
-
+      
+      console.log(lastGuy, nextGuy)
       if(lastGuy > nextGuy) {
         return -1;
       } else {
         return 1;
       }
     })
-    console.table(oldest)
+     console.table(oldest)
+
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
     
-    const category = document.querySelector('.mw-category')
-    const link = [...category.querySelectorAll('a')]; // 스프레드를 이런식으로 쓰자
-    const de = Arrlink
-              .map(link => link.textContent)
-              .filter(streetName => streetName.includes('de'));
+    // const category = document.querySelector('.mw-category')
+    // const link = [...category.querySelectorAll('a')]; // 스프레드를 이런식으로 쓰자
+    // const de = Arrlink // GOD BOSS !!
+    //           .map(link => link.textContent)
+    //           .filter(streetName => streetName.includes('de'));
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const alpha = people.sort((a, b) => {
+      const [last, first] = a.split(', ')
+      const [bLast, bFirst] = b.split(', ')
+      return last < bLast ? -1 : 1
+    })
+    // console.table(alpha)
+
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
