@@ -63,7 +63,7 @@
 
   function handleUpdate() {
     console.log(document.documentElement)
-    const suffix = this.dataset.sizing || ''; // sizing 프로퍼티가 있다면 참 없으면 '' 공백
+    const suffix = this.dataset.sizing || ''; // sizing 프로퍼티가 있다면 참 없으면 '' 공백 // if문 대신에 쓴 것
     document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix); // 컬러는 px가 필요없기 떄문에 위에서 공백으로 준 것
   }
 

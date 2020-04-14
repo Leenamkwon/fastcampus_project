@@ -19,37 +19,70 @@ const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb
 
 const searchInput = document.querySelector('.search');
 const suggestions = document.querySelector('.suggestions');
-
 let cities = [];
 
 fetch(endpoint)
-  .then(blob => blob.json()) // 받아온 데이터를 객체형식으로 만듦
-  .then(data => cities.push(...data) )  // 방법2 cities = ...data
+  .then(blob => blob.json())
+  .then(data => cities.push(...data)) // 그냥 push 해버리면 배열 자체를 배열 안에 또 넣기 떄문에 스프레드로 풀어주고 또 한번 넣어야 함
 
 function findMatches(wordToMatch, cities) {
   return cities.filter(place => {
     const regex = new RegExp(wordToMatch, 'gi');
-    return place.city.match(regex) || place.state.match(regex) // value값에 부합하는 city이름이 없다면 state로 부합하는 값을 찾아라 
-
-  }) // match() 메서드는 문자열이 정규식과 매치되는 부분을 검색합니다.
-    // 일치하는 전체 문자열을 첫 번째 요소로 포함하는 Array를 반환한 다음 괄호 안에 캡처된 결과가 옵니다. 일치하는 것이 없으면 null이 반환됩니다.
+    return place.city.match(regex) || place.state.match(regex)
+  })
 }
 
 function displayMatches() {
   const matchArray = findMatches(this.value, cities)
   const html = matchArray.map(place => {
+    const regex = new RegExp(this.value, 'gi');
+    const cityName = place.city.replace(regex, `${this.value}`)
+    const stateName = place.state.replace(regex, `${this.value}`)
+
     return `
       <li>
-        <span class="name">${place.city}, ${place.state}</span>
-        <span class="name">${place.population}</span>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${place.population}</span>
       </li>
-    `
-  }).join(''); // join() 메서드는 배열의 모든 요소를 연결해 하나의 문자열로 만듭니다.
+    `;
+  }).join('');
   suggestions.innerHTML = html;
 }
 
 searchInput.addEventListener('change', displayMatches)
 searchInput.addEventListener('keyup', displayMatches)
+
+
+// let cities = [];
+
+// fetch(endpoint)
+//   .then(blob => blob.json()) // 받아온 데이터를 객체형식으로 만듦
+//   .then(data => cities.push(...data) )  // 방법2 cities = ...data
+
+// function findMatches(wordToMatch, cities) {
+//   return cities.filter(place => {
+//     const regex = new RegExp(wordToMatch, 'gi');
+//     return place.city.match(regex) || place.state.match(regex) // value값에 부합하는 city이름이 없다면 state로 부합하는 값을 찾아라 
+
+//   }) // match() 메서드는 문자열이 정규식과 매치되는 부분을 검색합니다.
+//     // 일치하는 전체 문자열을 첫 번째 요소로 포함하는 Array를 반환한 다음 괄호 안에 캡처된 결과가 옵니다. 일치하는 것이 없으면 null이 반환됩니다.
+// }
+
+// function displayMatches() {
+//   const matchArray = findMatches(this.value, cities)
+//   const html = matchArray.map(place => {
+//     return `
+//       <li>
+//         <span class="name">${place.city}, ${place.state}</span>
+//         <span class="name">${place.population}</span>
+//       </li>
+//     `
+//   }).join(''); // join() 메서드는 배열의 모든 요소를 연결해 하나의 문자열로 만듭니다.
+//   suggestions.innerHTML = html;
+// }
+
+// searchInput.addEventListener('change', displayMatches)
+// searchInput.addEventListener('keyup', displayMatches)
 </script>
 </body>
 </html>
