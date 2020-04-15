@@ -43,11 +43,18 @@
     // find the comment with the ID of 823423
     const array1 = comments.find(id => id.id === 823423);
     console.log(array1) // find 는 요소를 반환한다.
-    
+
     // Array.prototype.findIndex()
     // Find the comment with this ID
     // delete the comment with the ID of 823423
-
+    const array2 = comments.findIndex(id => id.id === 823423);
+    console.log(array2)
+    // 인덱스 번호 구해서 새로운 배열에 slice로 복사하기
+    const newComments = [
+      ...comments.slice(0, array2),
+      ...comments.slice(array2 + 1)
+    ]
+    console.table(newComments)
   </script>
 </body>
 </html>
