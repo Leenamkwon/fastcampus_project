@@ -101,12 +101,16 @@ let lastChecked;
 
 function handleCheck(e) {
   let inbetween = false;
-  // shift key down와 같이 누른다면
-  if(e.shiftKey && this.checked) {
+  console.log(inbetween)
 
+  // shift key down와 같이 누른다면
+  // checkbox가 checked가 된다면
+  if(e.shiftKey && this.checked) {
     checkboxes.forEach(checkbox => {
+      console.log(checkbox)
       if(checkbox === this || checkbox === lastChecked) {
         inbetween = !inbetween;
+        console.log('Starting to check them inbetween!');
       }
 
       if(inbetween) {
@@ -114,8 +118,9 @@ function handleCheck(e) {
       }
     });
   }
-  console.log(lastChecked)
+  
   lastChecked = this;
+  console.log(lastChecked, 'LAST')
 }
 
 checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
