@@ -23,6 +23,7 @@ function draw(e) {
   let lastX = e.offsetX;
   let lastY = e.offsetY;
   ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+  hue++;
   if(!isDrawing) {
     ctx.beginPath();
     // start from
