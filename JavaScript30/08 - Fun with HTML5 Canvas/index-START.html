@@ -14,9 +14,10 @@ canvas.heigth = window.innerHeight;
 // ctx.strokeStyle = '#BADA55';
 ctx.lineJoin = 'round';
 ctx.lineCap = 'round';
-ctx.lineWidth = 50;
+ctx.lineWidth = 0;
 let isDrawing = false;
 let hue = 0;
+let direction = true;
 
 function draw(e) {
   let lastX = e.offsetX;
@@ -32,6 +33,16 @@ function draw(e) {
     ctx.stroke();
     hue++;
   } 
+
+  // 스위치 방식
+  if(ctx.lineWidth >= 30 || ctx.lineWidth <= 1) {
+    direction = !direction;
+  }
+  if(direction) {
+    ctx.lineWidth++;
+  } else {
+    ctx.lineWidth--;
+  }
 }
 
 canvas.addEventListener('mousedown', (e) => {
