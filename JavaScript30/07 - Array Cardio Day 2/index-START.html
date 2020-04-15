@@ -38,6 +38,7 @@
       return currentYear - person.year <= 19;
     })
     console.log(areAdult);
+    
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
     // find the comment with the ID of 823423
@@ -48,7 +49,8 @@
     // Find the comment with this ID
     // delete the comment with the ID of 823423
     const array2 = comments.findIndex(id => id.id === 823423);
-    console.log(array2)
+    console.log(array2) // 1
+
     // 인덱스 번호 구해서 새로운 배열에 slice로 복사하기
     const newComments = [
       ...comments.slice(0, array2),
