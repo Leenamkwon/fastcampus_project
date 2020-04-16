@@ -8,14 +8,9 @@ const player = document.querySelector('.player'),
       ranges = player.querySelectorAll('.player__slider');
 
 // 기능 만들기
-function togglePlay() {
-  // const method = video.paused ? 'play' : 'pause';
-  // video[method]();
-  if (video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
+function togglePlay(e) {
+  const method = video.paused ? 'play' : 'pause';
+  video[method]();
 }
 
 function updateButton() {
@@ -39,6 +34,7 @@ function handleProgress() {
 }
 
 function scrub(e) {
+  console.log(e);
   const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
   video.currentTime = scrubTime;
 }

@@ -100,27 +100,20 @@ const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
 let lastChecked;
 
 function handleCheck(e) {
-  let inbetween = false;
-  console.log(inbetween)
-
-  // shift key down와 같이 누른다면
-  // checkbox가 checked가 된다면
-  if(e.shiftKey && this.checked) {
+  let inBetween = false;
+  if(e.shiftKey && this.checked){
     checkboxes.forEach(checkbox => {
-      console.log(checkbox)
-      if(checkbox === this || checkbox === lastChecked) {
-        inbetween = !inbetween;
-        console.log('Starting to check them inbetween!');
+      if ( checkbox === this || checkbox === lastChecked ) {
+        inBetween = !inBetween;
       }
-
-      if(inbetween) {
+      // console.log(inBetween, 'first');
+      if (inBetween) {
         checkbox.checked = true;
       }
+      // console.log(inBetween, 'second');
     });
   }
-  
-  lastChecked = this;
-  console.log(lastChecked, 'LAST')
+  lastChecked = this; // 마지막에 체크한 것
 }
 
 checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
