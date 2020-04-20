@@ -58,13 +58,27 @@
       };
     }
 
-    const sliderImages = document.querySelectorAll('.slide-in');
-    
-    function checkSlide(e) {
-      console.log(e);
+    const sliderImages = [...document.querySelectorAll('.slide-in')];
+
+    function checkSlide() {
+      sliderImages.forEach(sliderImage => {
+        console.log(window.innerHeight + window.scrollY);
+        // half way through the image
+        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
+        // bottom of the image
+        const imageBottom = sliderImage.offsetTop + sliderImage.height;
+        const isHalfShown = slideInAt > sliderImage.offsetTop;
+        // scroll 빠르게 하지 말아!
+        const isNotScrolledPast = window.scrollY < imageBottom;
+        if (isHalfShown && isNotScrolledPast) {
+          sliderImage.classList.add('active');
+        } else {
+          sliderImage.classList.remove('active');
+        }
+      });
     }
 
-    window.addEventListener('scroll', checkSlide);
+    window.addEventListener('scroll', debounce(checkSlide));
   </script>
 
   <style>
