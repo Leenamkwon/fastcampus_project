@@ -64,12 +64,14 @@
       sliderImages.forEach(sliderImage => {
         console.log(window.innerHeight + window.scrollY);
         // half way through the image
-        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
+        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2; // 공식이다. 작동원리 이해만 하자
         // bottom of the image
         const imageBottom = sliderImage.offsetTop + sliderImage.height;
+        // 이미지 반을 뺀 창값이 이미지의 위쪽 여백보다 크다면
         const isHalfShown = slideInAt > sliderImage.offsetTop;
-        // scroll 빠르게 하지 말아!
+        // scroll 빠르기 방지!
         const isNotScrolledPast = window.scrollY < imageBottom;
+
         if (isHalfShown && isNotScrolledPast) {
           sliderImage.classList.add('active');
         } else {
