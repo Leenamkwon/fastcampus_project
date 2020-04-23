@@ -2,6 +2,16 @@
 
 Simple client side form validation. Check requird, length, email and password match
 
+## personel Project
+
+- Lee namkwon
+
+## using tool
+
+- HTML
+- CSS
+- JS(no framework, libary)
+
 ## Project Specifications
 
 - Create form UI
