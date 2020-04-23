@@ -88,7 +88,7 @@ function handleSaveClick() {
   const image = canvas.toDataURL();
   const link = document.createElement("a");
   link.href = image;
-  link.download = "mypainting.png";
+  link.download = "fuckyou.png";
   link.click();
 }
 
