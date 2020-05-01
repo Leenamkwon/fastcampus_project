@@ -88,6 +88,7 @@ const btnContainer = document.querySelector('.btn-container');
 
 // showing Buttons
 function paintButtons() {
+  // point
   const categories = menu.reduce(
     (values, item) => {
       if (!values.includes(item.category)) {
@@ -115,7 +116,7 @@ function filterItems(filterBtns) {
     btn.addEventListener('click', (e) => {
       let category = e.target.dataset.id;
 
-      // point (속성명으로 가져오는 법)
+      // point
       const menuCategory = menu.filter((menuItem) => {
         if (menuItem.category === category) {
           return menuItem;
