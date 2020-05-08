@@ -3,16 +3,16 @@
 // slice extracts a section of a string without modifying original string
 //offsetTop - A Number, representing the top position of the element, in pixels
 
-// ********** set date ************
 const date = document.getElementById('date');
-date.innerHTML = new Date().getFullYear();
-// ********** close links ************
+date.textContent = new Date().getFullYear();
+
 const navToggle = document.querySelector('.nav-toggle');
 const linksContainer = document.querySelector('.links-container');
 const links = document.querySelector('.links');
 
+// 동적으로 높이 계산하기
 navToggle.addEventListener('click', () => {
-  // nav를 동적으로 만드는 법
+  // linksContainer.classList.toggle('show-links');
   const containerHeight = linksContainer.getBoundingClientRect().height;
   const linksHeight = links.getBoundingClientRect().height;
 
@@ -23,50 +23,44 @@ navToggle.addEventListener('click', () => {
   }
 });
 
-const navbar = document.getElementById('nav');
+const navbar = document.querySelector('nav');
 const topLink = document.querySelector('.top-link');
 
-// ********** fixed navbar ************
+// 네비게이션 고정시키기
 window.addEventListener('scroll', () => {
-  const scollHeight = window.pageYOffset;
+  const offsetY = window.pageYOffset;
   const navHeight = navbar.getBoundingClientRect().height;
-  if (scollHeight > navHeight) {
+  if (offsetY > navHeight) {
     navbar.classList.add('fixed-nav');
   } else {
     navbar.classList.remove('fixed-nav');
   }
 
-  if (scollHeight > 500) {
+  if (offsetY > 500) {
     topLink.classList.add('show-link');
   } else {
     topLink.classList.remove('show-link');
   }
+
+  // css의 프로퍼티인 scroll-behavior: smooth; 떄문에 자연스럽게 올라가는 것임
 });
 
-// ********** smooth scroll ************
-// select links
+// 스크롤 정확하게 상단에 이동하기
 const scrollLinks = document.querySelectorAll('.scroll-link');
+
 scrollLinks.forEach((link) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
-    // navigate to specific spot
     const id = e.target.getAttribute('href').slice(1);
-    const element = document.getElementById(id);
-
-    // calculate the heigths
+    const sectionEl = document.getElementById(id);
+    // calculate the heights
     const navHeight = navbar.getBoundingClientRect().height;
-    const containerHeight = linksContainer.getBoundingClientRect().height;
     const fixedNav = navbar.classList.contains('fixed-nav');
 
-    // 위치값: 각 요소
-    let position = element.offsetTop - navHeight;
+    let position = sectionEl.offsetTop - navHeight;
 
     if (!fixedNav) {
       position = position - navHeight;
-    }
-
-    if (navHeight > 82) {
-      position = position + containerHeight;
     }
 
     window.scrollTo({
@@ -76,6 +70,3 @@ scrollLinks.forEach((link) => {
     linksContainer.style.height = 0;
   });
 });
-
-const navHeight = navbar.getBoundingClientRect().height;
-const containerHeight = linksContainer.getBoundingClientRect().height;
