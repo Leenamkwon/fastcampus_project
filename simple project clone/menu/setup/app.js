@@ -82,87 +82,70 @@ const menu = [
   }
 ];
 
-// select my parent
-const sectionCenter = document.querySelector('.section-center');
 const btnContainer = document.querySelector('.btn-container');
+const sectionCenter = document.querySelector('.section-center');
 
-// showing Buttons
-function paintButtons() {
-  // point
-  const categories = menu.reduce(
-    (values, item) => {
-      if (!values.includes(item.category)) {
-        values.push(item.category);
+function displayItems(menus) {
+  const showingArticle = menus
+    .map((article) => {
+      return `<article class="menu-item">
+    <img src="${article.img}" class="photo" alt="menu-item" />
+    <div class="item-info">
+      <header>
+        <h4>${article.title}</h4>
+        <h4 class="price">${article.price}</h4>
+      </header>
+      <p class="item-text">
+        ${article.desc}
+      </p>
+    </div>
+  </article>`;
+    })
+    .join('');
+  sectionCenter.innerHTML = showingArticle;
+}
+
+function displayButtons() {
+  const showingBtns = menu.reduce(
+    (value, item) => {
+      if (!value.includes(item.category)) {
+        value.push(item.category);
       }
-      return values;
+      return value;
     },
     ['all']
   );
-
-  // painting button view
-  const categoryBtns = categories
+  const paintingBtns = showingBtns
     .map((btns) => {
-      return `<button type="button" class="filter-btn" data-id="${btns}">${btns}</button>`;
-    })
-    .join('');
-  btnContainer.innerHTML = categoryBtns;
-  const filterBtns = document.querySelectorAll('.filter-btn');
-
-  // bring filterItems
-  filterItems(filterBtns);
-}
-
-// filter items
-function filterItems(filterBtns) {
-  filterBtns.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      // point (속성명으로 가져오는 법)
-      let category = e.target.dataset.id;
-      const menuCategory = menu.filter((menuItem) => {
-        if (menuItem.category === category) {
-          return menuItem;
-        }
-      });
-
-      if (category === 'all') {
-        menuShowing(menu);
-      } else {
-        menuShowing(menuCategory);
-      }
-    });
-  });
-}
-
-// showing menu items
-function menuShowing(menuItems) {
-  let displayMenu = menuItems
-    .map((item) => {
       return `
-      <article class="menu-item">
-    <div class="section-center">
-    <!-- single item -->
-    <article class="menu-item">
-      <img src="${item.img}" class="photo" alt=${item.title} />
-      <div class="item-info">
-        <header>
-          <h4>${item.title}</h4>
-          <h4 class="price">${item.price}</h4>
-        </header>
-        <p class="item-text">
-          ${item.desc}
-        </p>
-      </div>
-    </article>
-    <!-- end of single item -->
-  </div>
-  </article>
+    <button type="button" class="filter-btn" data-id="${btns}">${btns}</button>
     `;
     })
     .join('');
-  sectionCenter.innerHTML = displayMenu;
+  btnContainer.innerHTML = paintingBtns;
+
+  const buttons = document.querySelectorAll('.filter-btn');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', paintingShow);
+  });
 }
 
-window.addEventListener('DOMContentLoaded', function () {
-  menuShowing(menu);
-  paintButtons();
+function paintingShow(e) {
+  const target = e.target.dataset.id;
+  const filterCategory = menu.filter((category) => {
+    if (category.category === target) {
+      return category;
+    }
+  });
+
+  if (target === 'all') {
+    displayItems(menu);
+  } else {
+    displayItems(filterCategory);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  displayButtons();
+  displayItems(menu);
 });
