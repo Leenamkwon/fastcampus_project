@@ -33,7 +33,6 @@ function eventListeners() {
     if (questionValue === '' || answerValue === '') {
       feedback.classList.add('showItem', 'alert-danger');
       feedback.textContent = '값이 비었습니다.';
-
       setTimeout(() => {
         feedback.classList.remove('alert-danger', 'showItem');
       }, 1000);
@@ -46,17 +45,46 @@ function eventListeners() {
       ui.clearFiedls(questionValue, answerValue);
     }
   });
+
   // work with a question
   questionList.addEventListener('click', (e) => {
     e.preventDefault();
     const target = e.target;
-    const text = document.querySelector('.show-answer');
-
+    const removeChild = e.target.parentElement.parentElement.parentElement;
+    let id = e.target.dataset.id;
     if (target.classList.contains('delete-flashcard')) {
-      const removeChild = e.target.parentElement.parentElement.parentElement;
+      console.log(data);
+
       questionList.removeChild(removeChild);
+
+      // rest of the data
+      let tempData = data.filter((item) => {
+        return item.id !== +id;
+      });
+      data = tempData;
+      console.log(data);
     } else if (target.classList.contains('show-answer')) {
       e.target.nextElementSibling.classList.toggle('showItem');
+    } else if (target.classList.contains('edit-flashcard')) {
+      // delete question from the dom
+      questionList.removeChild(removeChild);
+
+      // show the question card
+      ui.showQuestion(questionCard);
+
+      // specific question
+      const tempQuestion = data.filter((item) => {
+        return item.id === +id;
+      });
+
+      // rest of the data
+      let tempData = data.filter((item) => {
+        return item.id !== +id;
+      });
+
+      data = tempData;
+      questionInput.value = tempQuestion[0].title;
+      answerInput.value = tempQuestion[0].answer;
     }
   });
 }
@@ -78,14 +106,14 @@ UI.prototype.closeQuestion = function (questionCard) {
 UI.prototype.addQuestion = function (element, question) {
   const div = document.createElement('div');
   div.classList.add('col-md-4');
-  div.innerHTML = `    <div class="card card-body flashcard my-3">
+  div.innerHTML = `<div class="card card-body flashcard my-3">
   <h4 class="text-capitalize">${question.title}</h4>
   <a href="#" class="text-capitalize my-3 show-answer">show/hide answer</a>
   <h5 class="answer mb-3">${question.answer}</h5>
   <div class="flashcard-btn d-flex justify-content-between">
 
    <a href="#" id="edit-flashcard" class=" btn my-1 edit-flashcard text-uppercase" data-id=${question.id}>edit</a>
-   <a href="#" id="delete-flashcard" class=" btn my-1 delete-flashcard text-uppercase">delete</a>
+   <a href="#" id="delete-flashcard" class=" btn my-1 delete-flashcard text-uppercase" data-id=${question.id}>delete</a>
   </div>
  </div>`;
   element.appendChild(div);
