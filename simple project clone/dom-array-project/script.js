@@ -33,14 +33,14 @@ function doubleMoney() {
 
 // sort arr
 function sortByRichest() {
-  data = data.sort((a, b) => b.money - a.money);
+  data.sort((a, b) => b.money - a.money);
 
   updateDOM();
 }
 
 // filter only millionaires
 function showMillionaire() {
-  data = data.filter((user) => user.money > 10000000);
+  data.filter((user) => user.money > 10000000);
 
   updateDOM();
 }
