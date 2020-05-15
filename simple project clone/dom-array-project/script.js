@@ -22,6 +22,12 @@ async function getRandomUser() {
   addData(newUser);
 }
 
+// Add new obj to data arr
+function addData(obj) {
+  data.push(obj);
+  updateDOM();
+}
+
 // double money
 function doubleMoney() {
   data = data.map((user) => {
@@ -55,12 +61,6 @@ function calculateWealth() {
   )}</strong></h3>`;
 
   main.appendChild(wealthEl);
-}
-
-// Add new obj to data arr
-function addData(obj) {
-  data.push(obj);
-  updateDOM();
 }
 
 // update DOM
