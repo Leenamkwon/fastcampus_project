@@ -59,6 +59,19 @@ function getMealByID(mealId) {
     });
 }
 
+// Fetch random meal from API
+function getRandomMeal() {
+  mealsEl.innerHTML = '';
+  resultHeading.innerHTML = '';
+
+  fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+    .then((res) => res.json())
+    .then((data) => {
+      const random = data.meals[0];
+      addMealToDOM(random);
+    });
+}
+
 // Add meal the DOM
 function addMealToDOM(meal) {
   const ingredients = [];
@@ -74,14 +87,28 @@ function addMealToDOM(meal) {
   }
 
   single_mealEl.innerHTML = `
-    <ul>
-      ${ingredients.map((list) => list).join('')}
-    </ul>
+    <div class="single-meal">
+      <h1>${meal.strMeal}</h1>
+      </div>
+      <img src="${meal.strMealThumb}" alt="${meal.strMeal}"/>
+      <div class="single-meal-info">
+        ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ''}
+        ${meal.strArea ? `<p>${meal.strArea}</p>` : ''}
+        <div class="main">
+          <p>${meal.strInstructions}</p>
+          <h2>Ingredients</h2>
+          <ul>
+            ${ingredients.map((list) => list).join('')}
+          </ul>
+        </div>
+      </div>
+    
   `;
 }
 
 // Event listeners
 submit.addEventListener('submit', searchMeal);
+random.addEventListener('click', getRandomMeal);
 meals.addEventListener('click', (e) => {
   const mealInfo = e.path.find((item) => {
     if (item.classList) {
@@ -93,6 +120,8 @@ meals.addEventListener('click', (e) => {
 
   if (mealInfo) {
     const mealID = mealInfo.getAttribute('data-mealid');
+    console.log(mealID, 'mealID');
+
     getMealByID(mealID);
   }
 });
