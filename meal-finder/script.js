@@ -30,11 +30,11 @@ function searchMeal(e) {
           mealsEl.innerHTML = data.meals
             .map((meal) => {
               return `<div class="meal">
-                <img src="${meal.strMealThumb}" alt="${meal.strMealThumb}" />
-                <div class="meal-info" data-mealID="${meal.idMeal}">
-                  <h3>${meal.strMeal}</h3>
-                </div>
-            </div>`;
+                      <img src="${meal.strMealThumb}" alt="${meal.strMealThumb}" />
+                      <div class="meal-info" data-mealID="${meal.idMeal}">
+                        <h3>${meal.strMeal}</h3>
+                      </div>
+                  </div>`;
             })
             .join('');
         }
@@ -52,8 +52,6 @@ function getMealByID(mealId) {
     .then((res) => res.json())
     .then((data) => {
       const meal = data.meals[0];
-
-      console.log(meal);
 
       addMealToDOM(meal);
     });
@@ -102,7 +100,6 @@ function addMealToDOM(meal) {
           </ul>
         </div>
       </div>
-    
   `;
 }
 

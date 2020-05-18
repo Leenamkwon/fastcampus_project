@@ -137,7 +137,6 @@ function paintingShow(e) {
       return category;
     }
   });
-
   if (target === 'all') {
     displayItems(menu);
   } else {
