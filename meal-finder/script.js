@@ -9,7 +9,7 @@ const search = document.getElementById('search'),
 function searchMeal(e) {
   e.preventDefault();
 
-  // clear single meal
+  // Clear single meal
   single_mealEl.innerHTML = '';
 
   // Get search term
@@ -17,38 +17,39 @@ function searchMeal(e) {
 
   // Check for empty
   if (term.trim()) {
-    fetch(
-      `https://www.themealdb.com/api/json/v1/1/search.php?s=${search.value}`
-    )
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
       .then((res) => res.json())
       .then((data) => {
         resultHeading.innerHTML = `<h2>Search results for '${term}'</h2>`;
 
         if (data.meals === null) {
-          resultHeading.innerHTML = `<p>There are no search results. Try again</p>`;
+          resultHeading.innerHTML = `<p>There are no search results. Try again!</p>`;
         } else {
           mealsEl.innerHTML = data.meals
-            .map((meal) => {
-              return `<div class="meal">
-                      <img src="${meal.strMealThumb}" alt="${meal.strMealThumb}" />
-                      <div class="meal-info" data-mealID="${meal.idMeal}">
-                        <h3>${meal.strMeal}</h3>
-                      </div>
-                  </div>`;
-            })
+            .map(
+              (meal) => `
+            <div class="meal">
+              <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
+              <div class="meal-info" data-id="${meal.idMeal}">
+                <h3>${meal.strMeal}</h3>
+              </div>
+            </div>
+          `
+            )
             .join('');
         }
       });
-    // Clear search value
+
+    // Clear search text
     search.value = '';
   } else {
-    alert('Please enter a search value');
+    alert('please enter a search term');
   }
 }
 
 // Fetch meal by ID
-function getMealByID(mealId) {
-  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+function getMealById(mealID) {
+  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
     .then((res) => res.json())
     .then((data) => {
       const meal = data.meals[0];
@@ -57,24 +58,10 @@ function getMealByID(mealId) {
     });
 }
 
-// Fetch random meal from API
-function getRandomMeal() {
-  mealsEl.innerHTML = '';
-  resultHeading.innerHTML = '';
-
-  fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
-    .then((res) => res.json())
-    .then((data) => {
-      const random = data.meals[0];
-      addMealToDOM(random);
-    });
-}
-
-// Add meal the DOM
 function addMealToDOM(meal) {
   const ingredients = [];
 
-  for (let i = 1; i <= 20; i += 1) {
+  for (let i = 1; i <= 20; i++) {
     if (meal[`strIngredient${i}`]) {
       ingredients.push(
         `${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`
@@ -87,26 +74,26 @@ function addMealToDOM(meal) {
   single_mealEl.innerHTML = `
     <div class="single-meal">
       <h1>${meal.strMeal}</h1>
-      </div>
-      <img src="${meal.strMealThumb}" alt="${meal.strMeal}"/>
+      <img src="${meal.strMealThumb}" alt="${meal.str}"/>
       <div class="single-meal-info">
-        ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ''}
-        ${meal.strArea ? `<p>${meal.strArea}</p>` : ''}
-        <div class="main">
-          <p>${meal.strInstructions}</p>
-          <h2>Ingredients</h2>
-          <ul>
-            ${ingredients.map((list) => list).join('')}
-          </ul>
-        </div>
+        <p> Category: ${meal.strCategory} </p>
+        <p> Area: ${meal.strArea} </p>
       </div>
+      <div class="main">
+        <p>${meal.strInstructions}</p>
+        <h2>Ingredients</h2>
+      <ul>
+      ${ingredients.map((item) => `<li>${item}</li>`).join('')}
+      </ul>
+      </div>
+    </div>
   `;
 }
 
 // Event listeners
 submit.addEventListener('submit', searchMeal);
-random.addEventListener('click', getRandomMeal);
-meals.addEventListener('click', (e) => {
+
+mealsEl.addEventListener('click', (e) => {
   const mealInfo = e.path.find((item) => {
     if (item.classList) {
       return item.classList.contains('meal-info');
@@ -116,9 +103,7 @@ meals.addEventListener('click', (e) => {
   });
 
   if (mealInfo) {
-    const mealID = mealInfo.getAttribute('data-mealid');
-    console.log(mealID, 'mealID');
-
-    getMealByID(mealID);
+    const mealID = mealInfo.getAttribute('data-id');
+    getMealById(mealID);
   }
 });
