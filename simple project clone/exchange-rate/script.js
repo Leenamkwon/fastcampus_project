@@ -14,11 +14,9 @@ function calculate() {
   fetch(`https://api.exchangerate-api.com/v4/latest/${currency_one}`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-
       const rate = data.rates[currency_two];
 
-      rateEl.innerText = `${data.date}기준: 100 ${currency_one} = ${
+      rateEl.innerText = `${data.date} 기준: 100 ${currency_one} = ${
         rate * 100
       } ${currency_two}`;
 
