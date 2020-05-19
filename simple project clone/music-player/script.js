@@ -16,35 +16,38 @@ const songs = ['hey', 'summer', 'ukulele'];
 // Keep track of song
 let songIndex = 2;
 
-// Initially load song details into DOM
-loadSong(songs[songIndex]);
+loadUI();
 
-// Update song details
-function loadSong(song) {
-  title.innerText = song;
-  audio.src = `music/${song}.mp3`;
-  cover.src = `images/${song}.jpg`;
+function loadUI() {
+  title.innerText = songs[songIndex];
+  cover.src = `./images/${songs[songIndex]}.jpg`;
+  audio.src = `./music/${songs[songIndex]}.mp3`;
 }
 
-// Play song
 function playSong() {
   musicContainer.classList.add('play');
   playBtn.querySelector('i.fas').classList.remove('fa-play');
   playBtn.querySelector('i.fas').classList.add('fa-pause');
-
-  audio.play();
 }
 
-// pause song
-function pauseSong() {
+function stopSong() {
   musicContainer.classList.remove('play');
-  playBtn.querySelector('i.fas').classList.remove('fa-pause');
   playBtn.querySelector('i.fas').classList.add('fa-play');
-
-  audio.pause();
+  playBtn.querySelector('i.fas').classList.remove('fa-pause');
 }
 
-// previous song
+function playMusic() {
+  const isMusic = musicContainer.classList.contains('play');
+
+  if (isMusic) {
+    audio.pause();
+    stopSong();
+  } else {
+    audio.play();
+    playSong();
+  }
+}
+
 function prevSong() {
   songIndex--;
 
@@ -52,31 +55,27 @@ function prevSong() {
     songIndex = songs.length - 1;
   }
 
-  loadSong(songs[songIndex]);
-
-  playSong();
+  loadUI();
+  playMusic();
 }
 
-// next song
 function nextSong() {
   songIndex++;
-
   if (songIndex > songs.length - 1) {
     songIndex = 0;
   }
 
-  loadSong(songs[songIndex]);
-
-  playSong();
+  loadUI();
+  playMusic();
 }
 
+// Change song
 function updateProgress(e) {
   const { duration, currentTime } = e.srcElement;
   const progressPercent = (currentTime / duration) * 100;
   progress.style.width = `${progressPercent}%`;
 }
 
-// set progress bar
 function setProgress(e) {
   const width = this.clientWidth;
   const clickX = e.offsetX;
@@ -85,26 +84,14 @@ function setProgress(e) {
   audio.currentTime = (clickX / width) * duration;
 }
 
-// Event listeners
-playBtn.addEventListener('click', () => {
-  const isPlaying = musicContainer.classList.contains('play');
-
-  if (isPlaying) {
-    pauseSong();
-  } else {
-    playSong();
-  }
-});
-
 // Change song
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 
-// Time/song update
+playBtn.addEventListener('click', playMusic);
+
 audio.addEventListener('timeupdate', updateProgress);
 
-// Click on progress bar
 progressContainer.addEventListener('click', setProgress);
 
-// Song end
 audio.addEventListener('ended', nextSong);
