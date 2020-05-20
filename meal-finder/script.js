@@ -58,6 +58,17 @@ function getMealById(mealID) {
     });
 }
 
+// Get random Meal
+function getRandomMeal() {
+  fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+    .then((res) => res.json())
+    .then((data) => {
+      const meal = data.meals[0];
+
+      addMealToDOM(meal);
+    });
+}
+
 function addMealToDOM(meal) {
   const ingredients = [];
 
@@ -107,3 +118,5 @@ mealsEl.addEventListener('click', (e) => {
     getMealById(mealID);
   }
 });
+
+random.addEventListener('click', getRandomMeal);
