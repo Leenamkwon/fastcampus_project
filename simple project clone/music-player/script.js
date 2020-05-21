@@ -48,10 +48,10 @@ function playMusic() {
   }
 }
 
-function prevSong() {
-  songIndex--;
+function prevSong(e) {
+  songIndex -= 1;
 
-  if (songIndex < 0) {
+  if (songIndex <= 0) {
     songIndex = songs.length - 1;
   }
 
@@ -59,8 +59,8 @@ function prevSong() {
   playMusic();
 }
 
-function nextSong() {
-  songIndex++;
+function nextSong(e) {
+  songIndex += 1;
   if (songIndex > songs.length - 1) {
     songIndex = 0;
   }
@@ -71,11 +71,12 @@ function nextSong() {
 
 // Change song
 function updateProgress(e) {
-  const { duration, currentTime } = e.srcElement;
+  const { duration, currentTime } = e.target;
   const progressPercent = (currentTime / duration) * 100;
   progress.style.width = `${progressPercent}%`;
 }
 
+// set song
 function setProgress(e) {
   const width = this.clientWidth;
   const clickX = e.offsetX;
