@@ -101,6 +101,7 @@ function gameOver() {
   <p>Your final score is ${score}</p>
   <button onclick="location.reload()">Reload</button>
   `;
+  // Location.reload() 메서드는 새로고침 버튼처럼 현재 리소스를 다시 불러옵니다.
 
   endgameEl.style.display = 'flex';
 }
