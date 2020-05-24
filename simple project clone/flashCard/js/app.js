@@ -49,12 +49,34 @@ function eventListeners() {
     e.preventDefault();
 
     if (e.target.classList.contains('delete-flashcard')) {
+      const id = e.target.dataset.id;
       questionList.removeChild(
-        'e.target.parentElement.parentElement.parentElement'
+        e.target.parentElement.parentElement.parentElement
       );
+      data = data.filter((item) => {
+        return item.id !== +id;
+      });
     } else if (e.target.classList.contains('show-answer')) {
       e.target.nextElementSibling.classList.toggle('show');
     } else if (e.target.classList.contains('edit-flashcard')) {
+      let id = e.target.dataset.id;
+
+      questionList.removeChild(
+        e.target.parentElement.parentElement.parentElement
+      );
+
+      // show the question card
+      ui.showQuestion(questionCard);
+      // specific question
+      const tempQuestion = data.filter((item) => {
+        return item.id === +id;
+      });
+      let tempData = data.filter((item) => {
+        return item.id !== +id;
+      });
+      data = tempData;
+      questionInput.value = tempQuestion[0].title;
+      answerInput.value = tempQuestion[0].answer;
     }
   });
 }
@@ -101,6 +123,7 @@ UI.prototype.addQuestion = function (element, question) {
       href="#"
       id="delete-flashcard"
       class="btn my-1 delete-flashcard text-uppercase"
+      data-id="${question.id}"
       >delete</a
     >
   </div>
