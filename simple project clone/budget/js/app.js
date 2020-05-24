@@ -49,6 +49,7 @@ class UI {
       this.balance.classList.add('showBlack');
     }
   }
+
   // total expense
   totalExpense() {
     let total = 0;
@@ -113,6 +114,39 @@ class UI {
         `;
     this.expenseList.appendChild(div);
   }
+
+  // remove expense
+  removeItem(ele) {
+    let id = +ele.dataset.id;
+    let parent = ele.parentElement.parentElement.parentElement;
+
+    // remove from dom
+    this.expenseList(parent);
+
+    this.itemList = this.itemList.filter((item) => item.id !== id);
+    this.showBalance();
+  }
+
+  // edit expense
+  editItem(ele) {
+    let id = +ele.dataset.id;
+    let parent = ele.parentElement.parentElement.parentElement;
+
+    // remove from dom
+    this.expenseList(parent);
+
+    // remove from the list
+    let expense = this.itemList.filter((item) => item.id === id);
+
+    this.expenseInput.value = expense[0].title;
+    this.amountInput.value = expense[0].amount;
+
+    // remove from list
+    let tempList = this.itemList.filter((item) => item.id !== item);
+
+    this.itemList = tempList;
+    this.showBalance();
+  }
 }
 
 function evnetLisenters() {
@@ -134,7 +168,15 @@ function evnetLisenters() {
     ui.submitExpenseForm();
   });
 
-  expenseList.addEventListener('click', () => {});
+  expenseList.addEventListener('click', (e) => {
+    const deleteBtn = e.target.classList.contains('delete-icon');
+    const editBtn = e.target.classList.contains('edit-icon');
+    if (editBtn) {
+      ui.editItem(e.target.parentElement);
+    } else if (deleteBtn) {
+      ui.removeItem(e.target.parentElement);
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
