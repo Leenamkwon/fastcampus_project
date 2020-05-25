@@ -61,6 +61,31 @@ UI.prototype.removeAlert = function (type) {
   }, 3000);
 };
 
+UI.prototype.addCustomer = function (Customer) {
+  const images = [1, 2, 3, 4, 5];
+  let random = Math.floor(Math.random() * images.length);
+  const div = document.createElement('div');
+  div.classList.add('person');
+  div.innerHTML = `
+  <img
+                src="img/person-${random}.jpeg"
+                alt="person${random}"
+                class="person_thumbnail"
+              />
+              <h4 class="person__name">${Customer.name}</h4>
+              <h4 class="person__last-name">${Customer.lastname}</h4>
+  `;
+  document.querySelector('.drink-card__list').appendChild(div);
+
+  this.clearFiedls();
+};
+
+UI.prototype.clearFiedls = function () {
+  document.querySelector('.input-name').value = '';
+  document.querySelector('.input-lastname').value = '';
+  document.querySelector('.input-email').value = '';
+};
+
 function Customer(name, lastname, email) {
   this.name = name;
   this.lastname = lastname;
@@ -93,7 +118,8 @@ function eventListeners() {
     let value = ui.checkEmpty(name, lastName, email);
 
     if (value) {
-      let display = new Customer();
+      let display = new Customer(name, lastName, email);
+      ui.addCustomer(display);
       ui.showFeedback('good job', 'success');
     } else {
       ui.showFeedback('some form values empty', 'error');
