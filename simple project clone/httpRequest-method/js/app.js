@@ -70,7 +70,7 @@ function showItems(data) {
   items.forEach((item) => {
     info += `
     <li class="list-group-item d-flex align-items-center justify-content-between flex-wrap item my-2">
-    <img src="${item.image}" id='itemImage' class='itemImage img-thumbnail' alt="">
+    <img src="${item.image}" id='itemImage' class='itemImage img-thumbnail' alt="${item.name}">
     <h6 id="itemName" class="text-capitalize itemName">${item.name}</h6>
     <div class="icons">
 
@@ -127,7 +127,10 @@ function getIcons() {
     icon.addEventListener('click', (e) => {
       e.preventDefault();
       const id = e.currentTarget.dataset.id;
-      editItemAPI(id);
+      const parent = e.target.parentElement.parentElement.parentElement;
+      const img = parent.querySelector('.itemImage').src;
+      const name = parent.querySelector('.itemName').textContent;
+      editItemUI(parent, img, name, id);
     });
   });
 }
@@ -154,4 +157,43 @@ function deleteItemAPI(id) {
   ajax.send();
 }
 
+function editItemUI(parent, itemImg, name, itemID) {
+  event.preventDefault();
+
+  itemList.removeChild(parent);
+
+  const imgIndex = itemImg.indexOf('img/');
+  const jpegIndex = itemImg.indexOf('.jepg');
+
+  const img = itemImg.slice(imgIndex + 4, jpegIndex);
+
+  itemInput.value = name.trim();
+  imageInput.value = img;
+  editedItemID = itemID;
+  submtiBtn.innerHTML = `Edit item`;
+  httpForm.removeEventListener('submit', submitItem);
+  httpForm.addEventListener('submit', editItemAPI);
+}
+
 // edit item
+function editItemAPI(id) {
+  event.preventDefault();
+  const url = `https://5eceb7c461c848001670196a.mockapi.io/articles/${id}`;
+  const ajax = new XMLHttpRequest();
+
+  ajax.open('PUT', url, true);
+
+  ajax.onload = function () {
+    if (this.status === 200) {
+      getItemsAPI(showItems);
+    } else {
+      this.onerror('error');
+    }
+  };
+
+  ajax.onerror = function () {
+    console.log('there was an error');
+  };
+
+  ajax.send();
+}
