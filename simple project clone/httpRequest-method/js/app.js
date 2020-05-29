@@ -182,4 +182,42 @@ function editItemUI(parent, itemImg, name, itemID) {
   httpForm.addEventListener('submit', editItemAPI);
 }
 
-function editItemAPI() {}
+function editItemAPI() {
+  event.preventDefault();
+  const id = editedItemID;
+
+  const itemValue = itemInput.value;
+  const imageValue = imageInput.value;
+
+  if (itemValue.trim() === '' || imageValue.trim() === '') {
+    showFeedback('값 입력하세요 둘 다');
+  } else {
+    const img = `img/${imageValue}.jpeg`;
+    const name = itemValue;
+    const url = `https://5eceb7c461c848001670196a.mockapi.io/articles/${id}`;
+    const ajax = new XMLHttpRequest();
+
+    ajax.open('PUT', url, true);
+
+    ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    ajax.onload = function () {
+      reverseForm();
+    };
+
+    ajax.onerror = function () {
+      console.log('PUT is error');
+    };
+
+    ajax.send(`image=${img}&name=${name}`);
+  }
+}
+
+function reverseForm() {
+  itemInput.value = '';
+  imageInput.value = '';
+  submtiBtn.innerHTML = 'Add Item';
+  httpForm.removeEventListener('submit', editItemAPI);
+  httpForm.addEventListener('submit', submitItem);
+  getItemsAPI(showItems);
+}
