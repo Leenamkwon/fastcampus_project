@@ -8,6 +8,8 @@ const items = document.querySelector('.items');
 const submtiBtn = document.getElementById('submitBtn');
 let editedItemID = 0;
 
+let baseURL = `https://5eceb7c461c848001670196a.mockapi.io`;
+
 httpForm.addEventListener('submit', submitItem);
 
 // load items
@@ -48,9 +50,11 @@ function getItemsAPI(cb) {
 
   ajax.onload = function () {
     if (this.status === 200) {
+      console.log((this.response = 'ok success status 200'));
+
       cb(this.responseText);
     } else {
-      console.log('something went wrong');
+      this.onerror;
     }
   };
 
