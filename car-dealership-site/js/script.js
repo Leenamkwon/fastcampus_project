@@ -180,6 +180,7 @@ const DisplayCars = ((CreateCars) => {
   });
 })(CreateCars);
 
+// Category Filter
 const FilterCars = (() => {
   const filter = document.querySelectorAll('.filter-btn');
 

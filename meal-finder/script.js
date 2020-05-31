@@ -99,7 +99,9 @@ function getRandomMeal() {
   fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
     .then((res) => res.json())
     .then((data) => {
-      const meal = data.meal[0];
+      console.log(data);
+
+      const meal = data.meals[0];
 
       addMealToDOM(meal);
     });
