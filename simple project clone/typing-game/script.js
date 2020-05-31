@@ -41,6 +41,18 @@ let score = 0;
 // Init time
 let time = 10;
 
+// Set difficulty to value in ls or medium
+let difficulty =
+  localStorage.getItem('difficulty') !== null
+    ? localStorage.getItem('difficulty')
+    : 'medium';
+
+// set difficulty select value
+difficultySelect.value =
+  localStorage.getItem('difficulty') !== null
+    ? localStorage.getItem('difficulty')
+    : 'medium';
+
 // Focus on text on start
 text.focus();
 
@@ -84,18 +96,34 @@ function gameOver() {
   endgameEl.style.display = 'flex';
 }
 
-// Event listeners
+// Typing Event listeners
 text.addEventListener('input', (e) => {
   const insertedText = e.target.value;
 
   if (insertedText === randomWord) {
     addWordToDOM();
-
+    updateScore();
+    updateTime();
     // Clear
     e.target.value = '';
 
-    time += 5;
-
-    updateTime();
+    if (difficulty === 'easy') {
+      time += 5;
+    } else if (difficulty === 'medium') {
+      time += 3;
+    } else if (difficulty === 'hard') {
+      time += 2;
+    }
   }
+});
+
+// settings btn click
+settingsBtn.addEventListener('click', () => {
+  settings.classList.toggle('hide');
+});
+
+// Settings select
+settingsForm.addEventListener('change', (e) => {
+  difficulty = e.target.value;
+  localStorage.setItem('difficulty', difficulty);
 });
