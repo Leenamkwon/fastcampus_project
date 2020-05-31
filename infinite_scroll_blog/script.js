@@ -10,17 +10,17 @@ async function getPosts() {
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`
   );
-
   const data = await res.json();
-
-  return data;
+  return {
+    data
+  };
 }
 
 // Show posts in DOM
 async function showPosts() {
   const posts = await getPosts();
 
-  posts.forEach((post) => {
+  posts['data'].forEach((post) => {
     const postEl = document.createElement('div');
     postEl.classList.add('post');
     postEl.innerHTML = `
@@ -49,22 +49,6 @@ function showLoading() {
   }, 1000);
 }
 
-function filterPosts(e) {
-  const term = e.target.value.toUppercase();
-  const posts = document.querySelectorAll('.post');
-
-  posts.forEach((post) => {
-    const title = post.querySelector('.post-title').innerText.toUppercase();
-    const body = post.querySelector('.post-body').innerText.toUppercase();
-
-    if (title.indexOf(term) > -1 || body.indexOf(term) > -1) {
-      post.style.display = 'flex';
-    } else {
-      post.style.display = 'none';
-    }
-  });
-}
-
 // Show initial posts
 showPosts();
 
@@ -75,5 +59,3 @@ window.addEventListener('scroll', () => {
     showLoading();
   }
 });
-
-filter.addEventListener('input', filterPosts);
