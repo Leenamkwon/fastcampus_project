@@ -8,58 +8,57 @@ const items = document.querySelector('.items');
 const submtiBtn = document.getElementById('submitBtn');
 let editedItemID = 0;
 
-let baseURL = `https://5eceb7c461c848001670196a.mockapi.io`;
-
-httpForm.addEventListener('submit', submitItem);
+const url = `https://5eceb7c461c848001670196a.mockapi.io/article`;
 
 // load items
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
+  // get items
   getItemsAPI(showItems);
 });
 
-// show item
+httpForm.addEventListener('submit', submitItem);
+
 function submitItem(e) {
   e.preventDefault();
   const itemValue = itemInput.value;
   const imageValue = imageInput.value;
 
-  if (itemValue.trim() === '' || imageValue.trim() === '') {
+  if (itemValue === 0 || imageValue === 0) {
     showFeedback('please enter valid values');
   } else {
     postItemAPI(imageValue, itemValue);
     imageInput.value = '';
-    itemValue.value = '';
+    itemInput.value = '';
   }
 }
 
+// show Feedback
 function showFeedback(text) {
   feedback.classList.add('showItem');
   feedback.innerHTML = `<p>${text}</p>`;
 
   setTimeout(() => {
     feedback.classList.remove('showItem');
-  }, 1300);
+  }, 2000);
 }
 
 // get items
 function getItemsAPI(cb) {
-  const url = 'https://5eceb7c461c848001670196a.mockapi.io/articles/';
+  const url = `https://5eceb7c461c848001670196a.mockapi.io/articles`;
   const ajax = new XMLHttpRequest();
 
-  ajax.open('GET', url, true);
+  ajax.open('GET', url);
 
   ajax.onload = function () {
     if (this.status === 200) {
-      console.log((this.response = 'ok success status 200'));
-
       cb(this.responseText);
     } else {
-      this.onerror;
+      console.log('something went wrong');
     }
   };
 
   ajax.onerror = function () {
-    console.log('This is error');
+    console.log('there was an error');
   };
 
   ajax.send();
@@ -69,27 +68,54 @@ function getItemsAPI(cb) {
 function showItems(data) {
   const items = JSON.parse(data);
 
-  let input = '';
+  let info = '';
   items.forEach((item) => {
-    input += `
-      <li class="list-group-item d-flex align-items-center justify-content-between flex-wrap item my-2">
-        <img src="${item.image}" id="itemImage" class="itemImage img-thumbnail" alt="">
-        <h6 id="itemName" class="text-capitalize itemName">${item.name}</h6>
-        <div class="icons">
-        <a href="#" class="itemIcon mx-2 edit-icon" data-id="${item.id}">
-        <i class="fas fa-edit"></i>
-        </a>
-        <a href="#" class="itemIcon mx-2 delete-icon" data-id="${item.id}">
-        <i class="fas fa-trash"></i>
-        </a>
-        </div>
-      </li>
+    info += `
+    <li class="list-group-item d-flex align-items-center justify-content-between flex-wrap item my-2">
+    <img src="${item.image}" id='itemImage' class='itemImage img-thumbnail' alt="${item.name}">
+    <h6 id="itemName" class="text-capitalize itemName">${item.name}</h6>
+    <div class="icons">
+
+     <a href='#' class="itemIcon mx-2 edit-icon" data-id='${item.id}'>
+      <i class="fas fa-edit"></i>
+     </a>
+     <a href='#' class="itemIcon mx-2 delete-icon" data-id='${item.id}'>
+      <i class="fas fa-trash"></i>
+     </a>
+    </div>
+   </li>
     `;
   });
-  itemList.innerHTML = input;
 
-  // get Icons
+  itemList.innerHTML = info;
+  // get icons
   getIcons();
+}
+
+function postItemAPI(imageValue, itemValue) {
+  const avatar = `img/${imageValue}.jpeg`;
+  const name = itemValue;
+
+  const url = `https://5eceb7c461c848001670196a.mockapi.io/articles`;
+  const ajax = new XMLHttpRequest();
+
+  ajax.setRequestHeader('Content-Type', 'application/json');
+
+  ajax.open('POST', url);
+
+  ajax.onload = function () {
+    if (this.status === 200) {
+      getItemsAPI(showItems);
+    } else {
+      console.log('something went wrong');
+    }
+  };
+
+  ajax.onerror = function () {
+    alert('post is error');
+  };
+
+  ajax.send(`avatar=${avatar}&name=${name}`);
 }
 
 function getIcons() {
@@ -97,131 +123,44 @@ function getIcons() {
   const deleteIcon = document.querySelectorAll('.delete-icon');
 
   deleteIcon.forEach((icon) => {
+    const itemID = icon.dataset.id;
+    console.log(itemID);
     icon.addEventListener('click', (e) => {
       e.preventDefault();
-      const id = e.target.dataset.id;
-      deleteItemAPI(id);
+      // const target = e.currentTarget.dataset.id;
+      deleteItemAPI(itemID);
     });
   });
 
   editIcon.forEach((icon) => {
+    const itemID = icon.dataset.id;
+    console.log(itemID);
     icon.addEventListener('click', (e) => {
       e.preventDefault();
-      const id = e.target.dataset.id;
-      const parent = e.currentTarget.parentElement.parentElement;
-      const img = parent.querySelector('.itemImage').src;
-      const name = parent.querySelector('.itemName').textContent;
-      itemList.removeChild = parent;
-      editedItemID = id;
-      editItemUI(parent, img, name, id);
+      // const target = e.currentTarget.dataset.id;
+      deleteItemAPI(itemID);
     });
   });
 }
 
-function postItemAPI(imgValue, nameValue) {
-  const url = 'https://5eceb7c461c848001670196a.mockapi.io/articles/';
-  const ajax = new XMLHttpRequest();
-
-  const img = `img/${imgValue}.jpeg`;
-  const name = nameValue;
-
-  ajax.open('POST', url, true);
-
-  ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-  ajax.onload = function () {
-    if (this.status === 200) {
-      getItemsAPI(showItems);
-    } else {
-      console.log(this.onerror);
-    }
-  };
-
-  ajax.onerror = function () {
-    console.log('POST is error');
-  };
-
-  ajax.send(`image="${img}"&name="${name}"`);
-}
-
+// delete user
 function deleteItemAPI(id) {
   const url = `https://5eceb7c461c848001670196a.mockapi.io/articles/${id}`;
   const ajax = new XMLHttpRequest();
 
-  ajax.open('DELETE', url, true);
-
-  ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  ajax.open('DELETE', url);
 
   ajax.onload = function () {
     if (this.status === 200) {
       getItemsAPI(showItems);
     } else {
-      console.log(this.onerror);
+      console.log('something went wrong');
     }
   };
 
   ajax.onerror = function () {
-    console.log('DELETE is error');
+    console.log('there was an error');
   };
 
   ajax.send();
-}
-
-function editItemUI(parent, itemImg, name, itemID) {
-  event.preventDefault();
-
-  itemList.removeChild(parent);
-
-  const imgIndex = itemImg.indexOf('img/');
-  const jpegIndex = itemImg.indexOf('.jpeg');
-
-  const img = itemImg.slice(imgIndex + 4, jpegIndex);
-
-  itemInput.value = name.trim();
-  imageInput.value = img;
-  submtiBtn.innerHTML = 'Edit Item';
-  editedItemID = itemID;
-
-  httpForm.removeEventListener('submit', submitItem);
-  httpForm.addEventListener('submit', editItemAPI);
-}
-
-function editItemAPI() {
-  event.preventDefault();
-  const id = editedItemID;
-
-  const itemValue = itemInput.value;
-  const imageValue = imageInput.value;
-
-  if (itemValue.trim() === '' || imageValue.trim() === '') {
-    showFeedback('값 입력하세요 둘 다');
-  } else {
-    const img = `img/${imageValue}.jpeg`;
-    const name = itemValue;
-    const url = `https://5eceb7c461c848001670196a.mockapi.io/articles/${id}`;
-    const ajax = new XMLHttpRequest();
-
-    ajax.open('PUT', url, true);
-
-    ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    ajax.onload = function () {
-      reverseForm();
-    };
-
-    ajax.onerror = function () {
-      console.log('PUT is error');
-    };
-
-    ajax.send(`image=${img}&name=${name}`);
-  }
-}
-
-function reverseForm() {
-  itemInput.value = '';
-  imageInput.value = '';
-  submtiBtn.innerHTML = 'Add Item';
-  httpForm.removeEventListener('submit', editItemAPI);
-  httpForm.addEventListener('submit', submitItem);
-  getItemsAPI(showItems);
 }
