@@ -10,11 +10,18 @@ about.addEventListener('click', (e) => {
       item.classList.remove('active');
       e.target.classList.add('active');
     });
+
     articles.forEach((item) => {
       item.classList.remove('active');
       if (id === item.id) {
         item.classList.add('active');
       }
     });
+
+    if (id === 'vision') {
+      document.querySelector('body').style.backgroundColor = '#999';
+    } else {
+      document.querySelector('body').style.backgroundColor = '#222';
+    }
   }
 });

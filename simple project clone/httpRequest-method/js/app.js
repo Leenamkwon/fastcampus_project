@@ -137,8 +137,11 @@ function getIcons() {
     console.log(itemID);
     icon.addEventListener('click', (e) => {
       e.preventDefault();
-      // const target = e.currentTarget.dataset.id;
-      deleteItemAPI(itemID);
+      const parent = event.target.parentElement.parentElement.parentElement;
+      const img = parent.querySelector('.itemImage').src;
+      const name = parent.querySelector('.itemName').textContent;
+
+      editedItemUI(parent, img, name, itemID);
     });
   });
 }
@@ -163,4 +166,63 @@ function deleteItemAPI(id) {
   };
 
   ajax.send();
+}
+
+function editedItemUI(parent, img, name, itemID) {
+  event.preventDefault();
+  itemList.removeChild(parent);
+
+  const imgIndex = img.indexOf('image/');
+  const jpegIndex = img.indexOf('.jpeg');
+
+  const img = img.slice(imgIndex + 4, jpegIndex);
+  itemInput.value = name.trim();
+  imageInput.value = img;
+  editedItemID = itemID;
+  submtiBtn.innerHTML = `Edit Item`;
+  httpForm.removeEventListener('submit', submitItem);
+  httpForm.addEventListener('submit', editItemAPI);
+}
+
+function editItemAPI() {
+  event.preventDefault();
+  const id = editedItemID;
+
+  const itemValue = itemInput.value;
+  const imageValue = imageInput.value;
+
+  if (itemValue === 0 || imageValue === 0) {
+    showFeedback('please enter valid values');
+  } else {
+    const img = `image/${imageValue}.jpeg`;
+    const name = itemValue;
+
+    const url = `https://5eceb7c461c848001670196a.mockapi.io/articles/${id}`;
+    const ajax = new XMLHttpRequest();
+
+    ajax.open('PUT', url);
+
+    ajax.onload = function () {
+      if (this.status === 200) {
+        reverseForm();
+      } else {
+        console.log('something went wrong');
+      }
+    };
+
+    ajax.onerror = function () {
+      console.log('there was an error');
+    };
+
+    ajax.send(`image=${img}&name=${name}`);
+  }
+}
+
+function reverseForm() {
+  itemInput.value = '';
+  imageInput.value = '';
+  submtiBtn.innerHTML = 'Add Item';
+  httpForm.removeEventListener('submit', editItemAPI);
+  httpForm.addEventListener('submit', submitItem);
+  getItemsAPI(showItems);
 }

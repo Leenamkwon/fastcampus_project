@@ -7,8 +7,12 @@ function showIngText() {
   questions.forEach((article) => {
     const btn = article.querySelector('.question-btn');
 
+    console.log(article, 'article');
+
     btn.addEventListener('click', () => {
       questions.forEach((item) => {
+        console.log(item, 'item');
+
         if (article !== item) {
           item.classList.remove('show-text');
         }
