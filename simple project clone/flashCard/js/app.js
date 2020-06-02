@@ -11,19 +11,21 @@ function eventListeners() {
   let data = [];
   let id = 1;
 
+  // new ui instance
   const ui = new UI();
+
   // show question form
-  showBtn.addEventListener('click', () => {
+  showBtn.addEventListener('click', function () {
     ui.showQuestion(questionCard);
   });
 
   // hide question form
-  closeBtn.addEventListener('click', () => {
+  closeBtn.addEventListener('click', function () {
     ui.hideQuestion(questionCard);
   });
 
   // add question
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const questionValue = questionInput.value;
@@ -31,57 +33,55 @@ function eventListeners() {
 
     if (questionValue === '' || answerValue === '') {
       feedback.classList.add('showItem', 'alert-danger');
-      feedback.textContent = 'cannot add empty value';
+      feedback.textContent = 'cannot add empty values';
 
-      setTimeout(() => {
+      setTimeout(function () {
         feedback.classList.remove('showItem', 'alert-danger');
-      }, 2000);
+      }, 3000);
     } else {
       const question = new Question(id, questionValue, answerValue);
       data.push(question);
-      id += 1;
-      ui.addQuestion(question, questionList);
+      id++;
+      ui.addQuestion(questionList, question);
       ui.clearFields(questionInput, answerInput);
     }
   });
-  // work width a question
-  questionList.addEventListener('click', (e) => {
+  // work with a question
+  questionList.addEventListener('click', function (e) {
     e.preventDefault();
-
     if (e.target.classList.contains('delete-flashcard')) {
-      const id = e.target.dataset.id;
+      let id = e.target.dataset.id;
       questionList.removeChild(
-        e.target.parentElement.parentElement.parentElement
+        event.target.parentElement.parentElement.parentElement
       );
       data = data.filter((item) => {
         return item.id !== +id;
       });
     } else if (e.target.classList.contains('show-answer')) {
-      e.target.nextElementSibling.classList.toggle('show');
+      e.target.nextElementSibling.classList.toggle('showItem');
     } else if (e.target.classList.contains('edit-flashcard')) {
+      // delete question
       let id = e.target.dataset.id;
 
       questionList.removeChild(
-        e.target.parentElement.parentElement.parentElement
+        event.target.parentElement.parentElement.parentElement
       );
 
       // show the question card
       ui.showQuestion(questionCard);
       // specific question
-      const tempQuestion = data.filter((item) => {
-        return item.id === +id;
-      });
-      let tempData = data.filter((item) => {
+      const tempQuestion = data.filter((item) => item.id === +id);
+      // rest of the data
+      data = data.filter((item) => {
         return item.id !== +id;
       });
-      data = tempData;
       questionInput.value = tempQuestion[0].title;
-      answerInput.value = tempQuestion[0].answer;
+      answerInput.value = tempQuestion[0].title;
     }
   });
 }
 
-// UI constructor
+// ui constructor
 function UI() {}
 
 // show question card
@@ -94,43 +94,44 @@ UI.prototype.hideQuestion = function (element) {
   element.classList.remove('showItem');
 };
 
-// clear Fiedls
-UI.prototype.clearFields = function (question, answer) {
-  question.value = '';
-  answer.value = '';
-};
-
 // add question
 UI.prototype.addQuestion = function (element, question) {
   const div = document.createElement('div');
+  const { id, title, answer } = question;
   div.classList.add('col-md-4');
   div.innerHTML = `
   <div class="card card-body flashcard my-3">
-  <h4 class="text-capitalize">${question.title}</h4>
-  <a href="#" class="text-capitalize my-3 show-answer"
-    >show/hide answer</a
-  >
-  <h5 class="answer mb-3">${question.answer}</h5>
-  <div class="flashcard-btn d-flex justify-content-between">
-    <a
-      href="#"
-      id="edit-flashcard"
-      class="btn my-1 edit-flashcard text-uppercase"
-      data-id="${question.id}"
-      >edit</a
-    >
-    <a
-      href="#"
-      id="delete-flashcard"
-      class="btn my-1 delete-flashcard text-uppercase"
-      data-id="${question.id}"
-      >delete</a
-    >
-  </div>
-</div>
-</div>
+            <h4 class="text-capitalize">${title}</h4>
+            <a href="#" class="text-capitalize my-3 show-answer"
+              >show/hide answer</a
+            >
+            <h5 class="answer mb-3">${answer}</h5>
+            <div class="flashcard-btn d-flex justify-content-between">
+              <a
+                href="#"
+                id="edit-flashcard"
+                class="btn my-1 edit-flashcard text-uppercase"
+                data-id="${id}"
+                >edit</a
+              >
+              <a
+                href="#"
+                id="delete-flashcard"
+                class="btn my-1 delete-flashcard text-uppercase"
+                data-id="${id}"
+                >delete</a
+              >
+            </div>
+          </div>
+        </div>
   `;
   element.appendChild(div);
+};
+
+// clear fiedls
+UI.prototype.clearFields = function (question, answer) {
+  question.value = '';
+  answer.value = '';
 };
 
 // question constructor
@@ -140,7 +141,6 @@ function Question(id, title, answer) {
   this.answer = answer;
 }
 
-// dom event listener
 document.addEventListener('DOMContentLoaded', function () {
   eventListeners();
 });
