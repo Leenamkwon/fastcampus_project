@@ -76,7 +76,7 @@ function eventListeners() {
         return item.id !== +id;
       });
       questionInput.value = tempQuestion[0].title;
-      answerInput.value = tempQuestion[0].title;
+      answerInput.value = tempQuestion[0].answers;
     }
   });
 }

@@ -3,16 +3,18 @@
 // slice extracts a section of a string without modifying original string
 //offsetTop - A Number, representing the top position of the element, in pixels
 
+// set date
 const date = document.getElementById('date');
-date.textContent = new Date().getFullYear();
+date.innerHTML = new Date().getFullYear();
 
+// close links
 const navToggle = document.querySelector('.nav-toggle');
 const linksContainer = document.querySelector('.links-container');
 const links = document.querySelector('.links');
+const topLinks = document.querySelector('.top-link');
+const navBar = document.querySelector('#nav');
 
-// 동적으로 높이 계산하기
 navToggle.addEventListener('click', () => {
-  // linksContainer.classList.toggle('show-links');
   const containerHeight = linksContainer.getBoundingClientRect().height;
   const linksHeight = links.getBoundingClientRect().height;
 
@@ -23,50 +25,53 @@ navToggle.addEventListener('click', () => {
   }
 });
 
-const navbar = document.querySelector('nav');
-const topLink = document.querySelector('.top-link');
+// fixed navbar
+window.addEventListener('scroll', function () {
+  const scrollHeight = window.pageYOffset;
+  const navHeight = navBar.getBoundingClientRect().height;
 
-// 네비게이션 고정시키기
-window.addEventListener('scroll', () => {
-  const offsetY = window.pageYOffset;
-  const navHeight = navbar.getBoundingClientRect().height;
-  if (offsetY > navHeight) {
-    navbar.classList.add('fixed-nav');
+  if (scrollHeight > 500) {
+    topLinks.classList.add('show-link');
   } else {
-    navbar.classList.remove('fixed-nav');
+    topLinks.classList.remove('show-link');
   }
 
-  if (offsetY > 500) {
-    topLink.classList.add('show-link');
+  if (scrollHeight > navHeight) {
+    navBar.classList.add('fixed-nav');
   } else {
-    topLink.classList.remove('show-link');
+    navBar.classList.remove('fixed-nav');
   }
-
-  // css의 프로퍼티인 scroll-behavior: smooth; 떄문에 자연스럽게 올라가는 것임
 });
 
-// 스크롤 정확하게 상단에 이동하기
+// smooth scroll
 const scrollLinks = document.querySelectorAll('.scroll-link');
 
 scrollLinks.forEach((link) => {
-  link.addEventListener('click', (e) => {
+  link.addEventListener('click', function (e) {
+    // prevent default
     e.preventDefault();
-    const id = e.target.getAttribute('href').slice(1);
-    const sectionEl = document.getElementById(id);
-    // calculate the heights
-    const navHeight = navbar.getBoundingClientRect().height;
-    const fixedNav = navbar.classList.contains('fixed-nav');
+    // navigate to specific spot
+    const id = e.currentTarget.getAttribute('href').slice(1);
+    const element = document.getElementById(id);
+    let position = element.offsetTop;
+    const fiexedNav = navBar.classList.contains('fixed-nav');
+    const containerHeight = linksContainer.getBoundingClientRect().height;
 
-    let position = sectionEl.offsetTop - navHeight;
+    if (fiexedNav) {
+      position = element.offsetTop - navBar.offsetHeight;
+    }
 
-    if (!fixedNav) {
-      position = position - navHeight;
+    if (navBar.offsetHeight > 82) {
+      position = position - containerHeight;
     }
 
     window.scrollTo({
       left: 0,
       top: position
     });
+
     linksContainer.style.height = 0;
   });
 });
+
+// select links
