@@ -56,12 +56,13 @@ scrollLinks.forEach((link) => {
     let position = element.offsetTop;
     const fiexedNav = navBar.classList.contains('fixed-nav');
     const containerHeight = linksContainer.getBoundingClientRect().height;
+    const navHeight = navBar.getBoundingClientRect().height;
 
     if (fiexedNav) {
-      position = element.offsetTop - navBar.offsetHeight;
+      position = element.offsetTop - navHeight;
     }
 
-    if (navBar.offsetHeight > 82) {
+    if (navHeight > 82) {
       position = position - containerHeight;
     }
 
