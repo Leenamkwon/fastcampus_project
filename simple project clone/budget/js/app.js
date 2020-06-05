@@ -121,6 +121,37 @@ class UI {
     }
     return total;
   }
+
+  editList(e) {
+    let id = e.target.dataset.id;
+    let parent =
+      e.target.parentElement.parentElement.parentElement.parentElement;
+
+    this.expenseList.removeChild(parent);
+
+    // remove from the dom
+    this.itemList = this.itemList.filter((item) => {
+      if (item.id === id) {
+        this.expenseInput.value = item.title;
+        this.amountValue.value = item.amount;
+      }
+    });
+
+    let tempList = this.itemList.filter((item) => item.id !== id);
+    this.itemList = tempList;
+    this.showBalance();
+  }
+
+  deleteList(e) {
+    let id = e.target.dataset.id;
+    let parent =
+      e.target.parentElement.parentElement.parentElement.parentElement;
+    console.log(parent);
+
+    this.expenseList.removeChild(parent);
+    this.itemList = this.itemList.filter((item) => item.id !== id);
+    this.showBalance();
+  }
 }
 
 function eventListenters() {
@@ -140,6 +171,14 @@ function eventListenters() {
   expenseForm.addEventListener('submit', (e) => {
     e.preventDefault();
     ui.submitExpenseForm();
+  });
+
+  expenseList.addEventListener('click', function (e) {
+    if (e.target.parentElement.classList.contains('delete-icon')) {
+      ui.deleteList(e);
+    } else if (e.target.parentElement.classList.contains('edit-icon')) {
+      ui.editList(e);
+    }
   });
 }
 
