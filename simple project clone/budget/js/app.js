@@ -16,145 +16,119 @@ class UI {
     this.itemID = 0;
   }
 
+  // submit budget method
   submitBudgetForm() {
     const value = this.budgetInput.value;
-    if (value.trim() === '' || value.length < 0) {
-      this.budgetFeedback.classList.add('showItem');
-      this.budgetFeedback.innerHTML = `<p>value cannot be empty or negative</p>`;
-      const self = this;
-
-      setTimeout(() => {
-        self.budgetFeedback.classList.remove('showItem');
-      }, 4000);
+    if (value.trim() === '') {
+      this.showFeedback('값을 입력해주세요');
     } else {
-      this.budgetAmount.textContent = value;
+      this.budgetAmount.innerText = value;
       this.budgetInput.value = '';
       this.showBalance();
     }
   }
 
-  // show balance
-  showBalance() {
-    const expense = this.totalExpense();
-    const total = +value - expense;
-    this.balanceAmount.textContent = total;
+  showFeedback(text) {
+    this.budgetFeedback.classList.add('showItem');
+    this.budgetFeedback.innerHTML = `<p>${text}</p>`;
+
+    const self = this;
+    setTimeout(() => {
+      self.budgetFeedback.classList.remove('showItem');
+    }, 1000);
+  }
+
+  showExpenseFeedback(text) {
+    this.expenseFeedback.classList.add('showItem');
+    this.expenseFeedback.innerHTML = `<p>${text}</p>`;
+
+    const self = this;
+    setTimeout(() => {
+      self.budgetFeedback.classList.remove('showItem');
+    }, 1000);
+  }
+
+  expenseColor(total) {
     if (total < 0) {
       this.balance.classList.remove('showGreen', 'showBlack');
       this.balance.classList.add('showRed');
     } else if (total > 0) {
       this.balance.classList.add('showGreen');
       this.balance.classList.remove('showRed');
-    } else if (total === 0) {
-      this.balance.classList.remove('showGreen');
+    } else {
       this.balance.classList.add('showBlack');
+      this.balance.classList.remove('showRed', 'showGreen');
     }
   }
 
-  // total expense
-  totalExpense() {
-    let total = 0;
-    if (this.itemList.length > 0) {
-      total = this.itemList.reduce((acc, item) => (acc += item.amount), 0) * -1;
-    }
-    this.expenseAmount.textContent = total;
-    return total;
-  }
-
-  // submit expense form
   submitExpenseForm() {
     const expenseValue = this.expenseInput.value;
     const amountValue = this.amountInput.value;
 
     if (expenseValue === '' || amountValue === '' || amountValue < 0) {
-      this.expenseFeedback.classList.add('showItem');
-      this.expenseFeedback.innerHTML = `<p>valuese cannot be empty or negative</p>`;
-      const self = this;
-
-      setTimeout(() => {
-        self.expenseFeedback.classList.remove('showItem');
-      }, 4000);
+      this.showExpenseFeedback('값을 입력해주세요');
     } else {
       let amount = +amountValue;
       this.expenseInput.value = '';
       this.amountInput.value = '';
 
-      let expense = {
-        id: this.itemID,
+      const expense = {
+        id: this.itemID++,
         title: expenseValue,
         amount: amount
       };
-      this.itemID += 1;
       this.itemList.push(expense);
-      this.addExpense(expense);
-
-      // show balance
-      this.showBalance();
+      this.addList(expense);
     }
   }
-  // add expense
-  addExpense(expense) {
+
+  addList(expenseList) {
+    const { id, title, amount } = expenseList;
     const div = document.createElement('div');
     div.classList.add('expense');
     div.innerHTML = `
-        <div class="expense-item d-flex justify-content-between align-items-baseline">
+    <div class="expense-item d-flex justify-content-between align-items-baseline">
 
-         <h6 class="expense-title mb-0 text-uppercase list-item">- ${expense.title}</h6>
-         <h5 class="expense-amount mb-0 list-item">${expense.amount}</h5>
+     <h6 class="expense-title mb-0 text-uppercase list-item">- ${title}</h6>
+     <h5 class="expense-amount mb-0 list-item">${amount}</h5>
 
-         <div class="expense-icons list-item">
+     <div class="expense-icons list-item">
 
-          <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
-           <i class="fas fa-edit"></i>
-          </a>
-          <a href="#" class="delete-icon" data-id="${expense.id}">
-           <i class="fas fa-trash"></i>
-          </a>
-         </div>
-        </div>
-        `;
+      <a href="#" class="edit-icon mx-2" data-id="${id}">
+       <i class="fas fa-edit"></i>
+      </a>
+      <a href="#" class="delete-icon" data-id="${id}">
+       <i class="fas fa-trash"></i>
+      </a>
+     </div>
+    `;
     this.expenseList.appendChild(div);
-  }
-
-  // remove expense
-  removeItem(ele) {
-    let id = +ele.dataset.id;
-    let parent = ele.parentElement.parentElement.parentElement;
-
-    // remove from dom
-    this.expenseList(parent);
-
-    this.itemList = this.itemList.filter((item) => item.id !== id);
     this.showBalance();
   }
 
-  // edit expense
-  editItem(ele) {
-    let id = +ele.dataset.id;
-    let parent = ele.parentElement.parentElement.parentElement;
+  showBalance() {
+    const expense = this.totalExpense();
+    const total = +this.budgetAmount.innerText - expense;
+    this.expenseAmount.innerText = expense;
+    this.balanceAmount.innerText = total;
+    this.expenseColor(total);
+  }
 
-    // remove from dom
-    this.expenseList(parent);
-
-    // remove from the list
-    let expense = this.itemList.filter((item) => item.id === id);
-
-    this.expenseInput.value = expense[0].title;
-    this.amountInput.value = expense[0].amount;
-
-    // remove from list
-    let tempList = this.itemList.filter((item) => item.id !== item);
-
-    this.itemList = tempList;
-    this.showBalance();
+  totalExpense() {
+    let total = 0;
+    if (this.itemList.length > 0) {
+      total = this.itemList.reduce((cal, num) => (cal += num.amount), 0) * -1;
+    }
+    return total;
   }
 }
 
-function evnetLisenters() {
+function eventListenters() {
   const budgetForm = document.getElementById('budget-form');
   const expenseForm = document.getElementById('expense-form');
   const expenseList = document.getElementById('expense-list');
 
-  // new instance ui
+  // new instance of UI CLASS
   const ui = new UI();
 
   // budget form submit
@@ -167,18 +141,8 @@ function evnetLisenters() {
     e.preventDefault();
     ui.submitExpenseForm();
   });
-
-  expenseList.addEventListener('click', (e) => {
-    const deleteBtn = e.target.classList.contains('delete-icon');
-    const editBtn = e.target.classList.contains('edit-icon');
-    if (editBtn) {
-      ui.editItem(e.target.parentElement);
-    } else if (deleteBtn) {
-      ui.removeItem(e.target.parentElement);
-    }
-  });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  eventListeners();
+document.addEventListener('DOMContentLoaded', () => {
+  eventListenters();
 });
