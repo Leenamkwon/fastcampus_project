@@ -1,39 +1,31 @@
-// A base class is defined using the new reserved 'class' keyword
+function UI() {
+  this.customerList = document.querySelector('.drink-card__list');
+}
 
-// window event list
-
-function UI() {}
-
-// show preloader
 UI.prototype.hidePreloader = function () {
-  setInterval(() => {
-    document.querySelector('.preloader').style.display = 'none';
-  }, 500);
+  document.querySelector('.preloader').style.display = 'none';
 };
 
-// show nav
-UI.prototype.showNav = function () {
+UI.prototype.showMenu = function () {
   document.querySelector('.nav').classList.toggle('nav--show');
 };
 
-// play , pause video
-UI.prototype.videoControl = function () {
+UI.prototype.controlVideo = function () {
   let btn = document.querySelector('.video__switch-btn');
-  const video = document.querySelector('.video__item');
+  const videoEl = document.querySelector('.video__item');
 
-  if (!btn.classList.contains('btnSlide')) {
-    btn.classList.add('btnSlide');
-    video.pause();
-  } else {
+  if (btn.classList.contains('btnSlide')) {
     btn.classList.remove('btnSlide');
-    video.play();
+    videoEl.play();
+  } else {
+    btn.classList.add('btnSlide');
+    videoEl.pause();
   }
 };
 
-UI.prototype.checkEmpty = function (name, lastname, email) {
+UI.prototype.checkEmpty = function (name, lastName, email) {
   let result;
-
-  if (name === '' || lastname === '' || email === '') {
+  if (name === '' || lastName === '' || email === '') {
     result = false;
   } else {
     result = true;
@@ -41,14 +33,13 @@ UI.prototype.checkEmpty = function (name, lastname, email) {
   return result;
 };
 
-UI.prototype.showFeedback = function (text, type) {
+UI.prototype.showFeedback = function (text, action) {
   let feedback = document.querySelector('.drink-form__feedback');
-
-  if (type === 'success') {
+  if (action === 'success') {
     feedback.classList.add('success');
     feedback.innerText = text;
     this.removeAlert('success');
-  } else if (type === 'error') {
+  } else if (action === 'error') {
     feedback.classList.add('error');
     feedback.innerText = text;
     this.removeAlert('error');
@@ -58,26 +49,29 @@ UI.prototype.showFeedback = function (text, type) {
 UI.prototype.removeAlert = function (type) {
   setTimeout(() => {
     document.querySelector('.drink-form__feedback').classList.remove(type);
-  }, 3000);
+  }, 1300);
 };
 
-UI.prototype.addCustomer = function (Customer) {
+UI.prototype.addCustomer = function (customerData) {
   const images = [1, 2, 3, 4, 5];
-  let random = Math.floor(Math.random() * images.length);
+  const random = Math.floor(Math.random() * images.length);
+  const { name, lastName, email } = customerData;
   const div = document.createElement('div');
   div.classList.add('person');
-  div.innerHTML = `
-  <img
-                src="img/person-${random}.jpeg"
-                alt="person${random}"
-                class="person_thumbnail"
-              />
-              <h4 class="person__name">${Customer.name}</h4>
-              <h4 class="person__last-name">${Customer.lastname}</h4>
-  `;
-  document.querySelector('.drink-card__list').appendChild(div);
 
-  this.clearFiedls();
+  div.innerHTML = `
+  <div class="person">
+  <img
+    src="img/person-${random}.jpeg"
+    alt="person"
+    class="person_thumbnail"
+  />
+  <h4 class="person__name">${name}</h4>
+  <h4 class="person__last-name">${lastName}</h4>
+  <p>${email}</p>
+</div>
+  `;
+  this.customerList.appendChild(div);
 };
 
 UI.prototype.clearFiedls = function () {
@@ -86,72 +80,36 @@ UI.prototype.clearFiedls = function () {
   document.querySelector('.input-email').value = '';
 };
 
-UI.prototype.showModal = function (e) {
-  let id = e.target.parentElement.dataset.id;
-  if (e.target.parentElement.classList.contains('work-item__icon')) {
-    const modal = document.querySelector('.work-modal');
-    const modalItem = document.querySelector('.work-modal__item');
-    const modalClose = document.querySelector('.work-modal__close');
-    modal.classList.add('work-modal--show');
-    modalItem.style.backgroundImage = `url('./img/work-${id}.jpeg')`;
-
-    modalClose.addEventListener('click', () => {
-      modal.classList.remove('work-modal--show');
-    });
-    modal.addEventListener('click', () => {
-      modal.classList.remove('work-modal--show');
-    });
-  }
-};
-
-function Customer(name, lastname, email) {
-  this.name = name;
-  this.lastname = lastname;
-  this.email = email;
-}
-
-const ui = new UI();
-
 function eventListeners() {
+  const ui = new UI();
   window.addEventListener('load', () => {
     ui.hidePreloader();
   });
 
+  // nav btn
   document.querySelector('.navBtn').addEventListener('click', () => {
-    ui.showNav();
+    ui.showMenu();
   });
 
   document.querySelector('.video__switch').addEventListener('click', () => {
-    ui.videoControl();
+    ui.controlVideo();
   });
 
-  // submit the form
   document.querySelector('.drink-form').addEventListener('submit', (e) => {
     e.preventDefault();
-
     const name = document.querySelector('.input-name').value;
     const lastName = document.querySelector('.input-lastname').value;
     const email = document.querySelector('.input-email').value;
-
+    let customerData = { name, lastName, email };
     let value = ui.checkEmpty(name, lastName, email);
 
-    if (value) {
-      let display = new Customer(name, lastName, email);
-      ui.addCustomer(display);
-      ui.showFeedback('good job', 'success');
+    if (!value) {
+      ui.showFeedback('값이 비었습니다', 'error');
     } else {
-      ui.showFeedback('some form values empty', 'error');
+      ui.showFeedback('성공적!', 'error');
+      ui.addCustomer(customerData);
+      ui.clearFiedls();
     }
   });
-
-  const links = document.querySelectorAll('.work-item');
-
-  links.forEach((item) => {
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-      ui.showModal(e);
-    });
-  });
 }
-
 eventListeners();

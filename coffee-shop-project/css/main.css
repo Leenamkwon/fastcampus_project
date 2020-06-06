@@ -175,6 +175,7 @@ body {
 /* nav Btn */
 .navBtn {
   position: fixed;
+  z-index: 997;
   top: 5%;
   right: 5%;
   font-size: 3.5rem;
