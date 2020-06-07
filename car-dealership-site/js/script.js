@@ -152,16 +152,12 @@ const FilterCars = (() => {
       const singleCar = document.querySelectorAll('.single-car');
 
       singleCar.forEach((car) => {
-        console.log(car);
-
-        if (car.classList.contains(value)) {
+        if (value === 'all') {
           car.style.display = 'block';
         } else {
-          car.style.display = 'none';
-        }
-
-        if (value === 'all') {
-          singleCar.forEach((car) => (car.style.display = 'block'));
+          car.classList.contains(value)
+            ? (car.style.display = 'block')
+            : (car.style.display = 'none');
         }
       });
     });
