@@ -92,11 +92,53 @@ const DisplaySpecialCars = (() => {
 
     info.innerHTML = data;
   });
+
   // change img
   info.addEventListener('click', (e) => {
     if (e.target.parentElement.classList.contains('featured-icon')) {
       const img = e.target.parentElement.dataset.img;
       document.querySelector('.featured-photo').src = img;
     }
+  });
+})(CreateCars);
+
+const DisplayCars = ((CreateCars) => {
+  const cars = CreateCars.cars;
+  const inventory = document.querySelector('.inventory-container');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    inventory.innerHTML = '';
+
+    let output = '';
+    cars.forEach((car) => {
+      output += `
+      <div class="col-10 mx-auto my-3 col-md-6 col-lg-4">
+      <div class="card car-card">
+        <img src="${car.img}" class="card-img-top car-img" alt="">
+        <!-- card body -->
+        <div class="card-body">
+          <div class="car-info d-flex justify-content-between">
+            <!-- first flex child -->
+            <div class="car-text text-uppercase">
+              <h6 class="font-weight-bold">${car.make}</h6>
+              <h6>${car.model}</h6>
+            </div>
+            <!-- second flex child -->
+            <h5 class="car-value align-self-center py-2 px-3">$
+              <span class="car-price">10,000</span>
+            </h5>
+          </div>
+        </div>
+        <!-- end of card -->
+        <div class="card-footer text-capitalize d-flex justify-content-between">
+          <p><span><i class="fas fa-car"></i></span>${car.type}</p>
+          <p><span><i class="fas fa-cogs"></i></span>${car.trans}</p>
+          <p><span><i class="fas fa-gas-pump"></i></span>${car.gas}</p>
+        </div>
+      </div>
+    </div>
+      `;
+    });
+    inventory.innerHTML = output;
   });
 })(CreateCars);
