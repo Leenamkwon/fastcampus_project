@@ -112,7 +112,7 @@ const DisplayCars = ((CreateCars) => {
     let output = '';
     cars.forEach((car) => {
       output += `
-      <div class="col-10 mx-auto my-3 col-md-6 col-lg-4">
+      <div class="col-10 mx-auto my-3 col-md-6 col-lg-4 single-car ${car.country}">
       <div class="card car-card">
         <img src="${car.img}" class="card-img-top car-img" alt="">
         <!-- card body -->
@@ -142,3 +142,28 @@ const DisplayCars = ((CreateCars) => {
     inventory.innerHTML = output;
   });
 })(CreateCars);
+
+const FilterCars = (() => {
+  const filterBtn = document.querySelectorAll('.filter-btn');
+  filterBtn.forEach((item) => {
+    item.addEventListener('click', (e) => {
+      //
+      const value = e.target.dataset.filter;
+      const singleCar = document.querySelectorAll('.single-car');
+
+      singleCar.forEach((car) => {
+        console.log(car);
+
+        if (car.classList.contains(value)) {
+          car.style.display = 'block';
+        } else {
+          car.style.display = 'none';
+        }
+
+        if (value === 'all') {
+          singleCar.forEach((car) => (car.style.display = 'block'));
+        }
+      });
+    });
+  });
+})();
