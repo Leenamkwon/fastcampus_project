@@ -54,6 +54,7 @@ class Display {
       showFeedback('city value cannot be empty');
     } else {
       ajax.getWheather(city).then((data) => display.showWeather(data));
+      cityInput.value = '';
     }
   });
 
