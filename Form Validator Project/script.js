@@ -55,7 +55,7 @@ function checkLength(input, min, max) {
 }
 
 function matchPassword(ps1, ps2) {
-  if (ps1 !== ps2) {
+  if (ps1.value !== ps2.value) {
     showError(ps1, `${toUpperCase(input.id)} is not same`);
   } else {
   }
@@ -68,4 +68,5 @@ form.addEventListener('submit', function (e) {
   checkLength(username, 3, 15);
   checkLength(password, 6, 20);
   isValidEmail(email);
+  matchPassword(password, password2);
 });
