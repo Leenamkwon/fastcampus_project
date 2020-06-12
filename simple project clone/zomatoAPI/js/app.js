@@ -81,9 +81,87 @@ class UI {
     } else {
       this.restaurantList.innerHTML = '';
       res.forEach((resList) => {
-        const {} = resList;
+        console.log(resList);
+
+        const {
+          thumb: img,
+          name,
+          location: { address },
+          user_rating: { aggregate_rating },
+          cuisines,
+          average_cost_for_two,
+          menu_url,
+          url
+        } = resList.restaurant;
+        if (img !== '') {
+          this.showRestaurant(
+            img,
+            name,
+            address,
+            aggregate_rating,
+            cuisines,
+            average_cost_for_two,
+            menu_url,
+            url
+          );
+        }
       });
     }
+  }
+
+  showRestaurant(
+    img,
+    name,
+    address,
+    aggregate_rating,
+    cuisines,
+    average_cost_for_two,
+    menu_url,
+    url
+  ) {
+    const div = document.createElement('div');
+    div.classList.add('col-11', 'mx-auto', 'my-3', 'col-md-4');
+    div.innerHTML = `
+    <div class="card">
+    <div class="card">
+     <div class="row p-3">
+      <div class="col-5">
+       <img src="${img}" class="img-fluid img-thumbnail" alt="">
+      </div>
+      <div class="col-5 text-capitalize">
+       <h6 class="text-uppercase pt-2 redText">${name}</h6>
+       <p>${address}</p>
+      </div>
+      <div class="col-1">
+       <div class="badge badge-success">
+        ${aggregate_rating}
+       </div>
+      </div>
+     </div>
+     <hr>
+     <div class="row py-3 ml-1">
+      <div class="col-5 text-uppercase ">
+       <p>cousines : </p>
+       <p>cost for two : </p>
+      </div>
+      <div class="col-7 text-uppercase">
+       <p> ${cuisines}</p>
+       <p>${average_cost_for_two}</p>
+      </div>
+     </div>
+     <hr>
+     <div class="row text-center no-gutters pb-3">
+      <div class="col-6">
+       <a href="${menu_url}" target="_blank" class="btn redBtn  text-uppercase"><i class="fas fa-book"></i> menu</a>
+      </div>
+      <div class="col-6">
+       <a href="${url}" target="_blank" class="btn redBtn  text-uppercase"><i class="fas fa-book"></i> website</a>
+      </div>
+     </div>
+    </div>
+   </div>
+    `;
+    this.restaurantList.appendChild(div);
   }
 }
 
