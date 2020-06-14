@@ -62,9 +62,9 @@ class UI {
 
   getBagButtons() {
     const buttons = [...document.querySelectorAll('.bag-btn')];
+    buttonsDOM = [...buttons];
     buttons.forEach((button) => {
       let id = button.dataset.id;
-      buttonsDOM = [...buttonsDOM, button];
 
       let inCart = cart.find((item) => item.id === id);
       if (inCart) {
@@ -121,9 +121,9 @@ class UI {
               <span class="remove-item" data-id="${item.id}">remove</span>
             </div>
             <div>
-              <i class="fas fa-chevron-up"></i>
+              <i class="fas fa-chevron-up" data-id="${item.id}"></i>
               <p class="item-amount">1</p>
-              <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-chevron-down" data-id="${item.id}"></i>
             </div>`;
     cartContent.appendChild(div);
   }
@@ -133,14 +133,88 @@ class UI {
     cartDOM.classList.add('showCart');
   }
 
+  hideCart() {
+    cartOverlay.classList.remove('transparentBcg');
+    cartDOM.classList.remove('showCart');
+  }
+
   setupAPP() {
     cart = Storage.getCart();
     this.setCartValues(cart);
     this.populateCart(cart);
+    cartBtn.addEventListener('click', this.showCart);
+    closeCartBtn.addEventListener('click', this.hideCart);
   }
 
   populateCart(cart) {
     cart.forEach((item) => this.addCart(item));
+  }
+
+  cartLogic() {
+    clearCartBtn.addEventListener('click', () => {
+      this.clearCart();
+    });
+
+    cartContent.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-item')) {
+        let removeItem = e.target.dataset.id;
+        cart = cart.filter((item) => item.id !== removeItem);
+        this.setCartValues(cart);
+        const parent = e.target.parentElement.parentElement;
+        cartContent.removeChild(parent);
+      } else if (e.target.classList.contains('fa-chevron-up')) {
+        const itemAmount = document.querySelector('.item-amount');
+        let upItem = e.target.dataset.id;
+        cart = cart.map((item) => {
+          if (item.id === upItem) {
+            item.amount++;
+            itemAmount.innerText = item.amount;
+          }
+          return item;
+        });
+        Storage.saveCart(cart);
+        this.setCartValues(cart);
+      } else if (e.target.classList.contains('fa-chevron-down')) {
+        const itemAmount = document.querySelector('.item-amount');
+        let downItem = e.target.dataset.id;
+        cart = cart.map((item) => {
+          if (item.id === downItem) {
+            if (item.amount <= 0) {
+              item.amount = 0;
+              itemAmount.innerText = 0;
+              alert('0보다 작을 수 없습니다.');
+            } else {
+              item.amount--;
+              itemAmount.innerText = item.amount;
+            }
+          }
+          return item;
+        });
+        Storage.saveCart(cart);
+        this.setCartValues(cart);
+      }
+    });
+  }
+
+  clearCart() {
+    let cartItems = cart.map((item) => item.id);
+    cartItems.forEach((id) => this.removeItem(id));
+    while (cartContent.children.length > 0) {
+      cartContent.removeChild(cartContent.children[0]);
+    }
+  }
+
+  removeItem(id) {
+    cart = cart.filter((item) => item.id !== id);
+    Storage.saveCart(cart);
+    this.setCartValues(cart);
+    const buttons = this.getSingleButton(id);
+    buttons.disabled = false;
+    buttons.innerHTML = `<i class="fas fa-shopping-cart"></i>add to cart`;
+  }
+
+  getSingleButton(id) {
+    return buttonsDOM.find((button) => button.dataset.id === id);
   }
 }
 
@@ -169,6 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const products = new Products();
   const ui = new UI();
 
+  ui.setupAPP();
+
   products
     .getProducts()
     .then((data) => {
@@ -177,5 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(() => {
       ui.getBagButtons();
+      ui.cartLogic();
+      console.log(buttonsDOM);
     });
 });
