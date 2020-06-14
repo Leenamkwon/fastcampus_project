@@ -102,7 +102,6 @@ class UI {
     const div = document.createElement('div');
     div.classList.add('cart-item');
     product.forEach((item) => {
-      console.log(item);
       div.innerHTML = `
             <img src=${item.image} alt="product" />
             <div>
@@ -140,6 +139,65 @@ class UI {
     cartOverlay.classList.remove('transparentBcg');
     cartDOM.classList.remove('showCart');
   }
+
+  setUPAPP() {
+    cart = Storage.getCart();
+    this.setTotal(cart);
+    this.displayCartItem(cart);
+    this.populateCart(cart);
+  }
+
+  populateCart(cart) {
+    let result = '';
+    cart.forEach((item) => {
+      result += `
+      <div class="cart-item"> 
+        <img src=${item.image} alt="product" />
+            <div>
+              <h4>${item.title}</h4>
+              <h5>${item.price}</h5>
+              <span class="remove-item" data-id=${item.id}>remove</span>
+            </div>
+            <div>
+              <i class="fas fa-chevron-up" data-id=${item.id}></i>
+              <p class="item-amount">${item.amount}</p>
+              <i class="fas fa-chevron-down" data-id=${item.id}></i>
+            </div>
+      `;
+    });
+    carContent.innerHTML = result;
+  }
+
+  cartLogic() {
+    // clear cart button
+    clearCartBtn.addEventListener('click', () => {
+      this.clearCart();
+    });
+  }
+
+  clearCart() {
+    let cartItems = cart.map((item) => item.id);
+    cartItems.forEach((id) => this.removeItem(id));
+    while (carContent.children.length > 0) {
+      console.log(carContent.children);
+
+      // 노드에 하위 요소가 없으면 children가 있는 빈 목록 length 입니다. 0
+      carContent.removeChild(carContent.children[0]);
+    }
+  }
+
+  removeItem(id) {
+    cart = cart.filter((item) => item.id !== id);
+    this.setTotal(cart);
+    Storage.setCart(cart);
+    let button = this.getSingleButton(id);
+    button.disabled = false;
+    button.innerHTML = `add Cart`;
+  }
+
+  getSingleButton(id) {
+    return buttonsDOM.find((button) => button.dataset.id === id);
+  }
 }
 
 class Storage {
@@ -154,11 +212,20 @@ class Storage {
   static setCart(data) {
     localStorage.setItem('cart', JSON.stringify(data));
   }
+
+  static getCart() {
+    return JSON.parse(localStorage.getItem('cart'))
+      ? JSON.parse(localStorage.getItem('cart'))
+      : [];
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const ui = new UI();
   const product = new Product();
+
+  // setup app
+  ui.setUPAPP();
 
   product
     .getProducts()
@@ -168,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(() => {
       ui.getBagButtons();
+      ui.cartLogic();
     });
 
   closeCartBtn.addEventListener('click', ui.hideCart);
