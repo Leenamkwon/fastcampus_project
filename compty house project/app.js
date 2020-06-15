@@ -62,13 +62,34 @@ class UI {
     });
     productDOM.innerHTML = result;
   }
+
+  getBagbuttons() {
+    const btn = [...document.querySelectorAll('.bag-btn')];
+    buttonsDOM = btn;
+  }
 }
 
 // local Storage
-class Storage {}
+class Storage {
+  static saveProducts(products) {
+    localStorage.setItem('products', JSON.stringify(products));
+  }
+
+  static getProducts() {
+    JSON.parse(localStorage.setItem('products', products));
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const ui = new UI();
   const products = new Products();
-  products.getProducts().then((data) => ui.displayItem(data));
+  products
+    .getProducts()
+    .then((products) => {
+      ui.displayItem(products);
+      Storage.saveProducts(products);
+    })
+    .then(() => {
+      ui.getBagbuttons();
+    });
 });
