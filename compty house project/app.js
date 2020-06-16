@@ -87,10 +87,10 @@ class UI {
         // 비교한 값을 얻었으면 카트 node로 display를 해준다. (UI)
         let arr = { ...products, amount: 1 };
 
-        this.addCartItem(arr);
-
         // 같은 항목 끼리 빈 배열에 저장한다. (data module)
         cart = [...cart, arr];
+
+        this.addCartItem(arr);
 
         // 카트 아이콘의 숫자가 변경된다.
         this.setValueCart(cart);
@@ -105,16 +105,14 @@ class UI {
   }
 
   setValueCart(cart) {
-    let itemTotal = 0;
-    let moneyTotal = 0;
-
-    cart.forEach((item) => {
-      itemTotal += item.amount;
-      moneyTotal += item.price * item.amount;
+    let tempTotal = 0;
+    let itemsTotal = 0;
+    cart.map((item) => {
+      tempTotal += item.price * item.amount;
+      itemsTotal += item.amount;
     });
-
-    cartItems.innerText = parseFloat(itemTotal.toFixed(2));
-    cartTotal.innerText = moneyTotal;
+    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+    cartItems.innerText = itemsTotal;
   }
 
   addCartItem(cart) {
@@ -170,9 +168,9 @@ class UI {
         let id = addAmount.dataset.id;
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount++;
-        addAmount.nextElementSibling.innerText = tempItem.amount;
         Storage.saveCart(cart);
         this.setValueCart(cart);
+        addAmount.nextElementSibling.innerText = tempItem.amount;
       } else if ('fa-chevron-down') {
         let addAmount = e.target;
         let id = addAmount.dataset.id;
