@@ -69,15 +69,13 @@ function init() {
   roundscore = 0;
   activePlayer = 0;
 
-  document.getElementById('score-0').textContent = 0;
-  document.getElementById('score-1').textContent = 0;
-  document.getElementById('current-0').textContent = 0;
-  document.getElementById('current-1').textContent = 0;
-  document.getElementById(`name-0`).textContent = `Player 1`;
-  document.getElementById(`name-1`).textContent = `Player 2`;
-  document.querySelector(`.player-0-panel`).classList.remove('winner');
-  document.querySelector(`.player-1-panel`).classList.remove('winner');
+  for (let i = 0; i <= score.length - 1; i++) {
+    document.getElementById(`score-${i}`).textContent = 0;
+    document.getElementById(`current-${i}`).textContent = 0;
+    document.getElementById(`name-${i}`).textContent = `Player ${i}`;
+    document.querySelector(`.player-${i}-panel`).classList.remove('winner');
+    document.querySelector(`.player-${i}-panel`).classList.remove('active');
+  }
   document.querySelector(`.player-0-panel`).classList.add('active');
-  document.querySelector(`.player-1-panel`).classList.remove('active');
   document.querySelector('.dice').style.display = 'none';
 }
