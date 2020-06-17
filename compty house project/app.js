@@ -122,7 +122,7 @@ class UI {
             </div>
             <div>
               <i class="fas fa-chevron-up" data-id=${item.id}></i>
-              <p class="item-amount">1</p>
+              <p class="item-amount">${item.amount}</p>
               <i class="fas fa-chevron-down" data-id=${item.id}></i>
             </div>
         `;
@@ -162,6 +162,28 @@ class UI {
         Storage.saveCart(cart);
         const parent = e.target.parentElement.parentElement;
         cartContent.removeChild(parent);
+      } else if (e.target.classList.contains('fa-chevron-up')) {
+        let addAmount = e.target;
+        let id = addAmount.dataset.id;
+        const tempItem = cart.find((item) => item.id === id);
+        tempItem.amount = tempItem.amount + 1;
+
+        Storage.saveCart(cart);
+        this.setCartValues(cart);
+        e.target.nextElementSibling.innerText = tempItem.amount;
+      } else if (e.target.classList.contains('fa-chevron-down')) {
+        let lowerAmount = e.target;
+        let id = lowerAmount.dataset.id;
+        const tempItem = cart.find((item) => item.id === id);
+        tempItem.amount -= 1;
+
+        if (tempItem.amount > 0) {
+          Storage.saveCart(cart);
+          this.setCartValues(cart);
+          e.target.previousElementSibling.innerText = tempItem.amount;
+        } else {
+          tempItem.amount = 0;
+        }
       }
     });
   }
