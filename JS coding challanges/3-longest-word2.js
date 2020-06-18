@@ -16,7 +16,7 @@ function longestWords(str) {
     }
   }
 
-  return `이 문장에서 제일 단어 수는 ${size} | 단어는 ${[...max]}`;
+  return `이 문장에서 제일 긴 단어 수는 ${size} | 단어는 ${[...max]}`;
 }
 
 console.log(longestWords('john react apple china ps5 ipad'));
