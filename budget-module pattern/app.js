@@ -27,8 +27,7 @@ const budgetController = (function () {
 
   const calculateTotal = function (type) {
     let sum = 0;
-    sum = data.allItems[type].reduce((cal, num) => (cal += num), 0);
-
+    sum = data.allItems[type].reduce((cal, num) => (cal += num.value), 0);
     data.total[type] = sum;
   };
 
@@ -162,7 +161,23 @@ const UIcontroller = (function () {
       return DOMstring;
     },
 
-    addMoney(budget) {}
+    displayBudget(obj) {
+      const budgetValue = document.querySelector('.budget__value');
+      const budgetIncome = document.querySelector('.budget__income--value');
+      const budgetExpense = document.querySelector('.budget__expenses--value');
+      const budgetPercentage = document.querySelector(
+        '.budget__expenses--percentage'
+      );
+      budgetValue.textContent = obj.budget;
+      budgetIncome.textContent = obj.totalInc;
+      budgetExpense.textContent = obj.totalExp;
+
+      if (obj.percentage > 0) {
+        budgetPercentage.textContent = obj.percentage + '%';
+      } else {
+        budgetPercentage.textContent = '---';
+      }
+    }
   };
 })();
 
@@ -178,7 +193,7 @@ const controller = (function (budgetCtrl, UICtrl) {
     const budget = budgetCtrl.getBudget();
 
     // 3. Display the budget on the UI
-    UICtrl.addMoney(budget);
+    UICtrl.displayBudget(budget);
   };
 
   //
@@ -225,10 +240,11 @@ const controller = (function (budgetCtrl, UICtrl) {
       }
     });
   };
-
+  const budget = budgetCtrl.getBudget();
   return {
     init() {
       setupEventListeners();
+      UICtrl.displayBudget(budget);
       budgetCtrl.testing();
     }
   };
