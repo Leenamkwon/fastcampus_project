@@ -122,7 +122,7 @@ const UIcontroller = (function () {
         const incomeList = document.querySelector('.income__list');
         element = incomeList;
         result += `
-          <div class="item clearfix" id="income-${obj.id}">
+          <div class="item clearfix" id="inc-${obj.id}">
             <div class="item__description">${obj.description}</div>
               <div class="right clearfix">
                 <div class="item__value">+ ${obj.value}</div>
@@ -135,7 +135,7 @@ const UIcontroller = (function () {
         const expenseList = document.querySelector('.expenses__list');
         element = expenseList;
         result += `
-          <div class="item clearfix" id="expense-${obj.id}">
+          <div class="item clearfix" id="exp-${obj.id}">
             <div class="item__description">${obj.description}</div>
               <div class="right clearfix">
                 <div class="item__value">- ${obj.value}</div>
@@ -202,6 +202,12 @@ const controller = (function (budgetCtrl, UICtrl) {
     UICtrl.displayBudget(budget);
   };
 
+  const updatePercentages = function () {
+    // 1. Calculate percentages
+    // 2. Read percentages from the budget controller
+    // 3. Updata the UI width the new Percentages
+  };
+
   //
   const ctrlAddItem = function () {
     let input, newItem;
@@ -230,6 +236,8 @@ const controller = (function (budgetCtrl, UICtrl) {
 
       // 5. calculate and update the budget and display on the UI
       updateBudget();
+
+      // 6. Calculate and update percentages
     }
   };
 
@@ -255,13 +263,27 @@ const controller = (function (budgetCtrl, UICtrl) {
     if (id) {
       const splitID = id.split('-');
       const type = splitID[0];
-      const ID = splitID[1];
+      const ID = +splitID[1];
 
       // 1. delete the item from the data structure
+      budgetCtrl.deleteItem(type, ID);
 
       // 2. delete the item from the UI
-
+      if (type === 'inc') {
+        const incomeList = document.querySelector('.income__list');
+        incomeList.removeChild(
+          e.target.parentElement.parentElement.parentElement.parentElement
+        );
+      } else if (type === 'exp') {
+        const expenseList = document.querySelector('.expense__list');
+        expenseList.removeChild(
+          e.target.parentElement.parentElement.parentElement.parentElement
+        );
+      }
       // 3. update and show the new budget
+      updateBudget();
+    } else {
+      false;
     }
   };
 
