@@ -57,6 +57,12 @@ const budgetController = (function () {
       return newItem;
     },
 
+    deleteItem: function (type, id) {
+      data.allItems[type] = data.allItems[type].filter(
+        (item) => item.id !== id
+      );
+    },
+
     calculateBudget() {
       // calculate total income and expense
       calculateTotal('exp');
@@ -129,7 +135,7 @@ const UIcontroller = (function () {
         const expenseList = document.querySelector('.expenses__list');
         element = expenseList;
         result += `
-          <div class="item clearfix" id="income-${obj.id}">
+          <div class="item clearfix" id="expense-${obj.id}">
             <div class="item__description">${obj.description}</div>
               <div class="right clearfix">
                 <div class="item__value">- ${obj.value}</div>
@@ -222,10 +228,8 @@ const controller = (function (budgetCtrl, UICtrl) {
       // 4. clear the fields
       UICtrl.clearFields();
 
-      // 5. calculate and update the budget
+      // 5. calculate and update the budget and display on the UI
       updateBudget();
-
-      // 6. display the budget on the UI
     }
   };
 
@@ -239,7 +243,28 @@ const controller = (function (budgetCtrl, UICtrl) {
         ctrlAddItem();
       }
     });
+
+    document
+      .querySelector('.container')
+      .addEventListener('click', (e) => ctrlDeleteItem(e));
   };
+
+  const ctrlDeleteItem = function (e) {
+    const id =
+      e.target.parentElement.parentElement.parentElement.parentElement.id;
+    if (id) {
+      const splitID = id.split('-');
+      const type = splitID[0];
+      const ID = splitID[1];
+
+      // 1. delete the item from the data structure
+
+      // 2. delete the item from the UI
+
+      // 3. update and show the new budget
+    }
+  };
+
   const budget = budgetCtrl.getBudget();
   return {
     init() {
