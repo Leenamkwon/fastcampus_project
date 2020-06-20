@@ -5,59 +5,66 @@ const total = document.getElementById('total');
 const movieSelect = document.getElementById('movie');
 
 let ticketPrice = +movieSelect.value;
+populateUI();
 
 function setMovieData(movieIndex, moviePrice) {
-  localStorage.setItem('selectedMovieIndex', movieIndex);
-  localStorage.setItem('selectedMoviePrice', moviePrice);
+  localStorage.setItem('selectedMovieIndex', JSON.stringify(movieIndex));
+  localStorage.setItem('selectedMoviePrice', JSON.stringify(moviePrice));
 }
 
+// update total and count
 function updateSelectedCount() {
-  const selectedSeats = document.querySelectorAll('.row .seat.selected');
+  const slectedSeats = document.querySelectorAll('.seat.selected');
 
-  const seatsIndex = [...selectedSeats].map((seat) => {
+  const seatsIndex = [...slectedSeats].map((seat) => {
     return [...seats].indexOf(seat);
   });
 
   localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
 
-  const selectedCount = selectedSeats.length;
-  count.innerText = selectedCount;
-  total.innerText = selectedCount * ticketPrice;
+  count.innerText = slectedSeats.length;
+  total.innerText = slectedSeats.length * ticketPrice;
 }
 
-// Get data from localstorage and populate UI
 function populateUI() {
   const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
 
   if (selectedSeats !== null && selectedSeats.length > 0) {
     seats.forEach((seat, index) => {
-      if (selectedSeats.indexOf(index) > -1) {
-        seat.classList.add('selected');
-      }
+      if (selectedSeats.indexOf(index) > -1) seat.classList.add('selected');
     });
   }
 
-  const movieIndex = localStorage.getItem('selectedMovieIndex');
-  if (movieIndex !== null) {
-    movieSelect.selectedIndex = movieIndex;
+  const selectedMovieIndex = JSON.parse(
+    localStorage.getItem('selectedMovieIndex')
+  );
+  const selectedMoviePrice = JSON.parse(
+    localStorage.getItem('selectedMoviePrice')
+  );
+
+  if (selectedMovieIndex !== null && selectedMoviePrice !== null) {
+    movieSelect.selectedIndex = selectedMovieIndex;
+    ticketPrice = parseFloat(selectedMoviePrice);
   }
+
+  updateSelectedCount();
 }
 
-container.addEventListener('click', function (e) {
-  if (e.target.classList.contains('seat')) {
-    e.target.classList.toggle('selected');
-    updateSelectedCount();
-  }
-});
-
+// Movie select event
 movieSelect.addEventListener('change', (e) => {
-  e.preventDefault();
-  ticketPrice = +e.target.value;
+  ticketPrice = e.target.value;
   setMovieData(e.target.selectedIndex, e.target.value);
   updateSelectedCount();
 });
 
-window.addEventListener('DOMContentLoaded', function () {
-  populateUI();
-  updateSelectedCount();
+// Seat click event
+container.addEventListener('click', (e) => {
+  if (
+    e.target.classList.contains('seat') &&
+    !e.target.classList.contains('occupied')
+  ) {
+    e.target.classList.toggle('selected');
+
+    updateSelectedCount();
+  }
 });

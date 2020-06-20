@@ -4,6 +4,7 @@ const budgetController = (function () {
     this.id = id;
     this.description = description;
     this.value = value;
+    this.percentage = -1;
   };
 
   const Income = function (id, description, value) {
@@ -202,12 +203,6 @@ const controller = (function (budgetCtrl, UICtrl) {
     UICtrl.displayBudget(budget);
   };
 
-  const updatePercentages = function () {
-    // 1. Calculate percentages
-    // 2. Read percentages from the budget controller
-    // 3. Updata the UI width the new Percentages
-  };
-
   //
   const ctrlAddItem = function () {
     let input, newItem;
@@ -238,6 +233,7 @@ const controller = (function (budgetCtrl, UICtrl) {
       updateBudget();
 
       // 6. Calculate and update percentages
+      updatePercentages();
     }
   };
 
