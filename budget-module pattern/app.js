@@ -277,6 +277,25 @@ const UIcontroller = (function () {
       ).innerText = `${year}. ${caclDate(month)}  ${
         monthArr[month]
       }. ${caclDate(day)}`;
+    },
+
+    changeType() {
+      const a = document.querySelector('.add__value');
+      const b = document.querySelector('.add__btn');
+      const c = document.querySelector('.add__type');
+      const d = document.querySelector('.add__description');
+
+      const fields = [a, b, c, d];
+
+      const nodeForEach = function (fields, cb) {
+        for (let i = 0; i < fields.length; i++) {
+          cb(fields[i], i);
+        }
+      };
+
+      nodeForEach(fields, function (cur) {
+        cur.classList.toggle('red-focus');
+      });
     }
   };
 })();
@@ -291,11 +310,14 @@ const controller = (function (budCtrl, UICtrl) {
       if (e.keyCode === 13 || e.which === 13) {
         ctrlAddItem();
       }
-
-      document.querySelector('.container').addEventListener('click', (e) => {
-        ctrlDeleteItem(e);
-      });
     });
+    document.querySelector('.container').addEventListener('click', (e) => {
+      ctrlDeleteItem(e);
+    });
+
+    document
+      .querySelector('.add__type')
+      .addEventListener('change', UICtrl.changeType);
   };
 
   const updateBudget = function () {
