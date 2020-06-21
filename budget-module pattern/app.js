@@ -182,6 +182,33 @@ const UIcontroller = (function () {
       list.innerHTML += result;
     },
 
+    displayPercentages(percentages) {
+      const itemPercentage = document.querySelectorAll('.item__percentage');
+
+      const nodeListForEach = function (list, callback) {
+        for (let i = 0; i < list.length; i++) {
+          callback(list[i], i);
+        }
+      };
+
+      const callback = function (current, index) {
+        if (percentages[index] > 0) {
+          current.textContent = percentages[index] + '%';
+        } else {
+          current.textContent = '---';
+        }
+      };
+
+      nodeListForEach(itemPercentage, callback);
+
+      // 2번쨰 방법
+      // const arr = function(list) {
+      //   list.forEach((item, index) => {
+      //     itemPercentage[index].textContent = list[index] + '%';
+      //   })
+      // }
+    },
+
     deleteItemUI(id) {
       const el = document.getElementById(id);
       el.parentNode.removeChild(el);
@@ -276,7 +303,7 @@ const controller = (function (budCtrl, UICtrl) {
     const percentages = budCtrl.getPercentages();
 
     // 3. Update the user with the new percentages
-    console.log(percentages);
+    UICtrl.displayPercentages(percentages);
   };
 
   return {
