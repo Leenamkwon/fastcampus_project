@@ -1,33 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>momentum</title>
-  <link rel="stylesheet" href="index.css">
-</head>
-<body>
-  <div class="js-clock">
-    <h1 class="clock">00:00</h1>
-</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome my landing page</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <time id="time"></time>
+    <h1>
+      <span id="greeting"></span>
+      <span id="name" contenteditable="true"></span>
+    </h1>
 
-<form class="js-form form">
-    <input type="text" placeholder="What is your name?" class="showing" />
-</form>
-<h4 class="js-greetings greeting"></h4>
+    <h2>What Is Your Focus For Today?</h2>
+    <h2 id="focus" contenteditable="true"></h2>
 
-<form class="js-toDoForm">
-    <input type="text" placeholder="Write a to do" />
-</form>
-<ul class="js-toDoList">
-</ul>
-    <span class="js-weather"></span>
-    
-    <script src="clock.js"></script>
-    <script src="greeting.js"></script>
-    <script src="todoList.js"></script>
-    <script src="background.js"></script>
-    <script src="weather.js"></script>
-</body>
-
-</html> 
+    <script src="./app.js"></script>
+  </body>
+</html>
