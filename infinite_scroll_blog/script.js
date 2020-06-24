@@ -1,5 +1,5 @@
 const postsContainer = document.getElementById('posts-container');
-const loading = document.querySelector('.loader');
+const loader = document.querySelector('.loader');
 const filter = document.getElementById('filter');
 
 let limit = 5;
@@ -11,16 +11,14 @@ async function getPosts() {
     `https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`
   );
   const data = await res.json();
-  return {
-    data
-  };
+  return data;
 }
 
 // Show posts in DOM
 async function showPosts() {
   const posts = await getPosts();
 
-  posts['data'].forEach((post) => {
+  posts.forEach((post) => {
     const postEl = document.createElement('div');
     postEl.classList.add('post');
     postEl.innerHTML = `
@@ -35,30 +33,27 @@ async function showPosts() {
   });
 }
 
-// show loader & fetch more posts
-function showLoading() {
-  loading.classList.add('show');
+async function showLoader() {
+  loader.classList.add('show');
 
+  // await page++;
+  // await loader.classList.remove('show');
+  // await showPosts();
   setTimeout(() => {
-    loading.classList.remove('show');
-
-    setTimeout(() => {
-      page++;
-      showPosts();
-    }, 300);
-  }, 1000);
+    loader.classList.remove('show');
+    page++;
+    setTimeout(showPosts, 300);
+  }, 600);
 }
 
-// Filter posts by input
 function filterPosts(e) {
-  const term = e.target.valuet.toUpperCase();
+  const term = e.target.value.toUpperCase();
   const posts = document.querySelectorAll('.post');
 
   posts.forEach((post) => {
-    const title = post.querySelector('.post-title').innerText.toUpperCase;
-    const body = post.querySelector('.post-body').innerText.toUpperCase;
-
-    if (title.indexOf(term) > -1 || body.indexOf(term) > -1) {
+    const title = post.querySelector('.post-title').innerText.toUpperCase();
+    const senetence = post.querySelector('.post-body').innerText.toUpperCase();
+    if (title.indexOf(term) > -1 || senetence.indexOf(term) > -1) {
       post.style.display = 'flex';
     } else {
       post.style.display = 'none';
@@ -66,15 +61,17 @@ function filterPosts(e) {
   });
 }
 
-// Show initial posts
 showPosts();
 
+filter.addEventListener('input', filterPosts);
+
 window.addEventListener('scroll', () => {
+  // scrollHeight 도큐먼트 전체 높이, 화면 사이즈에 영향을 받지 않음
+  // scrollTop 스크롤이 뷰포트에 맞춰서 상단 값, 스크롤을 내릴수록 값이 올라감
+  // clientHeight 사용자 화면에서의 높이값, 즉 브라우저를 늘리거나 줄이면 전체 높이값이 달라짐
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
   if (scrollTop + clientHeight >= scrollHeight - 5) {
-    showLoading();
+    showLoader();
   }
 });
-
-filter.addEventListener('input', filterPosts);
