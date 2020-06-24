@@ -2,9 +2,9 @@ const tabItems = document.querySelectorAll('.tab-item');
 const tabContentItems = document.querySelectorAll('.tab-content-item');
 const border = document.querySelector('.tab-border');
 
-function borderMoving() {
-  const width = event.target.parentElement.getBoundingClientRect();
-  const parent = event.target.parentElement;
+function borderMoving(self) {
+  const width = self.getBoundingClientRect();
+  const parent = self;
   border.classList.add('trans');
 
   if (parent.id === 'tab-1') {
@@ -18,11 +18,11 @@ function borderMoving() {
 
 function selecItem(self) {
   removeShow();
-  // Grab content item dom
-  console.log(self.id);
 
+  // Grab content item dom
   const tabContentItem = document.querySelector(`#${self.id}-content`);
   tabContentItem.classList.add('show');
+  borderMoving(self);
 }
 
 function removeShow() {
@@ -32,7 +32,7 @@ function removeShow() {
 tabItems.forEach((tab) => {
   tab.addEventListener('click', function () {
     const self = this;
-    borderMoving();
+
     selecItem(self);
   });
 });
