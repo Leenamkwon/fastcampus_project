@@ -4,8 +4,6 @@ const slides = document.querySelectorAll('.img');
 const backgrounds = document.querySelector('.bg');
 const options = document.querySelectorAll('.option');
 
-console.log(slides);
-
 let index = 1;
 let opindex = 0;
 let size = slides[index].clientWidth;
