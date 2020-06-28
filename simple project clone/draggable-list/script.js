@@ -54,66 +54,51 @@ function contenteditable() {
 }
 
 function dragStart() {
-  dragStartIndex = +this.closest('li').getAttribute('data-index');
+  dragStartIndex = this.closest('li').getAttribute('data-index');
 }
 
 function dragEnter() {
   this.classList.add('over');
 }
 
-function dragOver(e) {
-  e.preventDefault();
-}
-
 function dragLeave() {
   this.classList.remove('over');
 }
 
+function dragOver(e) {
+  e.preventDefault();
+}
+
 function dragDrop() {
   const dragEndIndex = +this.getAttribute('data-index');
-  swapItems(dragStartIndex, dragEndIndex);
+  swap(dragStartIndex, dragEndIndex);
+
   this.classList.remove('over');
 }
 
-function swapItems(FromIndex, toIndex) {
-  const itemOne = listItems[FromIndex].querySelector('.draggable');
-  const itemTwo = listItems[toIndex].querySelector('.draggable');
+function swap(start, end) {
+  const startItem = listItems[start].querySelector('.draggable');
+  const endItem = listItems[end].querySelector('.draggable');
 
-  listItems[FromIndex].appendChild(itemTwo);
-  listItems[toIndex].appendChild(itemOne);
-
-  listItems.forEach((item) => {
-    console.log(item);
-  });
+  listItems[start].appendChild(endItem);
+  listItems[end].appendChild(startItem);
 }
+
+function checkOrder() {}
 
 function addEventListener() {
   const draggables = document.querySelectorAll('.draggable');
-  const dragListItems = document.querySelectorAll('.draggable-list li');
+  const dragListItem = document.querySelectorAll('.draggable-list li');
 
   draggables.forEach((draggable) => {
     draggable.addEventListener('dragstart', dragStart);
   });
 
-  dragListItems.forEach((item) => {
-    item.addEventListener('dragover', dragOver);
-    item.addEventListener('drop', dragDrop);
-    item.addEventListener('dragenter', dragEnter);
-    item.addEventListener('dragleave', dragLeave);
-  });
-}
-
-function checkOrder() {
-  listItems.forEach((item, index) => {
-    const order = listItems[index]
-      .querySelector('.person-name')
-      .innerText.trim();
-    if (richestPeople[index] === order) {
-      listItems[index].classList.remove('wrong');
-      listItems[index].classList.add('right');
-    } else {
-      listItems[index].classList.add('wrong');
-    }
+  dragListItem.forEach((li) => {
+    li.addEventListener('dragover', dragOver);
+    li.addEventListener('dragenter', dragEnter);
+    li.addEventListener('dragleave', dragLeave);
+    li.addEventListener('drop', dragDrop);
   });
 }
 
