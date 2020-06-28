@@ -31,7 +31,7 @@ function createListItem() {
       listItem.innerHTML = `
     <span class="number">${index + 1}</span>
     <div class="draggable" draggable="true">
-      <p class="person-name">${person}</p>
+      <p class="person-name" ContentEditable="true" >${person}</p>
       <i class="fas fa-grip-lines"></i>
     </div>
     `;
@@ -39,7 +39,18 @@ function createListItem() {
       draggable_list.appendChild(listItem);
     });
 
+  contenteditable();
   addEventListener();
+}
+
+function contenteditable() {
+  const p = document.querySelectorAll('.person-name');
+  p.forEach((item) =>
+    item.addEventListener('blur', (e) => {
+      let index = +e.target.parentElement.parentElement.dataset.index;
+      if (index) richestPeople[index] = e.target.innerText;
+    })
+  );
 }
 
 function dragStart() {

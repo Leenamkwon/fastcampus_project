@@ -2,7 +2,7 @@ const container = document.querySelector('.container');
 const slide = document.querySelector('.slider');
 const box = document.querySelectorAll('.box');
 
-let width = box[0].offsetWidth + 10;
+let width = box[0].offsetWidth + 30;
 
 slide.style.minWidth = `${box.length * width}px`;
 
@@ -22,7 +22,7 @@ container.addEventListener('dragend', slideShow);
 
 // 핸드폰, 패드
 container.addEventListener('touchstart', (e) => {
-  console.log(e.touches[0].clientX);
+  start = e.touches[0].clientX;
 });
 
 container.addEventListener('touchmove', (e) => {
