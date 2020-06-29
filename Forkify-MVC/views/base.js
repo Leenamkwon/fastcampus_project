@@ -2,7 +2,8 @@ export const element = {
   searchInput: document.querySelector('.search__field'),
   searchFrom: document.querySelector('.search'),
   resultList: document.querySelector('.results__list'),
-  result: document.querySelector('.results')
+  result: document.querySelector('.results'),
+  searchResPages: document.querySelector('.results__pages')
 };
 
 export const renderLoader = (parent) => {

@@ -32,7 +32,7 @@ const renderRecipe = (recipes) => {
     <li>
       <a class="results__link" href="#${recipes.recipe_id}">
           <figure class="results__fig">
-              <img src=${recipes.image_url} alt="Test">
+              <img src=${recipes.image_url} alt=${recipes.title}>
           </figure>
           <div class="results__data">
               <h4 class="results__name">${limitRecipeTitle(recipes.title)}</h4>
@@ -44,6 +44,51 @@ const renderRecipe = (recipes) => {
   element.resultList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderResults = (recipes) => {
-  recipes.forEach((el) => renderRecipe(el));
+// type: prev or next
+const createButton = (page, type) => {
+  const markup = `
+  <button class="btn-inline results__btn--${type}" data-goto=${
+    type === 'prev' ? page - 1 : page + 1
+  }>
+    <svg class="search__icon">
+      <use href="img/icons.svg#icon-triangle-${
+        type === 'prev' ? 'left' : 'right'
+      }"></use>
+    </svg>
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+  </button>
+  `;
+
+  return markup;
+};
+
+const renderButton = (page, numResults, resPerpage) => {
+  const pages = Math.ceil(numResults / resPerpage);
+  let button;
+
+  if (page === 1 && pages > 1) {
+    // only next
+    button = createButton(page, 'next');
+  } else if (page < pages) {
+    // both button
+    button = `${createButton(page, 'prev')}
+              ${createButton(page, 'next')}
+    `;
+  } else if (page === pages && pages > 1) {
+    // only previous
+    button = createButton(page, 'prev');
+  }
+  element.searchResPages.innerHTML = button;
+};
+
+export const renderResults = (recipes, page = 1, resPerPage = 10) => {
+  // 렌더링 페이지
+  const start = (page - 1) * resPerPage; // 10, 5
+  const end = page * resPerPage; // 20, 10
+
+  // 몇개 씩 페이지에 보이게 할 것인지
+  recipes.slice(start, end).forEach((el) => renderRecipe(el));
+
+  // 렌더링 페이지 버튼
+  renderButton(page, recipes.length, resPerPage);
 };
