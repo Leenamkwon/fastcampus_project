@@ -61,10 +61,21 @@ export default class Recipe {
       });
 
       // Remove parentheses
-      ingredients = ingredients.replace(/ *\([^)]*\) */g, '');
-    });
+      ingredients = ingredients.replace(/ *\([^)]*\) */g, ' ');
 
-    console.log(newIngredients);
+      // Parse ingredients into count, unit and ingredient
+      const arrIng = ingredients.split(' ');
+      const unitIndex = arrIng.findIndex((el2) => unitsShort.includes(el2));
+
+      if (unitIndex > -1) {
+        // There is a unit
+      } else if (unitIndex === -1) {
+        // There is no unit
+      } else if (arrIng[0]) {
+      }
+
+      return ingredients;
+    });
 
     this.ingredients = newIngredients;
   }

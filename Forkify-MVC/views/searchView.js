@@ -45,14 +45,6 @@ const renderRecipe = (recipes) => {
   element.resultList.insertAdjacentHTML('beforeend', markup);
 };
 
-const pageClick = (page) => {
-  const pageBtn = document.querySelector('.btn-inline');
-  pageBtn.addEventListener('click', (e) => {
-    console.log(e.currentTarget);
-    console.log(page++);
-  });
-};
-
 // type: prev or next
 const createButton = (page, type) => {
   const markup = `
@@ -72,7 +64,7 @@ const createButton = (page, type) => {
 };
 
 const renderButton = (page, numResults, resPerpage) => {
-  // 전체 페이지 구하는 공식
+  // 전체 페이지 구하기
   const pages = Math.ceil(numResults / resPerpage);
   let button;
 
@@ -95,12 +87,9 @@ export const renderResults = (recipes, page = 1, resPerPage = 10) => {
   const start = (page - 1) * resPerPage; // 10, 5
   const end = page * resPerPage; // 20, 10
 
-  // 몇개 씩 페이지에 보이게 할 것인지
+  // 몇 개씩 페이지에 보이게 할 것인지
   recipes.slice(start, end).forEach((el) => renderRecipe(el));
 
   // 렌더링 페이지 버튼
   renderButton(page, recipes.length, resPerPage);
-
-  // 페이지 클릭
-  pageClick(page);
 };
