@@ -66,7 +66,7 @@ const controlRecipe = async () => {
 
       // Render recipe
       console.log(state.recipe.ingredients);
-      state.recipe.parseIngredients();
+      // state.recipe.parseIngredients();
     } catch (error) {
       alert('Error processing recipe!');
     }

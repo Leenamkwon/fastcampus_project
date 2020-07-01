@@ -54,29 +54,16 @@ export default class Recipe {
 
     const newIngredients = this.ingredients.map((el) => {
       // Uniform units
-      let ingredients = el.toLowerCase();
-
+      let ingredient = el.toLowerCase();
       unitsLong.forEach((unit, i) => {
-        ingredients = ingredients.replace(unit, unitsShort[i]);
+        ingredient = ingredient.replace(unit, unitsShort[i]);
       });
 
       // Remove parentheses
-      ingredients = ingredients.replace(/ *\([^)]*\) */g, ' ');
+      ingredient.replace(/ *\([^)]*\) */g, ' ');
 
       // Parse ingredients into count, unit and ingredient
-      const arrIng = ingredients.split(' ');
-      const unitIndex = arrIng.findIndex((el2) => unitsShort.includes(el2));
-
-      if (unitIndex > -1) {
-        // There is a unit
-      } else if (unitIndex === -1) {
-        // There is no unit
-      } else if (arrIng[0]) {
-      }
-
-      return ingredients;
     });
-
     this.ingredients = newIngredients;
   }
 }
