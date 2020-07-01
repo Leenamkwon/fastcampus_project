@@ -60,9 +60,35 @@ export default class Recipe {
       });
 
       // Remove parentheses
-      ingredient.replace(/ *\([^)]*\) */g, ' ');
+      ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
 
       // Parse ingredients into count, unit and ingredient
+      const arrIng = ingredient.split(' ');
+      const unitIndex = arrIng.findIndex((el) => {
+        unitsShort.includes(el);
+      });
+
+      let objIng;
+
+      if (unitIndex > -1) {
+      } else if (parseInt(arrIng[0], 10)) {
+        // 1st element is number
+        objIng = {
+          count: parseInt(arrIng[0], 10),
+          unit: '',
+          ingredient: arrIng.slice(1).join(' ')
+        };
+      } else if (unitIndex === -1) {
+        objIng = {
+          count: 1,
+          unit: '',
+          ingredient: ingredient
+        };
+      }
+
+      console.log(objIng);
+
+      return objIng;
     });
     this.ingredients = newIngredients;
   }
