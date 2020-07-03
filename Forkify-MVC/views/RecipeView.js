@@ -1,17 +1,29 @@
 import { element } from './base.js';
+import { asd } from '../node_modules/fractional/index.js';
 
 const createIngredient = (ingredients) => `
   <li class="recipe__item">
      <svg class="recipe__icon">
          <use href="img/icons.svg#icon-check"></use>
      </svg>
-     <div class="recipe__count">${ingredients.count}</div>
+     <div class="recipe__count">${formatCount(ingredients.count)}</div>
      <div class="recipe__ingredient">
          <span class="recipe__unit">${ingredients.unit}</span>
          ${ingredients.ingredient}
      </div>
  </li>
 `;
+
+const formatCount = (count) => {
+  if (count) {
+    // count = 2.5 --> 2 1/2
+    // count = 0.5 --> 1/2
+    console.log(count.toString().split('.'));
+
+    const [int, dec] = count.toString().split('.');
+  }
+  return '?';
+};
 
 export const renderRecipe = (recipe) => {
   const markup = `
