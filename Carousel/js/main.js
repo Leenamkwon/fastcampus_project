@@ -6,76 +6,61 @@ const options = document.querySelectorAll('.option');
 
 let index = 1;
 let opindex = 0;
-let size = slides[index].clientWidth;
-
+// let size = slides[index].getBoundingClientRect().width;
 update();
 
-function update() {
-  slider.style.transform = `translateX(${-size * index}px)`;
-  backgroundUpdate();
-}
+window.addEventListener('resize', update);
 
-function backgroundUpdate() {
-  backgrounds.src = `./img/bg${index}.jpg`;
-  backgrounds.classList.add('show');
+function update() {
+  size = slides[index].getBoundingClientRect().width;
+  slider.style.transform = `translateX(${-size * index}px)`;
+  options.forEach((op) => op.classList.remove('colored'));
+  options[opindex].classList.add('colored');
 }
 
 function slide() {
-  slider.style.transition = 'transform .5s ease-in-out';
+  slider.style.transition = `transform .5s ease-in-out`;
   update();
 }
 
 function btnCheck() {
   if (this.id === 'prev') {
     index--;
+    opindex--;
+    if (opindex === 0) opindex = slider.length - 3;
   } else if (this.id === 'next') {
     index++;
+    opindex++;
+    if (opindex === options.length) opindex = 0;
   }
   slide();
 }
 
-function optionClick() {
-  const target = event.target.dataset.index;
+function cricleSlide(e) {
+  e.target.classList.add('colored');
+  const target = +e.target.dataset.index;
   if (target) {
-    index = +target;
-    event.target.classList.add('colored');
+    index = target;
     slide();
   }
 }
 
-function checkIndex() {
+slider.addEventListener('transitionend', () => {
   if (slides[index].id === 'last') {
-    slider.style.transition = 'none';
     index = 1;
-    opindex = 0;
+    slider.style.transition = 'none';
     update();
   } else if (slides[index].id === 'first') {
-    slider.style.transition = 'none';
     index = slides.length - 2;
+    slider.style.transition = 'none';
     update();
   }
-}
-
-function autoCircleColored() {
-  options.forEach((item) => item.classList.remove('colored'));
-  options[opindex].classList.add('colored');
-  opindex++;
-}
-
-slider.addEventListener('transitionend', checkIndex);
+});
 
 btns.forEach((btn) => btn.addEventListener('click', btnCheck));
 
-options.forEach((option) =>
-  option.addEventListener('click', () => {
-    options.forEach((item) => item.classList.remove('colored'));
-    optionClick();
-  })
-);
-
-setInterval(() => {
-  index += 1;
-  slide();
-  autoCircleColored();
-  slider.addEventListener('transitionend', checkIndex);
-}, 10000);
+options.forEach((option) => {
+  option.addEventListener('click', (e) => {
+    cricleSlide(e);
+  });
+});

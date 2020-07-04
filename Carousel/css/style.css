@@ -5,10 +5,10 @@
 }
 
 .container {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
   position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .slider-container {
@@ -18,16 +18,6 @@
   top: 0;
   left: 0;
   z-index: 0;
-}
-
-.slider-container:after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: linear-gradient(45deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.7));
 }
 
 .slider-container > div {
@@ -43,20 +33,25 @@
 }
 
 .slider-container > div > div {
-  overflow: hidden;
-  box-shadow: 0px 0px 61px 0px rgba(0, 0, 0, 0.62);
+  width: 100vw;
+  height: 450px;
+  /* overflow: hidden; */
 }
 
 .slider {
-  width: 800px;
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(7, 100%);
-  height: 450px;
+  /* overflow: hidden; */
+  /* transform: translateX(-100vw); */
 }
 
 .img {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .img img {
@@ -69,12 +64,12 @@
 
 .content {
   position: absolute;
-  z-index: 999;
   width: 800px;
   height: 450px;
-  left: 50%;
   top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 .btn {
@@ -83,12 +78,12 @@
   transform: translateY(-50%);
   padding: 1rem 1.2rem;
   border-radius: 5px;
-  background: #ddd;
-  border: none;
+  background-color: #ddd;
   outline: none;
+  border: none;
   cursor: pointer;
   opacity: 0.5;
-  transition: 0.3s;
+  transition: opacity 0.3s;
 }
 
 .btn:hover {
@@ -105,54 +100,31 @@
 
 ul {
   position: absolute;
-  list-style: none;
-  display: flex;
   bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
+  list-style: none;
 }
 
 ul li {
-  margin: 0.3rem;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
+  margin: 0.3rem;
   border: 2.5px solid #2ecc71;
-  cursor: pointer;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 ul li.colored {
   background-color: #2ecc71;
 }
 
-.content:before {
-  content: '';
-  position: absolute;
-  height: 17%;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+.background {
+  width: 100vw;
+  height: 100vh;
 }
 
-.background {
-  position: absolute;
+.background img {
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-}
-
-.background .bg {
-  position: absolute;
-  width: 120%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.2);
-  opacity: 0;
-  transition: 0.5s;
-}
-
-.bg.show {
-  opacity: 1;
 }
