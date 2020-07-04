@@ -1,6 +1,7 @@
 import 'core-js';
 import regeneratorRuntime from 'regenerator-runtime';
 import Search from '../models/search';
+import Recipe from '../models/recipe';
 import { element, renderLoader, removeLoader } from '../view/base';
 import * as searchView from '../view/searchView';
 
@@ -30,11 +31,22 @@ element.searchForm.addEventListener('submit', (e) => {
   controlSearch();
 });
 
-window.addEventListener('hashchange', (e) => {
-  e.preventDefault();
-  console.log('hi');
+element.resultPage.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-inline');
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto);
+    searchView.renderResults(state.search.result, goToPage);
+  }
 });
-window.addEventListener('load', (e) => {
-  e.preventDefault();
-  console.log('hi');
-});
+
+const controlRecipe = () => {
+  const hash = window.location.hash.replace('#', '');
+
+  if (id) {
+    state.recipe = new Recipe(hash);
+  }
+};
+
+['hashchange', 'load'].forEach((event) =>
+  window.addEventListener(event, controlRecipe)
+);

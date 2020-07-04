@@ -48,7 +48,7 @@ const renderBtn = (page, type) => {
   let markup = `
     <button class="btn-inline results__btn--${
       type === 'prev' ? 'prev' : 'next'
-    }">
+    }" data-goto=${type === 'prev' ? page - 1 : page + 1}>
     <svg class="search__icon">
         <use href="img/icons.svg#icon-triangle---${
           type === 'prev' ? 'prev' : 'next'
@@ -61,7 +61,7 @@ const renderBtn = (page, type) => {
 };
 
 const renderPage = (recipe, page, resPerpage) => {
-  const pages = Math.ceil(recipe.length / resPerpage);
+  const pages = Math.ceil(recipe / resPerpage);
   let markup;
   if (page === 1 && pages > 1) {
     markup = renderBtn(page, 'next');
@@ -78,8 +78,11 @@ const renderPage = (recipe, page, resPerpage) => {
 };
 
 export const renderResults = (recipe, page = 1, resPerpage = 10) => {
+  console.log(page);
+
   const start = (page - 1) * resPerpage;
   const end = page * resPerpage;
+  clearResults();
   recipe.slice(start, end).forEach((item) => renderRecipe(item));
-  renderPage(recipe, page, resPerpage);
+  renderPage(recipe.length, page, resPerpage);
 };
