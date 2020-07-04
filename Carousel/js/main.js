@@ -6,20 +6,16 @@ const options = document.querySelectorAll('.option');
 
 let index = 1;
 let opindex = 0;
-// let size = slides[index].getBoundingClientRect().width;
-update();
-
-window.addEventListener('resize', update);
+let size = slides[index].getBoundingClientRect().width;
 
 function update() {
-  size = slides[index].getBoundingClientRect().width;
   slider.style.transform = `translateX(${-size * index}px)`;
-  options.forEach((op) => op.classList.remove('colored'));
-  options[opindex].classList.add('colored');
 }
 
 function slide() {
   slider.style.transition = `transform .5s ease-in-out`;
+  options.forEach((op) => op.classList.remove('colored'));
+  options[opindex].classList.add('colored');
   update();
 }
 
@@ -27,21 +23,23 @@ function btnCheck() {
   if (this.id === 'prev') {
     index--;
     opindex--;
-    if (opindex === 0) opindex = slider.length - 3;
+    if (opindex === -1) opindex = 4;
   } else if (this.id === 'next') {
     index++;
     opindex++;
-    if (opindex === options.length) opindex = 0;
+    if (opindex === 5) opindex = 0;
   }
   slide();
 }
 
 function cricleSlide(e) {
-  e.target.classList.add('colored');
   const target = +e.target.dataset.index;
   if (target) {
     index = target;
-    slide();
+    slider.style.transition = `transform .5s ease-in-out`;
+    slider.style.transform = `translateX(${-size * index}px)`;
+    options.forEach((circle) => circle.classList.remove('colored'));
+    e.target.classList.add('colored');
   }
 }
 
@@ -58,8 +56,8 @@ slider.addEventListener('transitionend', () => {
 });
 
 btns.forEach((btn) => btn.addEventListener('click', btnCheck));
-
 options.forEach((option) => {
+  options[opindex].classList.add('colored');
   option.addEventListener('click', (e) => {
     cricleSlide(e);
   });
