@@ -57,7 +57,7 @@ class UI {
   }
 
   showFeedback(text) {
-    const feedback = docuemnt.querySelector('.feedback');
+    const feedback = document.querySelector('.feedback');
     feedback.classList.add('showItem');
     feedback.innerHTML = `<p>${text}</p>`;
 
@@ -184,12 +184,12 @@ class UI {
     const categoryID = +searchCategory.value;
 
     if (city.trim() === '' || categoryID === 0) {
-      showFeedback('enter the value');
+      ui.showFeedback('enter the value');
     } else {
       zomato.searchAPI(city).then((data) => {
         const { cityID } = data;
         if (cityID === 0) {
-          showFeedback('해당 결과가 없습니다.');
+          ui.showFeedback('해당 결과가 없습니다.');
         } else {
           ui.showLoader();
           zomato.searchAPI(city, cityID).then((data) => {
