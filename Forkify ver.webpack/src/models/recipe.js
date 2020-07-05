@@ -56,7 +56,6 @@ export default class Recipe {
       'pound'
     ];
     const units = [...unitsShort, 'kg', 'g'];
-    console.log(units);
 
     const newIngredients = this.ingredients.map((el) => {
       // Uniform units
@@ -106,10 +105,19 @@ export default class Recipe {
         };
       }
 
-      console.log(objIng);
-
       return objIng;
     });
     this.ingredients = newIngredients;
+  }
+
+  updateServings(type) {
+    const newServings = type === 'dec' ? this.servings - 1 : this.servings + 1;
+
+    // ingredients
+    this.ingredients.forEach((ing) => {
+      ing.count = ing.count * (newServings / this.servings);
+    });
+
+    this.servings = newServings;
   }
 }
