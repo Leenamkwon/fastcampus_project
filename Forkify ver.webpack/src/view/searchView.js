@@ -78,8 +78,6 @@ const renderPage = (recipe, page, resPerpage) => {
 };
 
 export const renderResults = (recipe, page = 1, resPerpage = 10) => {
-  console.log(page);
-
   const start = (page - 1) * resPerpage;
   const end = page * resPerpage;
   clearResults();

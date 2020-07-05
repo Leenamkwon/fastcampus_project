@@ -4,6 +4,7 @@ import Search from '../models/search';
 import Recipe from '../models/recipe';
 import { element, renderLoader, removeLoader } from '../view/base';
 import * as searchView from '../view/searchView';
+import * as recipeView from '../view/recipeView';
 
 const state = {};
 
@@ -39,11 +40,25 @@ element.resultPage.addEventListener('click', (e) => {
   }
 });
 
-const controlRecipe = () => {
-  const hash = window.location.hash.replace('#', '');
+// RECIPE CONTROLE
+const controlRecipe = async () => {
+  renderLoader(element.recipe);
+  const id = window.location.hash.replace('#', '');
 
   if (id) {
-    state.recipe = new Recipe(hash);
+    // Create new recipe object
+    state.recipe = new Recipe(id);
+
+    // Get recipe data
+    await state.recipe.getRecipe();
+    state.recipe.parseIngredients();
+
+    // calculate servings and time
+    state.recipe.calcTime();
+    state.recipe.calcServings();
+
+    recipeView.renderRecipe(state.recipe);
+    console.log(state.recipe);
   }
 };
 
