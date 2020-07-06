@@ -15,7 +15,7 @@ const displayDrinks = (data) => {
     .map((data) => {
       const { idDrink: id, strDrink: name, strDrinkThumb: image } = data;
       let markup = `
-        <a href="#" data-id="${id}">
+        <a href="drink.html" data-id="${id}">
          <article class="cocktail" data-id="${id}">
            <img src=${image} alt="cocktail" />
            <h3>${name}</h3>
