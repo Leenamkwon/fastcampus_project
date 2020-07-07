@@ -7,6 +7,8 @@ import * as searchView from '../view/searchView';
 import * as recipeView from '../view/recipeView';
 import List from '../models/list';
 import * as listView from '../view/listView';
+import Likes from '../models/Like';
+import * as LikeView from '../view/LikeView';
 
 const state = {};
 
@@ -61,7 +63,7 @@ const controlRecipe = async () => {
     state.recipe.calcTime();
     state.recipe.calcServings();
 
-    recipeView.renderRecipe(state.recipe);
+    recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
     console.log(state.recipe);
   }
 };
@@ -80,6 +82,47 @@ const controlList = () => {
     const arr = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(arr);
   });
+};
+
+// TESTING
+state.likes = new Likes();
+LikeView.toggleLikeMenu(state.likes.getNumLikes());
+
+// LIKE CONTORLLER
+const controlLike = () => {
+  if (!state.likes) state.likes = new Likes();
+  const currentID = state.recipe.id;
+
+  if (!state.likes.isLiked(currentID)) {
+    // Add like to the state
+    const newLike = state.likes.addLike(
+      currentID,
+      state.recipe.title,
+      state.recipe.author,
+      state.recipe.img
+    );
+
+    // toggle the like button
+    LikeView.toggleLikeBtn(true);
+
+    LikeView.toggleLikeMenu(state.likes.getNumLikes());
+
+    // Add like to UI list
+    LikeView.renderLike(newLike);
+
+    // user has liked current recipe
+  } else {
+    // remove like from the state
+    state.likes.deleteLike(currentID);
+
+    // toggle the like button
+    LikeView.toggleLikeBtn(false);
+
+    LikeView.toggleLikeMenu(state.likes.getNumLikes());
+
+    // remove like from UI list
+    LikeView.deleteLike(currentID);
+  }
 };
 
 // Handle delete and update list item events
@@ -109,5 +152,7 @@ element.recipe.addEventListener('click', (e) => {
     recipeView.undateServingsIngredients(state.recipe);
   } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
     controlList();
+  } else if (e.target.matches('.recipe__love, .recipe__love *')) {
+    controlLike();
   }
 });
