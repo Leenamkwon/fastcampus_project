@@ -1,5 +1,5 @@
 import 'core-js';
-import regeneratorRuntime from 'regenerator-runtime';
+import 'regenerator-runtime/runtime';
 import Search from '../models/search';
 import Recipe from '../models/recipe';
 import { element, renderLoader, removeLoader } from '../view/base';
