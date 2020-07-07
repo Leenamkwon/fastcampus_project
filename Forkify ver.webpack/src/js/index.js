@@ -124,7 +124,7 @@ const controlLike = () => {
     LikeView.deleteLike(currentID);
   }
 };
-state.likes = new Likes();
+
 // page load
 window.addEventListener('load', () => {
   state.likes.readStorage();
@@ -132,13 +132,8 @@ window.addEventListener('load', () => {
   // Restore likes
   LikeView.toggleLikeMenu(state.likes.getNumLikes());
 
-  // Toggle like menu button
-  LikeView.renderLike(newLike);
-
   // Render the existing links
-  console.log(state.likes);
-
-  state.likes.forEach((like) => LikeView.renderLike(like));
+  state.likes.likes.forEach((like) => LikeView.renderLike(like));
 });
 
 // Handle delete and update list item events
