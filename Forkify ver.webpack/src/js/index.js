@@ -124,6 +124,22 @@ const controlLike = () => {
     LikeView.deleteLike(currentID);
   }
 };
+state.likes = new Likes();
+// page load
+window.addEventListener('load', () => {
+  state.likes.readStorage();
+
+  // Restore likes
+  LikeView.toggleLikeMenu(state.likes.getNumLikes());
+
+  // Toggle like menu button
+  LikeView.renderLike(newLike);
+
+  // Render the existing links
+  console.log(state.likes);
+
+  state.likes.forEach((like) => LikeView.renderLike(like));
+});
 
 // Handle delete and update list item events
 element.shopping.addEventListener('click', (e) => {
