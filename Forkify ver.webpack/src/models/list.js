@@ -12,17 +12,17 @@ export default class List {
       unit,
       ingredient
     };
-    this.item.push(item);
+    this.items.push(item);
+    return item;
   }
 
   deleteItem(id) {
     const index = this.items.findIndex((el) => {
       return el.id === id;
     });
-
     // splice 원본 변경 o 복사 o
     // slice 원본 변경 x 복사 o
-    this.item.splice(index, 1);
+    this.items.splice(index, 1);
   }
 
   updateCount(id, newCount) {

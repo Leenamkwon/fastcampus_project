@@ -77,8 +77,8 @@ const controlList = () => {
 
   // Add each ingredients
   state.recipe.ingredients.forEach((el) => {
-    const item = state.list.addItem(el.count, el.unit, el.ingredients);
-    listView.renderItem(item);
+    const arr = state.list.addItem(el.count, el.unit, el.ingredient);
+    listView.renderItem(arr);
   });
 };
 
