@@ -3,19 +3,20 @@ import { Fraction } from 'fractional';
 
 const formatCount = (count) => {
   if (count) {
+    // 2.5 --> 2 , 5
     const [int, dec] = count
       .toString()
-      .split('')
+      .split('.')
       .map((el) => parseInt(el, 10));
 
     if (!dec) return count;
 
     if (int === 0) {
       const fr = new Fraction(count);
-      return `${fr.numerator} / ${fr.denominator}`;
+      return `${fr.numerator}/${fr.denominator}`;
     } else {
       const fr = new Fraction(count - int);
-      return `${int} ${fr.numerator} / ${fr.denominator}`;
+      return `${int} ${fr.numerator}/${fr.denominator}`;
     }
   }
   return '?';
