@@ -1,7 +1,15 @@
-## Vanila js Practice && cloning
+## What's learn?
+
+<br>
+- a wide variety of Projects
+- spa app clone Projects
+- challenges
+- quizzes
+- JavaScript ES6+,
+- OOP 
+- AJAX 
+- Webpack
 
 <br>
 
-- HTML
-- CSS
-- javaScript
+## no framework, no library
