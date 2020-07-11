@@ -2,7 +2,6 @@ import Budget from './model/search.js';
 import * as budgetUI from './view/searchView.js';
 
 const btn = document.querySelector('.add__btn');
-
 const state = {
   budget: new Budget()
 };
@@ -30,6 +29,7 @@ const controlBudget = () => {
 
     const calcData = state.budget.getBudget();
     budgetUI.renderBudget(calcData);
+
     // clear input
     budgetUI.clearValue();
   } else {
@@ -37,7 +37,9 @@ const controlBudget = () => {
   }
 };
 
-btn.addEventListener('click', () => controlBudget);
+btn.addEventListener('click', () => {
+  controlBudget();
+});
 
 document.addEventListener('keypress', (e) => {
   if (e.keyCode === 13 || e.which === 13) {

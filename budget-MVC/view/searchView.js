@@ -34,22 +34,33 @@ export const clearValue = () => {
 //     totalINC: this.totals['inc'],
 //       totalEXP: this.totals['exp']
 
-export const renderBudget = (data) => {
+export const renderBudget = (data, type) => {
   const { percentage, total, totalINC, totalEXP } = data;
+
+  const budget = document.querySelector('.budget__value');
+  const budgetInc = document.querySelector('.budget__income--value');
+  const budgetExp = document.querySelector('.budget__expenses--value');
+  const budgetPercentage = document.querySelector(
+    '.budget__expenses--percentage'
+  );
+
+  budget.innerText = `${total} KRW`;
+  budgetInc.innerText = `+ ${totalINC} KRW`;
+  budgetExp.innerText = `- ${totalEXP} KRW`;
+  budgetPercentage.innerText = `${percentage}%`;
 };
 
 export const renderList = (type, obj) => {
   const inc = document.querySelector('.income__list');
   const exp = document.querySelector('.expenses__list');
   let markup;
-  console.log(obj);
   if (type === 'exp') {
     markup = `
       <div class="item clearfix" id="expense-${obj.id}">
           <div class="item__description">${obj.des}</div>
           <div class="right clearfix">
               <div class="item__value">- ${formatNumber(obj.val)}</div>
-              <div class="item__percentage">${obj.percentage}%</div>
+              <div class="item__percentage">20%</div>
               <div class="item__delete">
                   <button class="item__delete--btn" data-id="${
                     obj.id
