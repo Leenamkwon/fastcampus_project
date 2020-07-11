@@ -29,14 +29,13 @@ export const clearValue = () => {
   description.focus();
 };
 
-export const renderCalc = (sum) => {
-  const { dec, inc, exp } = sum;
-  document.querySelector('.budget__value').textContent = formatNumber(dec);
-  const incVal = document.querySelector('.budget__income--value');
-  incVal.innerText = formatNumber(inc);
-  document.querySelector('.budget__expenses--value').textContent = formatNumber(
-    exp
-  );
+// percentage: this.percentage,
+//   total: this.budget,
+//     totalINC: this.totals['inc'],
+//       totalEXP: this.totals['exp']
+
+export const renderBudget = (data) => {
+  const { percentage, total, totalINC, totalEXP } = data;
 };
 
 export const renderList = (type, obj) => {

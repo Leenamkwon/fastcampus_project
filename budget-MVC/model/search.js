@@ -7,12 +7,13 @@ export default class Budget {
       allItems: {
         exp: [],
         inc: []
-      },
-      totals: {
-        exp: 0,
-        inc: 0
       }
     };
+    this.totals = {
+      exp: 0,
+      inc: 0
+    };
+    this.budget = 0;
   }
 
   addItem(type, des, val) {
@@ -33,6 +34,25 @@ export default class Budget {
     return obj;
   }
 
-  updateBudget() {
-    
+  calculateTotal(type) {
+    let sum = 0;
+    this.data.allItems[type].forEach((item) => (sum += item.val));
+    this.totals[type] = sum;
+
+    this.budget = this.totals['inc'] - this.totals['exp'];
+    if (this.totals['inc'] > 0) {
+      this.percentage = Math.round(
+        (this.totals['exp'] / this.totals['inc']) * 100
+      );
+    }
+  }
+
+  getBudget() {
+    return {
+      percentage: this.percentage,
+      total: this.budget,
+      totalINC: this.totals['inc'],
+      totalEXP: this.totals['exp']
+    };
+  }
 }

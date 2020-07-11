@@ -20,14 +20,16 @@ const controlBudget = () => {
       input.value
     );
 
-    // calc update -> models -> views
-    const sum = state.budget.updateBudget();
-    budgetUI.renderCalc(sum);
-    // end of calc update
-
     // render ui
     budgetUI.renderList(input.type, data);
 
+    // calc update -> models -> views
+    state.budget.calculateTotal('exp');
+    state.budget.calculateTotal('inc');
+    // end of calc update
+
+    const calcData = state.budget.getBudget();
+    budgetUI.renderBudget(calcData);
     // clear input
     budgetUI.clearValue();
   } else {

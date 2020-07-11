@@ -1,4 +1,10 @@
-*.DS_Store
-.vscode/*
+# folder
 node_modules
 Forkify-MVC
+JavaScript30
+#
+
+# file
+*.DS_Store
+.vscode/*
+#
