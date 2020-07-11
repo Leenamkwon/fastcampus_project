@@ -5,8 +5,6 @@ export const getInput = () => {
   return { type, description, value };
 };
 
-// num = 10000 -> 10,000
-// 5,000,000
 const formatNumber = (num, type) => {
   num = num.toString();
   if (num.length >= 4) {
@@ -22,17 +20,21 @@ const formatNumber = (num, type) => {
   }
 };
 
+const renderPercentage = (per) => {
+  console.log(per.length);
+  for (let i = 0; i < per.length; i += 1) {
+    if (i === per.length - 1) {
+      return per[i].percentage;
+    }
+  }
+};
+
 export const clearValue = () => {
   const description = document.querySelector('.add__description');
   const value = document.querySelector('.add__value');
   [description, value].forEach((el) => (el.value = ''));
   description.focus();
 };
-
-// percentage: this.percentage,
-//   total: this.budget,
-//     totalINC: this.totals['inc'],
-//       totalEXP: this.totals['exp']
 
 export const renderBudget = (data, type) => {
   const { percentage, total, totalINC, totalEXP } = data;
@@ -44,46 +46,45 @@ export const renderBudget = (data, type) => {
     '.budget__expenses--percentage'
   );
 
-  budget.innerText = `${total} KRW`;
-  budgetInc.innerText = `+ ${totalINC} KRW`;
-  budgetExp.innerText = `- ${totalEXP} KRW`;
+  budget.innerText = `${formatNumber(total)} `;
+  budgetInc.innerText = `+ ${totalINC} `;
+  budgetExp.innerText = `- ${totalEXP} `;
   budgetPercentage.innerText = `${percentage}%`;
 };
 
-export const renderList = (type, obj) => {
+export const renderList = (type, obj, percentage) => {
   const inc = document.querySelector('.income__list');
   const exp = document.querySelector('.expenses__list');
+  const percentageUpdate = renderPercentage(percentage);
+
   let markup;
-  if (type === 'exp') {
+  if (type) {
     markup = `
-      <div class="item clearfix" id="expense-${obj.id}">
+      <div class="item clearfix" id="${type === 'exp' ? 'exp' : 'inc'}-${
+      obj.id
+    }">
           <div class="item__description">${obj.des}</div>
           <div class="right clearfix">
-              <div class="item__value">- ${formatNumber(obj.val)}</div>
-              <div class="item__percentage">20%</div>
+              <div class="item__value">${formatNumber(obj.val)}</div>
+              ${
+                type === 'exp'
+                  ? `<div class="item__percentage">${percentageUpdate}%</div>`
+                  : ''
+              }
               <div class="item__delete">
-                  <button class="item__delete--btn" data-id="${
-                    obj.id
-                  }"><i class="ion-ios-close-outline"></i>
+                  <button class="item__delete--btn"><i class="ion-ios-close-outline"></i>
                   </button>
               </div>
           </div>
       </div>
    `;
-    exp.insertAdjacentHTML('beforeend', markup);
-  } else if (type === 'inc') {
-    markup = `
-      <div class="item clearfix" id="income-0">
-        <div class="item__description">${obj.des}</div>
-        <div class="right clearfix">
-         <div class="item__value">+ ${formatNumber(obj.val)}</div>
-         <div class="item__delete">
-          <button class="item__delete--btn" data-id="${obj.id}">
-           <i class="ion-ios-close-outline"></i>
-          </button>
-         </div>
-        </div>
-      </div>`;
-    inc.insertAdjacentHTML('beforeend', markup);
+    type === 'exp'
+      ? exp.insertAdjacentHTML('beforeend', markup)
+      : inc.insertAdjacentHTML('beforeend', markup);
   }
+};
+
+export const removeList = (type, parent) => {
+  const container = document.querySelector(`.${type}__list`);
+  container.removeChild(parent);
 };

@@ -14,6 +14,7 @@ export default class Budget {
       inc: 0
     };
     this.budget = 0;
+    this.percentage = 0;
   }
 
   addItem(type, des, val) {
@@ -24,14 +25,21 @@ export default class Budget {
       id = 0;
     }
 
-    let obj = { id, des, val: parseInt(val, 10) };
+    let obj = { id, des, val: parseInt(val, 10), percentage: -1 };
     if (type === 'inc') {
       this.income.push(obj);
     } else if (type === 'exp') {
       this.expense.push(obj);
     }
+    // all item push
     this.data.allItems[type].push(obj);
     return obj;
+  }
+
+  deleteItem(type, id) {
+    this.data.allItems[type] = this.data.allItems[type].filter(
+      (el) => el.id !== id
+    );
   }
 
   calculateTotal(type) {
@@ -54,5 +62,15 @@ export default class Budget {
       totalINC: this.totals['inc'],
       totalEXP: this.totals['exp']
     };
+  }
+
+  calculatePercentage() {
+    if (this.totals.inc > 0) {
+      this.expense = this.expense.map((el) => {
+        el.percentage = (el.val / this.totals['inc']) * 100;
+        return el;
+      });
+    }
+    return this.expense;
   }
 }

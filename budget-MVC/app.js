@@ -2,8 +2,16 @@ import Budget from './model/search.js';
 import * as budgetUI from './view/searchView.js';
 
 const btn = document.querySelector('.add__btn');
+const container = document.querySelector('.container');
 const state = {
   budget: new Budget()
+};
+
+const updateBudget = () => {
+  state.budget.calculateTotal('exp');
+  state.budget.calculateTotal('inc');
+  const calcData = state.budget.getBudget();
+  budgetUI.renderBudget(calcData);
 };
 
 const controlBudget = () => {
@@ -12,25 +20,25 @@ const controlBudget = () => {
   const tempEmpty = document.querySelector('.add__description');
 
   if (tempEmpty.value.trim() !== '') {
-    // send model ctr
+    // 1. send model ctr
     const data = state.budget.addItem(
       input.type,
       input.description,
       input.value
     );
 
-    // render ui
-    budgetUI.renderList(input.type, data);
-
-    // calc update -> models -> views
-    state.budget.calculateTotal('exp');
-    state.budget.calculateTotal('inc');
+    // 2. calc update -> models -> views
+    updateBudget();
     // end of calc update
 
-    const calcData = state.budget.getBudget();
-    budgetUI.renderBudget(calcData);
+    // 3. calc percentage
+    const percentage = state.budget.calculatePercentage();
+    console.log(percentage);
 
-    // clear input
+    // 4. render ui
+    budgetUI.renderList(input.type, data, percentage);
+
+    // 5. clear input
     budgetUI.clearValue();
   } else {
     alert('please enter a value');
@@ -45,4 +53,25 @@ document.addEventListener('keypress', (e) => {
   if (e.keyCode === 13 || e.which === 13) {
     controlBudget();
   }
+});
+
+container.addEventListener('click', (e) => {
+  const target = e.target.closest('.item__delete--btn');
+
+  if (target) {
+    const parent =
+      e.target.parentElement.parentElement.parentElement.parentElement;
+    const tempID = parent.getAttribute('id');
+    const split = tempID.split('-');
+
+    const type = split[0];
+    const id = parseInt(split[1], 10);
+
+    state.budget.deleteItem(type, id);
+    budgetUI.removeList(type, parent);
+
+    // update
+    updateBudget();
+  }
+  return;
 });
