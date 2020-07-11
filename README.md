@@ -1,13 +1,14 @@
 ## What's learn?
 
 <br>
+
 - a wide variety of Projects
 - spa app clone Projects
 - challenges
 - quizzes
 - JavaScript ES6+,
-- OOP 
-- AJAX 
+- OOP
+- AJAX
 - Webpack
 
 <br>
