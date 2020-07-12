@@ -1,77 +1,95 @@
 import Budget from './model/search.js';
 import * as budgetUI from './view/searchView.js';
 
-const btn = document.querySelector('.add__btn');
-const container = document.querySelector('.container');
-const state = {
-  budget: new Budget()
-};
+const load = (() => {
+  const btn = document.querySelector('.add__btn');
+  const container = document.querySelector('.container');
+  const state = {
+    budget: new Budget()
+  };
+  const type = document.querySelector('.add__type');
 
-const updateBudget = () => {
-  state.budget.calculateTotal('exp');
-  state.budget.calculateTotal('inc');
-  const calcData = state.budget.getBudget();
-  budgetUI.renderBudget(calcData);
-};
+  // closer
+  return {
+    init() {
+      const updateBudget = () => {
+        state.budget.calculateTotal('exp');
+        state.budget.calculateTotal('inc');
+        const calcData = state.budget.getBudget();
+        budgetUI.renderBudget(calcData);
+      };
 
-const controlBudget = () => {
-  // get value
-  const input = budgetUI.getInput();
-  const tempEmpty = document.querySelector('.add__description');
+      const controlBudget = () => {
+        // get value
+        const input = budgetUI.getInput();
+        const tempEmpty = document.querySelector('.add__description');
 
-  if (tempEmpty.value.trim() !== '') {
-    // 1. send model ctr
-    const data = state.budget.addItem(
-      input.type,
-      input.description,
-      input.value
-    );
+        if (tempEmpty.value.trim() !== '') {
+          // 1. send model ctr
+          const data = state.budget.addItem(
+            input.type,
+            input.description,
+            input.value
+          );
 
-    // 2. calc update -> models -> views
-    updateBudget();
-    // end of calc update
+          // 2. calc update -> models -> views
+          updateBudget();
+          // end of calc update
 
-    // 3. calc percentage
-    const percentage = state.budget.calculatePercentage();
-    console.log(percentage);
+          // 3. calc percentage
+          const percentage = state.budget.calculatePercentage();
 
-    // 4. render ui
-    budgetUI.renderList(input.type, data, percentage);
+          // 4. render ui
+          budgetUI.renderList(input.type, data, percentage);
 
-    // 5. clear input
-    budgetUI.clearValue();
-  } else {
-    alert('please enter a value');
-  }
-};
+          // renderPercentage
+          budgetUI.renderPercentage(percentage);
 
-btn.addEventListener('click', () => {
-  controlBudget();
-});
+          // 5. clear input
+          budgetUI.clearValue();
+        } else {
+          alert('please enter a value');
+        }
+      };
 
-document.addEventListener('keypress', (e) => {
-  if (e.keyCode === 13 || e.which === 13) {
-    controlBudget();
-  }
-});
+      btn.addEventListener('click', () => {
+        controlBudget();
+      });
 
-container.addEventListener('click', (e) => {
-  const target = e.target.closest('.item__delete--btn');
+      document.addEventListener('keypress', (e) => {
+        if (e.keyCode === 13 || e.which === 13) {
+          controlBudget();
+        }
+      });
 
-  if (target) {
-    const parent =
-      e.target.parentElement.parentElement.parentElement.parentElement;
-    const tempID = parent.getAttribute('id');
-    const split = tempID.split('-');
+      container.addEventListener('click', (e) => {
+        const target = e.target.closest('.item__delete--btn');
 
-    const type = split[0];
-    const id = parseInt(split[1], 10);
+        if (target) {
+          const parent =
+            e.target.parentElement.parentElement.parentElement.parentElement;
+          const tempID = parent.getAttribute('id');
+          const split = tempID.split('-');
 
-    state.budget.deleteItem(type, id);
-    budgetUI.removeList(type, parent);
+          const type = split[0];
+          const id = parseInt(split[1], 10);
 
-    // update
-    updateBudget();
-  }
-  return;
-});
+          state.budget.deleteItem(type, id);
+          budgetUI.removeList(type, parent);
+
+          // update
+          updateBudget();
+        }
+        return;
+      });
+
+      window.addEventListener('load', () => {
+        budgetUI.renderDate();
+      });
+
+      type.addEventListener('change', budgetUI.changeType);
+    }
+  };
+})();
+
+load.init();

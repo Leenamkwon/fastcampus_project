@@ -16,16 +16,16 @@ const formatNumber = (num, type) => {
     }
     return `${num.slice(0, num.length - 3)},${num.slice(num.length - 3)} KRW`;
   } else {
-    return `${num} KRW`;
+    return `${type === 'inc' ? '+' : '-'}${num}`;
   }
 };
 
-const renderPercentage = (per) => {
-  console.log(per.length);
-  for (let i = 0; i < per.length; i += 1) {
-    if (i === per.length - 1) {
-      return per[i].percentage;
-    }
+export const renderPercentage = (per) => {
+  const percentage = document.querySelectorAll('.item__percentage');
+  if (percentage.length > 0) {
+    per.forEach((el, index) => {
+      percentage[index].innerText = Math.round(el.percentage) + '%';
+    });
   }
 };
 
@@ -46,16 +46,15 @@ export const renderBudget = (data, type) => {
     '.budget__expenses--percentage'
   );
 
-  budget.innerText = `${formatNumber(total)} `;
-  budgetInc.innerText = `+ ${totalINC} `;
-  budgetExp.innerText = `- ${totalEXP} `;
-  budgetPercentage.innerText = `${percentage}%`;
+  budget.innerText = `${formatNumber(total, 'inc')} `;
+  budgetInc.innerText = `${formatNumber(totalINC, 'inc')} `;
+  budgetExp.innerText = `${formatNumber(totalEXP, 'exp')} `;
+  budgetPercentage.innerText = `${formatNumber(percentage)}%`;
 };
 
-export const renderList = (type, obj, percentage) => {
+export const renderList = (type, obj) => {
   const inc = document.querySelector('.income__list');
   const exp = document.querySelector('.expenses__list');
-  const percentageUpdate = renderPercentage(percentage);
 
   let markup;
   if (type) {
@@ -65,12 +64,8 @@ export const renderList = (type, obj, percentage) => {
     }">
           <div class="item__description">${obj.des}</div>
           <div class="right clearfix">
-              <div class="item__value">${formatNumber(obj.val)}</div>
-              ${
-                type === 'exp'
-                  ? `<div class="item__percentage">${percentageUpdate}%</div>`
-                  : ''
-              }
+              <div class="item__value">${formatNumber(obj.val, type)}</div>
+              ${type === 'exp' ? `<div class="item__percentage">0%</div>` : ''}
               <div class="item__delete">
                   <button class="item__delete--btn"><i class="ion-ios-close-outline"></i>
                   </button>
@@ -87,4 +82,32 @@ export const renderList = (type, obj, percentage) => {
 export const removeList = (type, parent) => {
   const container = document.querySelector(`.${type}__list`);
   container.removeChild(parent);
+};
+
+export const renderDate = () => {
+  const dateText = document.querySelector('.budget__title--month');
+  const daysKOR = ['월', '화', '수', '목', '금', '토', '일'];
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const days = now.getDay();
+  const date = now.getDate();
+
+  dateText.innerText = `${year}년 ${month}월 ${date}일 ${daysKOR[days]}`;
+};
+
+export const changeType = () => {
+  const type = document.querySelector('.add__type');
+  const des = document.querySelector('.add__description');
+  const value = document.querySelector('.add__value');
+  const btn = document.querySelector('.add__btn');
+  if (type.value === 'exp') {
+    [type, des, value].forEach((el) => el.classList.add('red-focus'));
+    btn.style.color = 'red';
+  } else if (type.value === 'inc') {
+    [type, des, value].forEach((el) => el.classList.remove('red-focus'));
+    btn.style.color = '#28b9b5';
+  }
+  des.focus();
 };
