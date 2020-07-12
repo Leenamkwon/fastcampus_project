@@ -191,8 +191,10 @@ body {
 
 /***** LISTS *****/
 .container {
-  width: 1000px;
+  width: 100%;
   margin: 60px auto;
+  display: flex;
+  justify-content: center;
 }
 
 .income {
