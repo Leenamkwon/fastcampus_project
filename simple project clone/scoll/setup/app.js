@@ -53,13 +53,16 @@ scrollLinks.forEach((link) => {
     // navigate to specific spot
     const id = e.currentTarget.getAttribute('href').slice(1);
     const element = document.getElementById(id);
-    let position = element.offsetTop;
-    const fiexedNav = navBar.classList.contains('fixed-nav');
-    const containerHeight = linksContainer.getBoundingClientRect().height;
-    const navHeight = navBar.getBoundingClientRect().height;
 
-    if (fiexedNav) {
-      position = element.offsetTop - navHeight;
+    // calculate the heights
+    const navHeight = navBar.getBoundingClientRect().height;
+    const containerHeight = linksContainer.getBoundingClientRect().height;
+    const fixedNav = navBar.classList.contains('fixed-nav');
+    let position = element.offsetTop - navHeight;
+
+    if (!fixedNav) {
+      console.log('hi');
+      position = position - navHeight;
     }
 
     if (navHeight > 82) {
