@@ -18,6 +18,13 @@ h1.logo {
   font-family: cursive;
 }
 
+h1.end {
+  position: relative;
+  color: #fff;
+  opacity: 0;
+  transition: 0.8s ease-in-out;
+}
+
 #container {
   height: 100vh;
   display: flex;
@@ -36,7 +43,7 @@ h1.logo {
   transition: transform 0.1s ease-in-out;
 
   &:hover {
-    // transform: translate(0px, 10px);
+    transform: translate(0px, 10px);
   }
 }
 
@@ -46,6 +53,7 @@ h1.logo {
   overflow: hidden;
   transition: 0.8s ease-in-out;
   box-shadow: 0 1.6rem 2.4rem 0.2rem rgba(0, 0, 0, 0);
+  display: none;
 }
 
 #next-btn {

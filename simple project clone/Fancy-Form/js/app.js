@@ -64,7 +64,7 @@ function getQuestion() {
 // Display Question To User
 function showQuestion() {
   inputGroup.style.opacity = 1;
-  inputProgress.style.transition = '';
+  inputProgress.style.transition = `all .7s ease`;
   inputProgress.style.width = '100%';
 }
 
@@ -73,7 +73,7 @@ function hideQuestion() {
   inputGroup.style.opacity = 0;
   inputLabel.style.marginLeft = 0;
   inputProgress.style.width = 0;
-  inputProgress.style.transition = '';
+  inputProgress.style.transition = 'none';
   inputGroup.style.border = null;
 }
 
@@ -117,7 +117,7 @@ function inputPass() {
   // If New Question, Hide Current and Get Next
   if (questions[position]) {
     hideQuestion();
-    getQuestion();
+    setTimeout(getQuestion, 50);
   } else {
     // Remove If no more questions
     formBox.className = 'close';
