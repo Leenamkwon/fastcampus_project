@@ -9,6 +9,12 @@ h1.logo {
   font-size: 4rem;
   font-family: cursive; }
 
+h1.end {
+  position: relative;
+  color: #fff;
+  opacity: 0;
+  transition: 0.8s ease-in-out; }
+
 #container {
   height: 100vh;
   display: flex;
@@ -30,7 +36,8 @@ h1.logo {
   padding: 0;
   overflow: hidden;
   transition: 0.8s ease-in-out;
-  box-shadow: 0 1.6rem 2.4rem 0.2rem rgba(0, 0, 0, 0); }
+  box-shadow: 0 1.6rem 2.4rem 0.2rem rgba(0, 0, 0, 0);
+  display: none; }
 
 #next-btn {
   position: absolute;
@@ -60,7 +67,7 @@ h1.logo {
   position: relative;
   padding: 3rem 2rem 2rem 2rem;
   margin: 1rem 6rem 1rem 1rem;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.3s ease-in-out; }
   #input-group input {
     position: relative;
