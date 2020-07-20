@@ -10,30 +10,26 @@ function reverseString(str) {
 	//    reverseVOCA += tempSplit[i];
 	//  }
 	//  return reverseVOCA;
-
 	// My solution 2
 	// const tempSplit = str.split('');
 	// tempSplit.reverse();
 	// return tempSplit.join('');
-
 	// My solution 3
 	// let reverseVOCA = '';
 	// for (let char of str) {
 	//   reverseVOCA = char + reverseVOCA;
 	// }
 	// console.log(reverseVOCA);
-
 	// My solution 4
 	// let reverseVOCA = '';
 	// str.split('').forEach((char) => {
 	//   reverseVOCA = char + reverseVOCA;
 	// });
 	// return reverseVOCA;
-
-	// instructor solution
-	return str.split('').reduce((rev, char) => {
-		return char + rev;
-	}, '');
+	/* instructor solution */
+	// return str.split('').reduce((rev, char) => {
+	// 	return char + rev;
+	// }, '');
 }
 
 // CHALLENGE 2: VALIDATE A PALINDROME
@@ -53,10 +49,9 @@ function isPalindrome(str) {
 
 function reverseInt(int) {
 	// My solution 1
-	const reverse = int.toString().split('');
-	const num = parseInt(reverse.reverse().join(''), 10);
-	return Math.abs(num);
-
+	// const reverse = int.toString().split('');
+	// const num = parseInt(reverse.reverse().join(''), 10);
+	// return Math.abs(num);
 	// My solution 2
 }
 
@@ -82,26 +77,54 @@ function capitalizeLetters(str) {
 	// 	})
 	// 	.join(' ');
 	// return parseSentence;
-
 	/* My solution 3 */
-	const split = str.split(' ');
-	const parseSentence = split.map((item) => {
-		return item.replace(item[0], item[0].toUpperCase());
-	});
-	const [i, love, javascript] = parseSentence;
-	return `${i} ${love} ${javascript}`;
+	// const split = str.split(' ');
+	// const parseSentence = split.map((item) => {
+	// 	return item.replace(item[0], item[0].toUpperCase());
+	// });
+	// const [i, love, javascript] = parseSentence;
+	// return `${i} ${love} ${javascript}`;
+	/* Instructor solution 1 */
+	// const strArr = str.toLowerCase().split(' ');
+	// for (let i = 0; i < strArr.length; i++) {
+	// 	strArr[i] = strArr[i].slice(0, 1).toUpperCase() + strArr[i].slice(1);
+	// }
+	// return strArr.join(' ');
 }
 
 // CHALLENGE 5: MAX CHARACTER
 // Return the character that is most common in a string
 // ex. maxCharacter('javascript') == 'a'
-function maxCharacter(str) {}
+function maxCharacter(str) {
+	/* My solution 1 */
+	const charMap = {};
+	let maxNum = 0;
+	let maxChar = '';
+
+	str.split('').forEach((char) => {
+		if (charMap[char]) {
+			charMap[char]++;
+		} else {
+			charMap[char] = 1;
+		}
+	});
+
+	console.log(charMap);
+
+	for (let item in charMap) {
+		if (charMap[item] > maxNum) {
+			maxNum = charMap[item];
+			maxChar = item;
+		}
+	}
+	return maxChar;
+}
 
 // CHALLENGE 6: FIZZBUZZ
 // Write a program that prints all the numbers from 1 to 100. For multiples of 3, instead of the number, print "Fizz", for multiples of 5 print "Buzz". For numbers which are multiples of both 3 and 5, print "FizzBuzz".
 function fizzBuzz() {}
 
 // Call Function
-const output = capitalizeLetters('i love javascript');
+const output = maxCharacter('jjjjavascript');
 
 console.log(output);
