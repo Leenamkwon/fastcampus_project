@@ -2,8 +2,7 @@ const DARKBTN = document.querySelector('.dark-mode-toggle');
 const body = document.body;
 
 document.addEventListener('DOMContentLoaded', () => {
-	const get = getMode();
-	body.classList.add(get);
+	getMode();
 });
 
 DARKBTN.addEventListener('click', (e) => {
@@ -24,10 +23,7 @@ function isDark() {
 
 function getMode() {
 	const isGet = localStorage.getItem('Mode');
-	if (isGet !== null) {
-		return isGet;
-	}
-	return;
+	isGet !== null ? body.classList.add(isGet) : '';
 }
 
 function setMode(val) {
