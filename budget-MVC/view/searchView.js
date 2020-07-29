@@ -16,7 +16,7 @@ const formatNumber = (num, type) => {
     }
     return `${num.slice(0, num.length - 3)},${num.slice(num.length - 3)} KRW`;
   } else {
-    return `${type === 'inc' ? '+' : '-'}${num}`;
+    return `${type === 'inc' ? '+' : '-'} ${num}`;
   }
 };
 
@@ -36,7 +36,7 @@ export const clearValue = () => {
   description.focus();
 };
 
-export const renderBudget = (data, type) => {
+export const renderBudget = (data) => {
   const { percentage, total, totalINC, totalEXP } = data;
 
   const budget = document.querySelector('.budget__value');
@@ -64,7 +64,10 @@ export const renderList = (type, obj) => {
     }">
           <div class="item__description">${obj.des}</div>
           <div class="right clearfix">
-              <div class="item__value">${formatNumber(obj.val, type)}</div>
+              <div class="item__value">${formatNumber(
+                obj.val,
+                `${type === 'exp' ? 'exp' : 'inc'}`
+              )}</div>
               ${type === 'exp' ? `<div class="item__percentage">0%</div>` : ''}
               <div class="item__delete">
                   <button class="item__delete--btn"><i class="ion-ios-close-outline"></i>
