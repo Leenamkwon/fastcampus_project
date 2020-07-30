@@ -6,5 +6,8 @@ JavaScript30
 
 # file
 *.DS_Store
-.vscode/*
+.vscode/
+*.log
+haters/
+.idea/
 #
