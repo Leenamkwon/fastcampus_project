@@ -3,19 +3,32 @@ class Timer {
     this.durationInput = durationInput;
     this.startBtn = startBtn;
     this.pauseBtn = pauseBtn;
-    this.startBtn.addEventListener('click', this.start.bind(this));
+
+    this.timeLeft = 0;
+
+    this.startBtn.addEventListener('click', this.start);
+    this.pauseBtn.addEventListener('click', this.pause);
   }
 
-  start() {
-    console.log(this);
-    this.pause();
-  }
+  start = () => {
+    this.tick();
+    this.interval = setInterval(this.tick, 1000);
+  };
 
-  pause() {
-    console.log(this);
-  }
+  pause = () => {
+    clearInterval(this.interval);
+  };
 
-  onChange() {}
+  tick = () => {
+    this.timeLeft = durationInput.value;
+    this.timeLeft--;
+    this.durationInput.value = this.timeLeft;
+
+    if (this.timeLeft <= 0) {
+      this.pause();
+      this.timeLeft = 0;
+    }
+  };
 }
 
 const durationInput = document.querySelector('#duration');
