@@ -11,7 +11,5 @@
 - OOP
 - AJAX
 - Webpack
-
-<br>
-
-### no framework, no library
+- design pattern
+  <br>
