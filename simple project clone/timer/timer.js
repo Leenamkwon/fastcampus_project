@@ -18,18 +18,22 @@ class Timer {
       this.onStart(this.timeRemaining);
     }
 
-    this.tick();
-    this.timer = setInterval(this.tick, 50);
+    if (this.tick) {
+      this.tick();
+      this.timer = setInterval(this.tick, 50);
+    }
   };
 
   pause = () => {
     clearInterval(this.timer);
+    this.startButton.addEventListener('click', this.start);
   };
 
   tick = () => {
     if (this.durationInput.value <= 0) {
       this.pause;
     } else {
+      this.startButton.removeEventListener('click', this.start);
       this.onTick(this.timeRemaining);
       this.timeRemaining = this.timeRemaining - 0.05;
     }
