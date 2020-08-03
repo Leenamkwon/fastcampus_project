@@ -15,7 +15,7 @@ const createAutoComplete = ({
     <div>
 `;
 
-  const input = root.querySelector('input');
+  const input = root.querySelector('.input');
   const dropdown = root.querySelector('.dropdown');
   const resultsWrapper = root.querySelector('.results');
 
