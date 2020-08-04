@@ -39,18 +39,11 @@ const createAutoComplete = ({
         dropdown.classList.remove('is-active');
         input.value = inputValue(item);
         onOptionSelect(item);
-        // do another request
-        // get data
-        // render data
       });
 
       resultsWrapper.appendChild(option);
     }
   };
-
-  // const onInput = debounce((event) => {
-  //   fetchData(event.target.value);
-  // }, 1000);
 
   input.addEventListener('input', debounce(onInput, 500));
 
