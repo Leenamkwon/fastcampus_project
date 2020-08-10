@@ -27,7 +27,7 @@ const UICtrl = (() => {
       li.id = `item-${item.id}`;
       li.innerHTML = `
         <strong>${item.name}: </strong> <em>${item.calories} Calories</em>
-        <a href="#" class="secondary-content">
+        <a href="#" class="secondary-content" dataset-id="${item.id}">
           <i class="edit-item fa fa-pencil"></i>
         </a>
       `;
