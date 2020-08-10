@@ -26,6 +26,7 @@ const getUser = (txt) => {
       // show profile
       ui.clearAlert();
       ui.showProfile(data.profile);
+      ui.showRepos(data.repos);
     }
   });
 };
