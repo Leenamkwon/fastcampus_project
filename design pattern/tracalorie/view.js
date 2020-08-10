@@ -1,3 +1,5 @@
+import selector from './selector.js';
+
 const UICtrl = (() => {
   return {
     populateItemList(items) {
@@ -13,7 +15,36 @@ const UICtrl = (() => {
       });
 
       // Insert list items
-      document.querySelector('#item-list').innerHTML = html;
+      selector['item-list'].innerHTML = html;
+    },
+
+    addListItem(item) {
+      this.hideList('block');
+      const li = document.createElement('li');
+
+      // Add class
+      li.className = 'collection-item';
+      li.id = `item-${item.id}`;
+      li.innerHTML = `
+        <strong>${item.name}: </strong> <em>${item.calories} Calories</em>
+        <a href="#" class="secondary-content">
+          <i class="edit-item fa fa-pencil"></i>
+        </a>
+      `;
+      selector['item-list'].insertAdjacentElement('beforeend', li);
+    },
+
+    clearInput() {
+      selector.meal.value = '';
+      selector.calories.value = '';
+    },
+
+    hideList(style) {
+      selector['item-list'].style.display = style;
+    },
+
+    totalCalories(calc) {
+      selector.totalCalories.textContent = calc;
     },
   };
 })();

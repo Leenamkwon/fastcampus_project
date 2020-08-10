@@ -7,7 +7,7 @@ const itemCtrl = (() => {
 
   // Data Structure / State
   const data = {
-    items: [{ id: 0, name: 'steak', calories: 1200 }],
+    items: [],
     currentItem: null,
     total: 0,
   };
@@ -16,8 +16,21 @@ const itemCtrl = (() => {
     getItems() {
       return data.items;
     },
+    addItems(name, calories) {
+      let id;
+      data.items.length ? (id = data.items.length) : (id = 0);
+
+      const newItem = new Item(id, name, calories);
+      data.items.push(newItem);
+
+      return newItem;
+    },
     logData() {
       return data;
+    },
+    getTotalCalories() {
+      data.total = data.items.reduce((acc, cal) => acc + cal.calories, 0);
+      return data.total;
     },
   };
 })();
