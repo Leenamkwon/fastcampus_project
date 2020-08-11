@@ -68,9 +68,19 @@ const App = ((itemCtrl, UICtrl) => {
     // update item
     const updatedItem = itemCtrl.updatedItem(input.name, input.calories);
 
-    console.log(updatedItem);
     // Update UI
     UICtrl.updateListItem(updatedItem);
+
+    // hide edit btn
+    ['updateBtn', 'deleteBtn', 'backBtn'].forEach((dom) => {
+      UICtrl.hideList('none', dom);
+    });
+
+    // show add btn
+    UICtrl.hideList('inline-block', 'addBtn');
+
+    // clear Input
+    UICtrl.clearInput();
 
     // Get total calories
     const totalCalories = itemCtrl.getTotalCalories();
@@ -85,9 +95,9 @@ const App = ((itemCtrl, UICtrl) => {
   return {
     init() {
       // Clear edit state / set initial set
-      UICtrl.hideList('none', 'updateBtn');
-      UICtrl.hideList('none', 'deleteBtn');
-      UICtrl.hideList('none', 'backBtn');
+      ['updateBtn', 'deleteBtn', 'backBtn'].forEach((dom) => {
+        UICtrl.hideList('none', dom);
+      });
 
       // fatch items from data structure
       const items = itemCtrl.getItems();

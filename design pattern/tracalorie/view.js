@@ -65,13 +65,23 @@ const UICtrl = (() => {
     },
 
     updateListItem(item) {
-      // Turn Node list into array
-      let listItems = Array.from(selector.listItems);
+      const listItems = [...document.querySelectorAll('#item-list li')];
 
-      listItems.forEach((listitem) => {
-        console.log(listItems);
-        const itemID = listitem.getAttribute('id');
-        console.log(itemID);
+      listItems.forEach((list) => {
+        const listID = list
+          .getAttribute('id')
+          .split('')
+          .join('')
+          .replace('item', '');
+
+        if (parseInt(listID) === item.id) {
+          document.querySelector(`#item-${item.id}`).innerHTML = `
+        <strong>${item.name}: </strong> <em>${item.calories} Calories</em>
+        <a href="#" class="secondary-content" dataset-id="${item.id}">
+          <i class="edit-item fa fa-pencil"></i>
+        </a>
+      `;
+        }
       });
     },
   };
