@@ -1,8 +1,9 @@
 import itemCtrl from './item.js';
 import UICtrl from './view.js';
 import selector from './selector.js';
+import strCtrl from './storage.js';
 
-const App = ((itemCtrl, UICtrl) => {
+const App = ((itemCtrl, UICtrl, strCtrl) => {
   const loadEventListeners = () => {
     selector.addBtn.addEventListener('click', itemAddSubmit);
   };
@@ -46,6 +47,9 @@ const App = ((itemCtrl, UICtrl) => {
       // clear Fields
       UICtrl.clearInput();
 
+      // Store in localStorage
+      strCtrl.storeItem(newItem);
+
       // Get total calories
       const totalCalories = itemCtrl.getTotalCalories();
       UICtrl.showTotalCalories(totalCalories);
@@ -85,6 +89,9 @@ const App = ((itemCtrl, UICtrl) => {
     // update item
     const updatedItem = itemCtrl.updatedItem(input.name, input.calories);
 
+    // Update local storage
+    strCtrl.updateItemStorage(updatedItem);
+
     // Update UI
     UICtrl.updateListItem(updatedItem);
 
@@ -94,6 +101,7 @@ const App = ((itemCtrl, UICtrl) => {
   const deleteItem = () => {
     itemCtrl.deleteList();
     UICtrl.deleteListItem(itemCtrl.getCurrentItem());
+    strCtrl.deleteItemFromStorage(itemCtrl.getCurrentItem());
     update();
   };
 
@@ -101,6 +109,7 @@ const App = ((itemCtrl, UICtrl) => {
     // Delete all items from data structure
     itemCtrl.clearAllItem();
     UICtrl.hideList('none', 'item-list');
+    strCtrl.clearItemFromStorage();
     update();
     UICtrl.removeItems();
   };
@@ -131,6 +140,6 @@ const App = ((itemCtrl, UICtrl) => {
       loadEventListeners();
     },
   };
-})(itemCtrl, UICtrl);
+})(itemCtrl, UICtrl, strCtrl);
 
 App.init();

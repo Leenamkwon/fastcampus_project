@@ -1,4 +1,5 @@
 // import selector from './selector';
+import strCtrl from './storage.js';
 
 const itemCtrl = (() => {
   const Item = function (id, name, calories) {
@@ -9,7 +10,7 @@ const itemCtrl = (() => {
 
   // Data Structure / State
   const data = {
-    items: [],
+    items: strCtrl.getItems(),
     currentItem: null,
     total: 0,
   };
