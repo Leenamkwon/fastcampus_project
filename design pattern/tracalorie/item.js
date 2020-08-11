@@ -60,6 +60,11 @@ const itemCtrl = (() => {
       data.total = data.items.reduce((acc, cal) => acc + cal.calories, 0);
       return data.total;
     },
+
+    deleteList() {
+      data.items = data.items.filter((item) => item.id !== data.currentItem.id);
+      return data.items;
+    },
   };
 })();
 

@@ -14,6 +14,23 @@ const App = ((itemCtrl, UICtrl) => {
     }
   });
 
+  const update = () => {
+    // hide edit btn
+    ['updateBtn', 'deleteBtn', 'backBtn'].forEach((dom) => {
+      UICtrl.hideList('none', dom);
+    });
+
+    // show add btn
+    UICtrl.hideList('inline-block', 'addBtn');
+
+    // clear Input
+    UICtrl.clearInput();
+
+    // Get total calories
+    const totalCalories = itemCtrl.getTotalCalories();
+    UICtrl.showTotalCalories(totalCalories);
+  };
+
   const itemAddSubmit = (e) => {
     e.preventDefault();
     // get form input from UI Controller
@@ -71,26 +88,20 @@ const App = ((itemCtrl, UICtrl) => {
     // Update UI
     UICtrl.updateListItem(updatedItem);
 
-    // hide edit btn
-    ['updateBtn', 'deleteBtn', 'backBtn'].forEach((dom) => {
-      UICtrl.hideList('none', dom);
-    });
+    update();
+  };
 
-    // show add btn
-    UICtrl.hideList('inline-block', 'addBtn');
-
-    // clear Input
-    UICtrl.clearInput();
-
-    // Get total calories
-    const totalCalories = itemCtrl.getTotalCalories();
-    UICtrl.showTotalCalories(totalCalories);
+  const deleteItem = () => {
+    const data = itemCtrl.deleteList();
+    UICtrl.populateItemList(data);
+    update();
   };
 
   // Edit icon click
   selector['item-list'].addEventListener('click', itemUpdateClick);
   // update btn click
   selector.updateBtn.addEventListener('click', itemUpdateSubmit);
+  selector.deleteBtn.addEventListener('click', deleteItem);
 
   return {
     init() {
