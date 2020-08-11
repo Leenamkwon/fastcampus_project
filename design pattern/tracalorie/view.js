@@ -84,6 +84,11 @@ const UICtrl = (() => {
         }
       });
     },
+
+    deleteListItem(item) {
+      const deleteItem = document.querySelector(`#item-${item.id}`);
+      deleteItem.remove();
+    },
   };
 })();
 

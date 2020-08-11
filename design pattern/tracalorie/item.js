@@ -1,3 +1,5 @@
+// import selector from './selector';
+
 const itemCtrl = (() => {
   const Item = function (id, name, calories) {
     this.id = id;
@@ -15,6 +17,10 @@ const itemCtrl = (() => {
   return {
     getItems() {
       return data.items;
+    },
+
+    getCurrentItem() {
+      return data.currentItem;
     },
 
     getItemID(id) {
@@ -62,8 +68,17 @@ const itemCtrl = (() => {
     },
 
     deleteList() {
-      data.items = data.items.filter((item) => item.id !== data.currentItem.id);
-      return data.items;
+      // MY SOLUTION 1
+      // data.items = data.items.filter((item) => item.id !== data.currentItem.id);
+
+      // MY SOLUTION 2
+      const remover = data.items.findIndex((item) => {
+        if (item.id === data.currentItem.id) {
+          return item;
+        }
+      });
+      data.items.splice(remover, 1);
+      return remover;
     },
   };
 })();

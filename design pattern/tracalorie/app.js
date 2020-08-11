@@ -92,8 +92,8 @@ const App = ((itemCtrl, UICtrl) => {
   };
 
   const deleteItem = () => {
-    const data = itemCtrl.deleteList();
-    UICtrl.populateItemList(data);
+    itemCtrl.deleteList();
+    UICtrl.deleteListItem(itemCtrl.getCurrentItem());
     update();
   };
 
@@ -102,6 +102,7 @@ const App = ((itemCtrl, UICtrl) => {
   // update btn click
   selector.updateBtn.addEventListener('click', itemUpdateSubmit);
   selector.deleteBtn.addEventListener('click', deleteItem);
+  selector.backBtn.addEventListener('click', update);
 
   return {
     init() {
