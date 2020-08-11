@@ -16,6 +16,32 @@ const itemCtrl = (() => {
     getItems() {
       return data.items;
     },
+
+    getItemID(id) {
+      let found = data.items.find((item) => item.id === id);
+      return found;
+    },
+
+    setCurrentItem(item) {
+      data.currentItem = item;
+      return data.currentItem;
+    },
+
+    updatedItem(name, calories) {
+      calories = parseInt(calories);
+      let found;
+
+      data.items.forEach((item) => {
+        if (item.id === data.currentItem.id) {
+          item.name = name;
+          item.calories = calories;
+          found = item;
+        }
+      });
+
+      return found;
+    },
+
     addItems(name, calories) {
       let id;
       data.items.length ? (id = data.items.length) : (id = 0);
@@ -25,9 +51,11 @@ const itemCtrl = (() => {
 
       return newItem;
     },
+
     logData() {
       return data;
     },
+
     getTotalCalories() {
       data.total = data.items.reduce((acc, cal) => acc + cal.calories, 0);
       return data.total;

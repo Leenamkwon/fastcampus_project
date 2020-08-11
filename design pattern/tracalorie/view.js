@@ -19,7 +19,7 @@ const UICtrl = (() => {
     },
 
     addListItem(item) {
-      this.hideList('block');
+      this.hideList('block', 'item-list');
       const li = document.createElement('li');
 
       // Add class
@@ -39,12 +39,40 @@ const UICtrl = (() => {
       selector.calories.value = '';
     },
 
-    hideList(style) {
-      selector['item-list'].style.display = style;
+    hideList(style = 'none', dom) {
+      selector[dom].style.display = style;
     },
 
-    totalCalories(calc) {
+    showTotalCalories(calc) {
       selector.totalCalories.textContent = calc;
+    },
+
+    addItemToForm({ id, name, calories }) {
+      selector.meal.value = name;
+      selector.calories.value = calories;
+
+      ['backBtn', 'deleteBtn', 'updateBtn'].forEach((dom) =>
+        this.hideList('inline-block', dom)
+      );
+      this.hideList('none', 'addBtn');
+    },
+
+    getItemInput() {
+      return {
+        name: selector.meal.value,
+        calories: selector.calories.value,
+      };
+    },
+
+    updateListItem(item) {
+      // Turn Node list into array
+      let listItems = Array.from(selector.listItems);
+
+      listItems.forEach((listitem) => {
+        console.log(listItems);
+        const itemID = listitem.getAttribute('id');
+        console.log(itemID);
+      });
     },
   };
 })();
