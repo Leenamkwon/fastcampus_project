@@ -80,6 +80,11 @@ const itemCtrl = (() => {
       data.items.splice(remover, 1);
       return remover;
     },
+
+    clearAllItem() {
+      data.items = [];
+      data.currentItem = null;
+    },
   };
 })();
 

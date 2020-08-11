@@ -89,6 +89,20 @@ const UICtrl = (() => {
       const deleteItem = document.querySelector(`#item-${item.id}`);
       deleteItem.remove();
     },
+
+    removeItems() {
+      let listItems = [...selector.listItems];
+
+      // Turn Node list into array
+      listItems.forEach((item) => {
+        item.remove();
+      });
+
+      // SOLUTION 2
+      // for (let i = 0; i < listItems.length; i+=1) {
+      //   selector['item-list'].removeChild(listItems[i]);
+      // }
+    },
   };
 })();
 

@@ -8,6 +8,7 @@ const selector = {
   updateBtn: document.querySelector('.update-btn'),
   deleteBtn: document.querySelector('.delete-btn'),
   backBtn: document.querySelector('.back-btn'),
+  clearBtn: document.querySelector('.clear-btn'),
 };
 
 export default selector;

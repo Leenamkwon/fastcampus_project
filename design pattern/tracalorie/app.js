@@ -97,11 +97,20 @@ const App = ((itemCtrl, UICtrl) => {
     update();
   };
 
+  const clearAllItemsClick = () => {
+    // Delete all items from data structure
+    itemCtrl.clearAllItem();
+    UICtrl.hideList('none', 'item-list');
+    update();
+    UICtrl.removeItems();
+  };
+
   // Edit icon click
   selector['item-list'].addEventListener('click', itemUpdateClick);
   // update btn click
   selector.updateBtn.addEventListener('click', itemUpdateSubmit);
   selector.deleteBtn.addEventListener('click', deleteItem);
+  selector.clearBtn.addEventListener('click', clearAllItemsClick);
   selector.backBtn.addEventListener('click', update);
 
   return {
