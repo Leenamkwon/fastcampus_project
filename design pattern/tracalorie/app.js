@@ -138,6 +138,10 @@ const App = ((itemCtrl, UICtrl, strCtrl) => {
         : UICtrl.populateItemList(items);
 
       loadEventListeners();
+
+      // Get total calories
+      const totalCalories = itemCtrl.getTotalCalories();
+      UICtrl.showTotalCalories(totalCalories);
     },
   };
 })(itemCtrl, UICtrl, strCtrl);
