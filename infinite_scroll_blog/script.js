@@ -16,12 +16,13 @@ async function getPosts() {
 
 // Show posts in DOM
 async function showPosts() {
-  const posts = await getPosts();
+  try {
+    const posts = await getPosts();
 
-  posts.forEach((post) => {
-    const postEl = document.createElement('div');
-    postEl.classList.add('post');
-    postEl.innerHTML = `
+    posts.forEach((post) => {
+      const postEl = document.createElement('div');
+      postEl.classList.add('post');
+      postEl.innerHTML = `
       <div class="number">${post.id}</div>
       <div class="post-info">
         <h2 class="post-title">${post.title}</h2>
@@ -29,8 +30,11 @@ async function showPosts() {
       </div>
     `;
 
-    postsContainer.appendChild(postEl);
-  });
+      postsContainer.appendChild(postEl);
+    });
+  } catch {
+    console.log('err');
+  }
 }
 
 async function showLoader() {
@@ -46,6 +50,19 @@ async function showLoader() {
   }, 600);
 }
 
+const debounce = (fn, delay = 650) => {
+  let timeOut;
+  return (...arg) => {
+    if (timeOut) {
+      clearTimeout(timeOut);
+    }
+
+    timeOut = setTimeout(() => {
+      fn.apply(null, arg);
+    }, delay);
+  };
+};
+
 function filterPosts(e) {
   const term = e.target.value.toUpperCase();
   const posts = document.querySelectorAll('.post');
@@ -58,12 +75,14 @@ function filterPosts(e) {
     } else {
       post.style.display = 'none';
     }
+
+    if (!term.length) post.style.display = 'none';
   });
 }
 
 showPosts();
 
-filter.addEventListener('input', filterPosts);
+filter.addEventListener('input', debounce(filterPosts));
 
 window.addEventListener('scroll', () => {
   // scrollHeight 도큐먼트 전체 높이, 화면 사이즈에 영향을 받지 않음
