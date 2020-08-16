@@ -279,7 +279,7 @@
       const li = document.querySelectorAll('li');
 
       const fixNav = () => {
-        if (window.scrollY >= topofNav) {
+        if (window.scrollY >= topofNav || window.pageYOffset >= topofNav) {
           document.body.style.paddingTop = paddingTop + 'px';
           document.body.classList.add('fixed-nav');
         } else {
