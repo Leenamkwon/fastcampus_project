@@ -2,6 +2,7 @@ const slideContainer = document.querySelector('.container');
 const slide = document.querySelector('.slide-container');
 const nextBtn = document.getElementById('next-btn');
 const prevBtn = document.getElementById('prev-btn');
+const nav = document.querySelectorAll('.index__navigation');
 
 let index = 1;
 let slides = document.querySelectorAll('.slide'); // 4개
@@ -20,7 +21,7 @@ const slideWidth = slides[index].getBoundingClientRect().width;
 slide.style.transform = `translateX(${-slideWidth * index}px)`;
 
 const startSlide = () => {
-  autoMoving = setInterval(moveToNextSlide, 2000);
+  autoMoving = setInterval(moveToNextSlide, 5000);
 };
 
 const moveToNextSlide = () => {
@@ -46,19 +47,50 @@ const resetSlide = () => {
     index = 1;
     slide.style.transition = 'none';
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
-    startSlide();
+    // startSlide();
   }
 
   if (index === 0) {
     index = slides.length - 2;
     slide.style.transition = 'none';
     slide.style.transform = `translateX(${-slideWidth * index}px)`;
-    startSlide();
+    // startSlide();
+  }
+};
+
+const debounce = (fn, delay = 300) => {
+  let timeOut;
+  return (args) => {
+    if (timeOut) {
+      clearInterval(timeOut);
+    }
+    timeOut = setTimeout(() => {
+      fn(args);
+      clearInterval(autoMoving);
+      setTimeout(() => {
+        console.log('start');
+        startSlide();
+        return;
+      }, 2000);
+    }, delay);
+  };
+};
+
+const clickIndexMove = (e) => {
+  slides = document.querySelectorAll('.slide');
+  if (e.target.dataset.index) {
+    index = e.target.dataset.index;
+    slide.style.transform = `translateX(${-slideWidth * index}px)`;
+    slide.style.transition = `.7s ease`;
   }
 };
 
 slide.addEventListener('transitionend', resetSlide);
 document.addEventListener('DOMContentLoaded', startSlide);
-slideContainer.addEventListener('mouseenter', () => clearInterval(autoMoving));
-nextBtn.addEventListener('click', moveToNextSlide);
-prevBtn.addEventListener('click', moveToPrevSlide);
+// slideContainer.addEventListener('mouseenter', () => clearInterval(autoMoving));
+// slideContainer.addEventListener('mouseout', startSlide);
+nextBtn.addEventListener('click', debounce(moveToNextSlide));
+prevBtn.addEventListener('click', debounce(moveToPrevSlide));
+[...nav].forEach((li) =>
+  li.addEventListener('click', debounce(clickIndexMove))
+);

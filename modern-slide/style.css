@@ -53,3 +53,25 @@
   font-size: 60px;
   color: white;
 }
+
+.index {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: #fff;
+}
+
+.index ul {
+  display: flex;
+  list-style-type: none;
+}
+
+.index ul li {
+  padding: 0.5rem;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+
+.index ul li:not(:last-child) {
+  margin-right: 10px;
+}
