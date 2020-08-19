@@ -10,6 +10,7 @@ function reverseString(str) {
   //    reverseVOCA += tempSplit[i];
   //  }
   //  return reverseVOCA;
+  /////////////////////////
   // My solution 2
   // const tempSplit = str.split('');
   // tempSplit.reverse();
@@ -19,7 +20,6 @@ function reverseString(str) {
   // for (let char of str) {
   //   reverseVOCA = char + reverseVOCA;
   // }
-  // console.log(reverseVOCA);
   // My solution 4
   // let reverseVOCA = '';
   // str.split('').forEach((char) => {
@@ -52,7 +52,18 @@ function reverseInt(int) {
   // const reverse = int.toString().split('');
   // const num = parseInt(reverse.reverse().join(''), 10);
   // return Math.abs(num);
-  // My solution 2
+  /*
+   My solution 2
+  if (int.toString().includes('-')) {
+    const reverse = int.toString().split('');
+    const arr = parseInt(reverse.slice(1).reverse().join(''));
+
+    console.log(`${reverse[0]}${arr}`);
+    return `${reverse[0]}${arr}`;
+  } else {
+    const reverse = parseInt(int.toString().split('').reverse().join(''));
+    return reverse;
+  } */
 }
 
 // CHALLENGE 4: CAPITALIZE LETTERS
