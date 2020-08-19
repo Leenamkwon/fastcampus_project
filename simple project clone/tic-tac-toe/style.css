@@ -1,0 +1,100 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cell-size: 100px;
+  --mark-size: calc(var(--cell-size) * 0.8);
+}
+
+body {
+  margin: 0;
+}
+
+.board {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: repeat(3, auto);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+  border-bottom-style: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-right-style: none;
+  border-left-style: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right-style: none;
+  border-left-style: none;
+}
+
+.cell:last-child,
+.cell:nth-child(7),
+.cell:nth-child(8) {
+  border-bottom-style: none;
+  border-top-style: none;
+}
+
+.cell.x,
+.cell.circle {
+  cursor: not-allowed;
+}
+
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:hover:not(.circle)::before,
+.board.x .cell:hover:not(.circle)::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: var(--mark-size);
+  background-color: black;
+}
+
+.cell.x::after,
+.board.x .cell:hover::after {
+  transform: rotate(-45deg);
+}
+
+.cell.x::before,
+.board.x .cell:hover::before {
+  transform: rotate(45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after {
+  content: '';
+  display: block;
+}
+
+.cell.circle::before {
+  width: var(--mark-size);
+  height: var(--mark-size);
+  border-radius: 50%;
+  border: 1px solid black;
+}

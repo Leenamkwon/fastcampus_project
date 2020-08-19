@@ -276,9 +276,12 @@
 
       const paddingTop = nav.offsetHeight;
       const logo = document.querySelector('.logo');
+      console.log(logo.offsetHeight);
       const li = document.querySelectorAll('li');
 
       const fixNav = () => {
+        console.log(window.scrollY);
+
         if (window.scrollY >= topofNav || window.pageYOffset >= topofNav) {
           document.body.style.paddingTop = paddingTop + 'px';
           document.body.classList.add('fixed-nav');

@@ -21,7 +21,7 @@ const slideWidth = slides[index].getBoundingClientRect().width;
 slide.style.transform = `translateX(${-slideWidth * index}px)`;
 
 const startSlide = () => {
-  autoMoving = setInterval(moveToNextSlide, 5000);
+  autoMoving = setInterval(moveToNextSlide, 4000);
 };
 
 const moveToNextSlide = () => {
@@ -58,7 +58,7 @@ const resetSlide = () => {
   }
 };
 
-const debounce = (fn, delay = 300) => {
+const debounce = (fn, delay = 700) => {
   let timeOut;
   return (args) => {
     if (timeOut) {
@@ -68,10 +68,9 @@ const debounce = (fn, delay = 300) => {
       fn(args);
       clearInterval(autoMoving);
       setTimeout(() => {
-        console.log('start');
         startSlide();
         return;
-      }, 2000);
+      }, 1000);
     }, delay);
   };
 };
