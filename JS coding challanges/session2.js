@@ -51,9 +51,18 @@ function chunkArray(arr, len) {
 // ex. [[1, 2], [3, 4], [5, 6], [7]] = [1, 2, 3, 4, 5, 6, 7]
 
 function flattenArray(arrays) {
+  // SOLUTION 1
   let flatten = [];
-  arrays.forEach((deep) => flatten.push(...deep));
-  return flatten;
+  // arrays.forEach((deep) => flatten.push(...deep));
+  // return flatten;
+
+  // SOLUTION 2
+  // return arrays.reduce((a, b) => {
+  //   return a.concat(b);
+  // }, []);
+
+  // SOLUTION 3
+  // return Array.prototype.concat.apply(flatten, arrays);
 }
 
 // CHALLENGE 4: ANAGRAM
@@ -71,6 +80,6 @@ function isAnagram(str1, str2) {}
 function letterChanges(str) {}
 
 // Call Function
-const output = longestWord('Hello, my name is Brad');
+const output = flattenArray([[1, 2], [3, 4], [5, 6], [7]]);
 
 console.log(output);
