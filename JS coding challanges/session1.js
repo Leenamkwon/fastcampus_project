@@ -108,23 +108,23 @@ function capitalizeLetters(str) {
 // ex. maxCharacter('javascript') == 'a'
 function maxCharacter(str) {
   /* My solution 1 */
-  // const charMap = {};
-  // let maxNum = 0;
-  // let maxChar = '';
-  // str.split('').forEach((char) => {
-  // 	if (charMap[char]) {
-  // 		charMap[char]++;
-  // 	} else {
-  // 		charMap[char] = 1;
-  // 	}
-  // });
-  // for (let item in charMap) {
-  // 	if (charMap[item] > maxNum) {
-  // 		maxNum = charMap[item];
-  // 		maxChar = item;
-  // 	}
-  // }
-  // return maxChar;
+  const charMap = {};
+  let maxNum = 0;
+  let maxChar = '';
+  str.split('').forEach((char) => {
+    if (charMap[char]) {
+      charMap[char]++;
+    } else {
+      charMap[char] = 1;
+    }
+  });
+  for (let item in charMap) {
+    if (charMap[item] > maxNum) {
+      maxNum = charMap[item];
+      maxChar = item;
+    }
+  }
+  return maxChar;
 }
 
 // 3 1 1 5 1 1 1

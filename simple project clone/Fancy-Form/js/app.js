@@ -4,9 +4,9 @@ const questions = [
   { questions: 'Enter Your Last Name' },
   {
     questions: 'Enter Your Email',
-    pattern: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    pattern: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
   },
-  { questions: 'Create A Password', type: 'password' }
+  { questions: 'Create A Password', type: 'password' },
 ];
 
 // Transition Times
@@ -15,7 +15,7 @@ const shakeTime = 100;
 const switchTime = 200;
 
 // Init Position At First question
-let position = 0 % (questions.length - 1);
+let position = 0;
 
 // Init DOM Elements
 const formBox = document.querySelector('#form-box');
@@ -86,6 +86,10 @@ function validate() {
     pass();
   }
 }
+// 0 : -20
+// 1 : 20
+// 2 : -20
+// 1 : 20
 
 function fail() {
   formBox.className = 'error';

@@ -1,15 +1,11 @@
-## What's learn?
+#### 프론트엔드의 근본인 자바스크립트 공부하기 🤘
 
-<br>
+#### Goal
 
-- a wide variety of Projects
-- spa app clone Projects
-- UI design effect
-- challenges
-- quizzes
-- JavaScript ES6+
-- OOP
-- AJAX
-- Webpack
-- design pattern
-  <br>
+1. 헷갈리는 문법과 특이한 작동원리 계속 반복하기 (취업 전까지) 💻
+2. MVC 패턴과 웹팩을 적용하여 작은 사이드 프로젝트 만들어 보기
+3. 웹에서 자주 등장하는 UI/UX 효과를 토대로 미니 프로젝트 만들어 보기
+4. 디스코드, 유투브에서 코딩 챌린지 꾸준히 하기
+5. 꾸준히 FE개발자 취준생들과 스터디하기
+6. 프레임 워크 없이 공부하기
+7. 라이브러리 없이 SPA 프로젝트 클론해보기.

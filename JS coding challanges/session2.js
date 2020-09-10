@@ -44,6 +44,8 @@ function chunkArray(arr, len) {
   for (let i = 0; i < arr.length; i += len) {
     chunkedArr.push(arr.slice(i, i + len));
   }
+
+  // INSTRUCTOR SOLUTION
 }
 
 // CHALLENGE 3: FLATTEN ARRAY
